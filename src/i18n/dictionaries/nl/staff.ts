@@ -1,0 +1,92 @@
+import type { staff as en } from "../en/staff";
+
+export const staff: typeof en = {
+  metaTitle: "Medewerkers",
+  description: "Je medewerkers, hun roosters en de behandelingen die ze uitvoeren.",
+  add: "Medewerker toevoegen",
+  emptyTitle: "Nog geen medewerkers",
+  emptyText:
+    "Voeg de mensen toe die afspraken aannemen. Iedereen krijgt eigen werkuren en behandelingen.",
+  emptyAction: "Een medewerker toevoegen",
+  professional: "Medewerker",
+  notBookable: "Niet online boekbaar",
+  hasLogin: "Heeft een login",
+  services: "Behandelingen",
+  worksOn: "Werkt op",
+  noHours: "Geen uren ingesteld",
+  newTitle: "Een medewerker toevoegen",
+  newDescription:
+    "Nieuwe medewerkers starten met je openingsuren — pas hun rooster aan op het volgende scherm.",
+  created: "Medewerker toegevoegd",
+  createdText: "Controleer de werkuren en kies welke behandelingen deze persoon uitvoert.",
+  profile: "Profiel",
+  profileDescription: "Naam, functie en bio verschijnen op je boekingspagina.",
+  servicesDescription: (name) =>
+    `Kies wat ${name} uitvoert, eventueel met een eigen prijs en duur.`,
+  form: {
+    displayName: "Naam zichtbaar voor klanten",
+    jobTitlePlaceholder: "bv. Kleurspecialist",
+    bio: "Korte bio",
+    bioHint: "Zichtbaar op je boekingspagina.",
+    privateHint: "Privé — nooit zichtbaar voor klanten.",
+    bookable: "Online boekbaar",
+    bookableHint: "Klanten kunnen deze medewerker kiezen op de boekingspagina.",
+    activeHint:
+      "Zet medewerkers die vertrokken zijn op inactief; hun afsprakengeschiedenis blijft bewaard.",
+    saveProfile: "Profiel opslaan",
+  },
+  servicesForm: {
+    none: "Nog geen behandelingen.",
+    create: "Maak eerst een behandeling aan",
+    first: "",
+    defaultsHint: "Laat prijs of duur leeg om de standaardwaarde van de behandeling te gebruiken.",
+    ownPrice: "Eigen prijs",
+    ownDuration: "Eigen duur",
+    submit: "Behandelingen opslaan",
+    check: "Controleer de gemarkeerde afwijkingen.",
+    saved: "Behandelingen opgeslagen.",
+  },
+  hours: {
+    title: "Werkuren",
+    description: "Klanten kunnen alleen binnen deze uren boeken. Voeg een pauze toe om een dag te splitsen.",
+    submit: "Werkuren opslaan",
+    check: "Controleer de werkuren.",
+    saved: "Werkuren opgeslagen. De online beschikbaarheid is bijgewerkt.",
+  },
+  timeOff: {
+    title: "Afwezigheid",
+    description: "Vakantie, ziekte en losse pauzes blokkeren online boeken in die periode.",
+    remove: "Afwezigheid verwijderen",
+    none: "Geen geplande afwezigheid.",
+    from: "Van",
+    until: "Tot",
+    startTime: "Beginuur",
+    endTime: "Einduur",
+    type: "Soort",
+    note: "Notitie",
+    notePlaceholder: "Alleen zichtbaar voor je team",
+    submit: "Afwezigheid toevoegen",
+    added: "Afwezigheid toegevoegd. Die uren zijn niet meer boekbaar.",
+    kinds: {
+      holiday: "Vakantie",
+      sick: "Ziekte",
+      break: "Pauze",
+      training: "Opleiding",
+      other: "Andere",
+    },
+  },
+  mySchedule: {
+    title: "Mijn rooster",
+    description:
+      "Je werkuren en afwezigheden. Wijzigingen passen de online beschikbaarheid meteen aan.",
+    noProfile: "Geen medewerkersprofiel gekoppeld",
+    noProfileText:
+      "Vraag de eigenaar van de salon om je account aan je medewerkersprofiel te koppelen, zodat je je uren kunt beheren.",
+  },
+  errors: {
+    manage: "Je hebt geen toestemming om medewerkers te beheren.",
+    schedule: "Je hebt geen toestemming om dit rooster te wijzigen.",
+    services: "Je hebt geen toestemming om de toegewezen behandelingen te wijzigen.",
+  },
+  profileSaved: "Profiel opgeslagen.",
+};

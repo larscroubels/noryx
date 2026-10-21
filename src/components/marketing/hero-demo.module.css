@@ -1,0 +1,668 @@
+/*
+ * Animated product demo for the landing page hero. One 16 s timeline drives
+ * both mock-ups (percentages below are shared):
+ *   0–38 %   desktop: cursor opens an appointment and marks it completed
+ *   38–64 %  phone: a hand scrolls, picks a time and confirms a booking
+ *   64–96 %  the new booking appears in the salon's schedule
+ * Positions use SVG user units (desktop) or % of the phone box, so the
+ * choreography stays aligned at every screen size.
+ */
+
+.demo {
+  --demo-duration: 16s;
+}
+
+.demo * {
+  animation-duration: var(--demo-duration);
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1);
+  animation-fill-mode: both;
+}
+
+.svgText {
+  font-family: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+}
+
+.svgSerif {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-variant-numeric: lining-nums;
+}
+
+/* ── Desktop: cursor ─────────────────────────────────────────────────────── */
+.cursor {
+  animation-name: cursor-path;
+}
+
+@keyframes cursor-path {
+  0% {
+    transform: translate(660px, 500px);
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  15% {
+    transform: translate(332px, 236px);
+  }
+  17% {
+    transform: translate(332px, 236px);
+  }
+  25% {
+    transform: translate(418px, 263px);
+  }
+  32% {
+    transform: translate(418px, 263px);
+    opacity: 1;
+  }
+  39% {
+    transform: translate(700px, 420px);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(700px, 420px);
+    opacity: 0;
+  }
+}
+
+.cursorShape {
+  transform-box: fill-box;
+  transform-origin: 0 0;
+  animation-name: cursor-press;
+}
+
+@keyframes cursor-press {
+  0%,
+  16%,
+  18.5%,
+  26.5%,
+  29%,
+  100% {
+    transform: scale(1);
+  }
+  17.3%,
+  27.8% {
+    transform: scale(0.82);
+  }
+}
+
+.rippleDesktopOne,
+.rippleDesktopTwo,
+.rippleTapOne,
+.rippleTapTwo,
+.rippleSwipe {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.rippleDesktopOne {
+  animation-name: ripple-desktop-one;
+}
+
+.rippleDesktopTwo {
+  animation-name: ripple-desktop-two;
+}
+
+@keyframes ripple-desktop-one {
+  0%,
+  16.8% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  17.3% {
+    opacity: 0.55;
+  }
+  21% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ripple-desktop-two {
+  0%,
+  27.3% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  27.8% {
+    opacity: 0.55;
+  }
+  31.5% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ── Desktop: appointment popover ────────────────────────────────────────── */
+.popover {
+  transform-box: fill-box;
+  transform-origin: 10% 10%;
+  animation-name: popover;
+}
+
+@keyframes popover {
+  0%,
+  17.4% {
+    opacity: 0;
+    transform: scale(0.95) translateY(6px);
+  }
+  19.5% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  34% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  36.5%,
+  100% {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+
+.buttonPress {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation-name: button-press;
+}
+
+@keyframes button-press {
+  0%,
+  27.2%,
+  29%,
+  100% {
+    transform: scale(1);
+  }
+  27.9% {
+    transform: scale(0.96);
+  }
+}
+
+.badgeConfirmed {
+  animation-name: fade-out-at-28;
+}
+
+.badgeCompleted {
+  animation-name: fade-in-at-28;
+}
+
+@keyframes fade-out-at-28 {
+  0%,
+  28% {
+    opacity: 1;
+  }
+  29.5%,
+  96% {
+    opacity: 0;
+  }
+  99%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-at-28 {
+  0%,
+  28% {
+    opacity: 0;
+  }
+  29.5%,
+  96% {
+    opacity: 1;
+  }
+  99%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Row 1 turns from "confirmed" (pink) to "completed" (green). */
+.rowOneFill {
+  animation-name: row-one-fill;
+}
+
+.rowOneAccent {
+  animation-name: row-one-accent;
+}
+
+@keyframes row-one-fill {
+  0%,
+  29% {
+    fill: #fdf2f4;
+  }
+  31%,
+  96% {
+    fill: #eef7f1;
+  }
+  99%,
+  100% {
+    fill: #fdf2f4;
+  }
+}
+
+@keyframes row-one-accent {
+  0%,
+  29% {
+    fill: #b83d5d;
+  }
+  31%,
+  96% {
+    fill: #1f7a4b;
+  }
+  99%,
+  100% {
+    fill: #b83d5d;
+  }
+}
+
+.rowFocus {
+  animation-name: row-focus;
+}
+
+@keyframes row-focus {
+  0%,
+  16.5% {
+    opacity: 0;
+  }
+  17.5%,
+  34% {
+    opacity: 1;
+  }
+  36%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ── Desktop: the new online booking arrives ─────────────────────────────── */
+.newRow {
+  animation-name: new-row;
+}
+
+@keyframes new-row {
+  0%,
+  65% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  68%,
+  95% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  98%,
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+
+.newRowGlow {
+  animation-name: new-row-glow;
+}
+
+@keyframes new-row-glow {
+  0%,
+  66% {
+    opacity: 0;
+  }
+  69% {
+    opacity: 1;
+  }
+  80%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.statOld {
+  animation-name: stat-old;
+}
+
+.statNew {
+  animation-name: stat-new;
+}
+
+@keyframes stat-old {
+  0%,
+  66% {
+    opacity: 1;
+  }
+  67.5%,
+  96% {
+    opacity: 0;
+  }
+  99%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes stat-new {
+  0%,
+  66% {
+    opacity: 0;
+  }
+  67.5%,
+  96% {
+    opacity: 1;
+  }
+  99%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ── Phone: scrolling, selecting and confirming ──────────────────────────── */
+.phoneContent {
+  animation-name: phone-scroll;
+}
+
+@keyframes phone-scroll {
+  0%,
+  42% {
+    transform: translateY(0);
+  }
+  50%,
+  85% {
+    transform: translateY(-150px);
+  }
+  85.1%,
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.slotFill {
+  animation-name: slot-fill;
+}
+
+.slotText {
+  animation-name: slot-text;
+}
+
+@keyframes slot-fill {
+  0%,
+  56% {
+    fill: #ffffff;
+    stroke: #e6dfda;
+  }
+  57%,
+  85% {
+    fill: #b83d5d;
+    stroke: #b83d5d;
+  }
+  85.1%,
+  100% {
+    fill: #ffffff;
+    stroke: #e6dfda;
+  }
+}
+
+@keyframes slot-text {
+  0%,
+  56% {
+    fill: #292626;
+  }
+  57%,
+  85% {
+    fill: #ffffff;
+  }
+  85.1%,
+  100% {
+    fill: #292626;
+  }
+}
+
+.confirmPress {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation-name: confirm-press;
+}
+
+@keyframes confirm-press {
+  0%,
+  61.5%,
+  63%,
+  100% {
+    transform: scale(1);
+  }
+  62.2% {
+    transform: scale(0.95);
+  }
+}
+
+.success {
+  animation-name: success;
+}
+
+@keyframes success {
+  0%,
+  63.5% {
+    opacity: 0;
+  }
+  65.5%,
+  86% {
+    opacity: 1;
+  }
+  90%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.successCheck {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation-name: success-check;
+}
+
+@keyframes success-check {
+  0%,
+  64% {
+    transform: scale(0.6);
+  }
+  67%,
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* The hand is an HTML overlay positioned in % of the phone box. Its fingertip
+   sits at the element's top-left, so left/top are the touch point. */
+.hand {
+  position: absolute;
+  width: 26%;
+  aspect-ratio: 1;
+  margin-left: -9%;
+  margin-top: -2%;
+  pointer-events: none;
+  animation-name: hand-path;
+}
+
+@keyframes hand-path {
+  0%,
+  37% {
+    left: 62%;
+    top: 92%;
+    opacity: 0;
+  }
+  40% {
+    left: 62%;
+    top: 82%;
+    opacity: 1;
+  }
+  42% {
+    left: 62%;
+    top: 80%;
+  }
+  50% {
+    left: 62%;
+    top: 46%;
+  }
+  53% {
+    left: 62%;
+    top: 46%;
+  }
+  56% {
+    left: 22%;
+    top: 56%;
+  }
+  59% {
+    left: 22%;
+    top: 56%;
+  }
+  61.5% {
+    left: 50%;
+    top: 67%;
+    opacity: 1;
+  }
+  63% {
+    left: 50%;
+    top: 67%;
+    opacity: 1;
+  }
+  66%,
+  100% {
+    left: 56%;
+    top: 80%;
+    opacity: 0;
+  }
+}
+
+.handPress {
+  width: 100%;
+  height: 100%;
+  transform-origin: 30% 8%;
+  animation-name: hand-press;
+}
+
+@keyframes hand-press {
+  0%,
+  41%,
+  43%,
+  55.5%,
+  57.5%,
+  61.6%,
+  63.2%,
+  100% {
+    transform: scale(1);
+  }
+  42%,
+  56.5%,
+  62.4% {
+    transform: scale(0.9);
+  }
+}
+
+.touch {
+  position: absolute;
+  width: 14%;
+  aspect-ratio: 1;
+  margin-left: -7%;
+  margin-top: -7%;
+  border-radius: 9999px;
+  background: rgb(127 6 16 / 0.18);
+  border: 2px solid rgb(127 6 16 / 0.35);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.touchSwipe {
+  left: 62%;
+  animation-name: touch-swipe;
+}
+
+@keyframes touch-swipe {
+  0%,
+  41.5% {
+    top: 80%;
+    opacity: 0;
+  }
+  42.5% {
+    top: 80%;
+    opacity: 1;
+  }
+  50% {
+    top: 46%;
+    opacity: 0.8;
+  }
+  51.5%,
+  100% {
+    top: 46%;
+    opacity: 0;
+  }
+}
+
+.touchSlot {
+  left: 22%;
+  top: 56%;
+  animation-name: touch-tap-slot;
+}
+
+.touchConfirm {
+  left: 50%;
+  top: 67%;
+  animation-name: touch-tap-confirm;
+}
+
+@keyframes touch-tap-slot {
+  0%,
+  56% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  56.6% {
+    opacity: 1;
+  }
+  59.5%,
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+@keyframes touch-tap-confirm {
+  0%,
+  62% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  62.6% {
+    opacity: 1;
+  }
+  65.5%,
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+/* Visitors who prefer less motion get a calm still image. */
+@media (prefers-reduced-motion: reduce) {
+  .demo * {
+    animation: none !important;
+  }
+  .cursor,
+  .popover,
+  .rowFocus,
+  .hand,
+  .touch,
+  .success,
+  .newRowGlow,
+  .statNew,
+  .badgeCompleted,
+  .rippleDesktopOne,
+  .rippleDesktopTwo {
+    opacity: 0 !important;
+  }
+  .newRow {
+    opacity: 0 !important;
+  }
+}

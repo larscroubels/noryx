@@ -1,0 +1,39 @@
+import { NextResponse, type NextRequest } from "next/server";
+
+import { updateSession } from "@/lib/supabase/proxy";
+
+/** Routes that need a signed-in user. Real authorisation happens again on the server and in RLS. */
+const PROTECTED_PREFIXES = ["/app", "/onboarding", "/admin"];
+/** Auth pages that signed-in users should skip. */
+const GUEST_ONLY = ["/login", "/signup", "/forgot-password"];
+
+export async function proxy(request: NextRequest) {
+  const { response, userId } = await updateSession(request);
+  const { pathname, search } = request.nextUrl;
+
+  const isProtected = PROTECTED_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  );
+  if (isProtected && !userId) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    url.search = `?next=${encodeURIComponent(pathname + search)}`;
+    return NextResponse.redirect(url);
+  }
+
+  if (userId && GUEST_ONLY.includes(pathname)) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/app";
+    url.search = "";
+    return NextResponse.redirect(url);
+  }
+
+  return response;
+}
+
+export const config = {
+  matcher: [
+    // Skip static files, images and metadata assets.
+    "/((?!_next/static|_next/image|favicon.ico|icon.png|apple-icon.png|opengraph-image.png|manifest.webmanifest|brand/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|txt|xml)$).*)",
+  ],
+};

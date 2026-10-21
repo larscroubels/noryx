@@ -1,0 +1,25 @@
+import type { account as en } from "../en/account";
+
+export const account: typeof en = {
+  metaTitle: "Account",
+  title: "Accountinstellingen",
+  description: "Je persoonlijke inloggegevens. Die staan los van de instellingen van je zaak.",
+  profile: "Profiel",
+  email: "E-mail",
+  password: "Wachtwoord",
+  workspaces: "Je werkruimtes",
+  workspacesText: "Zaken waartoe je toegang hebt.",
+  yourName: "Je naam",
+  emailHint: "We vragen je om het nieuwe adres te bevestigen.",
+  changeEmail: "E-mailadres wijzigen",
+  changePassword: "Wachtwoord wijzigen",
+  nameFailed: "We konden je naam niet opslaan. Probeer het opnieuw.",
+  nameUpdated: "Je naam is bijgewerkt.",
+  emailInUse: "Dat e-mailadres is al in gebruik.",
+  emailFailed: "We konden de wijziging van je e-mailadres niet starten.",
+  emailSent: "Kijk in je huidige én je nieuwe mailbox om de wijziging te bevestigen.",
+  reauth: "Log voor je veiligheid uit en opnieuw in voor je je wachtwoord wijzigt.",
+  samePassword: "Kies een wachtwoord dat verschilt van je huidige.",
+  passwordFailed: "We konden je wachtwoord niet wijzigen. Probeer het opnieuw.",
+  passwordChanged: "Je wachtwoord is gewijzigd.",
+};

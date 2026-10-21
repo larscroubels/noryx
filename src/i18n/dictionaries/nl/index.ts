@@ -1,0 +1,21 @@
+import { account } from "./account";
+import { admin } from "./admin";
+import { app } from "./app";
+import { appointments } from "./appointments";
+import { auth } from "./auth";
+import { booking } from "./booking";
+import { common } from "./common";
+import { customers } from "./customers";
+import { errors } from "./errors";
+import { finance } from "./finance";
+import { help } from "./help";
+import { marketing } from "./marketing";
+import { onboarding } from "./onboarding";
+import { retail } from "./retail";
+import { services } from "./services";
+import { settings } from "./settings";
+import { staff } from "./staff";
+import { team } from "./team";
+import { validation } from "./validation";
+
+export const nl = { common, marketing, auth, validation, errors, onboarding, settings, staff, booking, app, appointments, finance, admin, customers, services, team, retail, account, help };

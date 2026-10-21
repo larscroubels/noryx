@@ -1,0 +1,224 @@
+/*
+ * NORYX design tokens — the single source of truth for colour, typography, radius,
+ * shadow and motion. Tailwind generates a utility for every token declared in @theme
+ * (e.g. `bg-pink-700`, `text-fg-muted`, `shadow-md`, `rounded-lg`).
+ *
+ * Tailwind's default colour palette is removed on purpose: only brand tokens exist,
+ * so a stray `bg-blue-500` fails to compile into anything.
+ *
+ * Contrast rules (verified in src/styles/tokens.test.ts):
+ *   - rosegold-400 and pink-400 (the logo pink) and lighter are decorative only — never text.
+ *   - pink-700 and darker are safe for text and for white text on top.
+ *   - rosegold-600 and darker are safe for text on white, ivory and champagne-50/100.
+ *   - fg-muted is the lightest grey allowed for body text.
+ */
+
+@theme {
+  /* ── Reset Tailwind defaults so only brand tokens are available ─────────── */
+  --color-*: initial;
+  --font-*: initial;
+
+  /* ── Base ──────────────────────────────────────────────────────────────── */
+  --color-white: #ffffff;
+  --color-ivory: #fbf8f5;
+
+  /* Warm neutrals: text, borders and quiet surfaces. */
+  --color-neutral-50: #faf8f6;
+  --color-neutral-100: #f4f1ee;
+  --color-neutral-200: #eae4e0;
+  --color-neutral-300: #ddd5d0;
+  --color-neutral-400: #b5aca7;
+  --color-neutral-450: #958b86;
+  --color-neutral-500: #7c7470;
+  --color-neutral-600: #6e6764;
+  --color-neutral-700: #4f4946;
+  --color-neutral-800: #3a3534;
+  --color-neutral-900: #292626;
+  --color-neutral-950: #1c1a1a;
+
+  /* Champagne: warm surfaces and soft highlights (from the logo's metallic lights). */
+  --color-champagne-50: #f9f3ee;
+  --color-champagne-100: #f4e9df;
+  --color-champagne-200: #ead8c8;
+  --color-champagne-300: #dcc2ac;
+  --color-champagne-400: #c8a88e;
+
+  /* Rose gold: the metallic accent (sampled from the logo's midtones and shadows). */
+  --color-rosegold-50: #fbf5f1;
+  --color-rosegold-100: #f6e8e0;
+  --color-rosegold-200: #edd3c5;
+  --color-rosegold-300: #dfb7a3;
+  --color-rosegold-400: #c99a85;
+  --color-rosegold-500: #b07f69;
+  --color-rosegold-600: #92644f;
+  --color-rosegold-700: #774e3d;
+  --color-rosegold-800: #5b3b2e;
+  --color-rosegold-900: #3e2820;
+
+  /* Pink: the signature accent — primary actions and selective emphasis.
+   * 400 is the logo pink (decorative only); 700 and darker are text-safe. */
+  --color-pink-50: #fdf2f4;
+  --color-pink-100: #fbe3e8;
+  --color-pink-200: #f6c9d3;
+  --color-pink-300: #eea3b3;
+  --color-pink-400: #e0738a;
+  --color-pink-500: #d05a76;
+  --color-pink-600: #c44a68;
+  --color-pink-700: #b83d5d;
+  --color-pink-800: #9a2c48;
+  --color-pink-900: #7a2238;
+
+  /* Status colours — always paired with an icon or label, never colour alone. */
+  --color-success-50: #eef7f1;
+  --color-success-100: #d5eddd;
+  --color-success-500: #2f9d62;
+  --color-success-600: #1f7a4b;
+  --color-success-700: #17603b;
+
+  --color-warning-50: #fff7e6;
+  --color-warning-100: #fce9bf;
+  --color-warning-500: #d9951a;
+  --color-warning-600: #a86a05;
+  --color-warning-700: #85520a;
+
+  --color-danger-50: #fef1f0;
+  --color-danger-100: #fcdcd8;
+  --color-danger-500: #d94a3d;
+  --color-danger-600: #c0352b;
+  --color-danger-700: #9e281f;
+
+  --color-info-50: #eff4fa;
+  --color-info-100: #d9e5f3;
+  --color-info-500: #4a78b0;
+  --color-info-600: #3a6194;
+  --color-info-700: #2e4d77;
+
+  /* ── Semantic aliases — prefer these in components ─────────────────────── */
+  --color-canvas: var(--color-white);
+  --color-surface: var(--color-white);
+  --color-surface-subtle: var(--color-ivory);
+  --color-surface-muted: var(--color-neutral-100);
+  --color-surface-warm: var(--color-champagne-50);
+
+  --color-fg: var(--color-neutral-900);
+  --color-fg-muted: var(--color-neutral-600);
+  --color-fg-subtle: var(--color-neutral-500);
+  --color-fg-disabled: var(--color-neutral-400);
+  --color-fg-inverse: var(--color-white);
+  --color-fg-accent: var(--color-rosegold-700);
+
+  --color-border: var(--color-neutral-200);
+  --color-border-strong: var(--color-neutral-300);
+  --color-border-control: var(--color-neutral-450);
+
+  --color-primary: var(--color-pink-700);
+  --color-primary-hover: var(--color-pink-800);
+  --color-primary-active: var(--color-pink-900);
+  --color-primary-soft: var(--color-pink-50);
+  --color-primary-fg: var(--color-white);
+
+  --color-accent: var(--color-rosegold-400);
+  --color-accent-soft: var(--color-rosegold-100);
+  --color-ring: var(--color-rosegold-600);
+
+  /* ── Typography ────────────────────────────────────────────────────────── */
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-cormorant), ui-serif, Georgia, "Times New Roman", serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Display sizes are for the serif face, whose small x-height needs extra size. */
+  --text-display-sm: 2rem;
+  --text-display-sm--line-height: 1.15;
+  --text-display-sm--letter-spacing: -0.01em;
+  --text-display-md: 2.5rem;
+  --text-display-md--line-height: 1.1;
+  --text-display-md--letter-spacing: -0.015em;
+  --text-display-lg: 3.25rem;
+  --text-display-lg--line-height: 1.05;
+  --text-display-lg--letter-spacing: -0.02em;
+  --text-display-xl: 4.25rem;
+  --text-display-xl--line-height: 1;
+  --text-display-xl--letter-spacing: -0.025em;
+
+  --tracking-eyebrow: 0.14em;
+
+  /* ── Radius: elegant but restrained ────────────────────────────────────── */
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.75rem;
+
+  /* ── Shadows: soft and warm-tinted, used instead of heavy borders ──────── */
+  --shadow-xs: 0 1px 2px 0 rgb(58 40 34 / 0.05);
+  --shadow-sm: 0 1px 2px 0 rgb(58 40 34 / 0.04), 0 1px 3px 0 rgb(58 40 34 / 0.06);
+  --shadow-md: 0 2px 4px -1px rgb(58 40 34 / 0.05), 0 6px 14px -3px rgb(58 40 34 / 0.08);
+  --shadow-lg: 0 4px 8px -2px rgb(58 40 34 / 0.05), 0 14px 30px -6px rgb(58 40 34 / 0.12);
+  --shadow-xl: 0 8px 16px -4px rgb(58 40 34 / 0.06), 0 26px 52px -12px rgb(58 40 34 / 0.18);
+
+  /* ── Motion: short and purposeful; disabled under prefers-reduced-motion ── */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+
+  --animate-fade-in: fade-in 160ms var(--ease-standard);
+  --animate-fade-out: fade-out 120ms var(--ease-exit);
+  --animate-scale-in: scale-in 180ms var(--ease-standard);
+  --animate-scale-out: scale-out 120ms var(--ease-exit);
+  --animate-slide-in-left: slide-in-left 220ms var(--ease-standard);
+  --animate-slide-out-left: slide-out-left 160ms var(--ease-exit);
+  --animate-pop-in: pop-in 160ms var(--ease-standard);
+  --animate-spin: spin 0.8s linear infinite;
+  --animate-pulse: pulse 1.6s ease-in-out infinite;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -48%) scale(0.97);
+    }
+  }
+  @keyframes scale-out {
+    to {
+      opacity: 0;
+      transform: translate(-50%, -48%) scale(0.97);
+    }
+  }
+  @keyframes slide-in-left {
+    from {
+      transform: translateX(-100%);
+    }
+  }
+  @keyframes slide-out-left {
+    to {
+      transform: translateX(-100%);
+    }
+  }
+  @keyframes pop-in {
+    from {
+      opacity: 0;
+      transform: translateY(4px) scale(0.98);
+    }
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes pulse {
+    50% {
+      opacity: 0.55;
+    }
+  }
+}
+
+/* Responsive breakpoints use Tailwind's defaults: sm 40rem · md 48rem · lg 64rem · xl 80rem · 2xl 96rem. */
