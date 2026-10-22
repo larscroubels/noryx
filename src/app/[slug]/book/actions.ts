@@ -191,8 +191,7 @@ export async function submitBooking(
   });
 
   if (error || !result) {
-    if (error?.code === "23P01")
-      return { ok: false, message: e.justBooked, slotTaken: true };
+    if (error?.code === "23P01") return { ok: false, message: e.justBooked, slotTaken: true };
     const known = error?.message && RPC_MESSAGES[error.message];
     if (!known) logger.error("booking.create_failed", { code: error?.code });
     return {

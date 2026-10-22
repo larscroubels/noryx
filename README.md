@@ -56,6 +56,7 @@ Emails sent by local Supabase Auth (sign-up confirmation, password reset) are ca
 | `npm run db:start` / `db:stop` / `db:reset` | Local Supabase lifecycle                                                   |
 | `npm run db:types`                          | Regenerate `src/types/database.ts` from the local schema                   |
 | `npm run brand:assets`                      | Regenerate logo crops, favicons and app icons from `brand/source`          |
+| `npm run help:screenshots`                  | Recapture help-centre screenshots and click targets from the demo data     |
 
 Database tests run every migration inside [PGlite](https://pglite.dev) (Postgres compiled to WebAssembly) with a small Supabase shim, so tenant isolation and booking rules are tested without Docker.
 
@@ -65,7 +66,7 @@ Database tests run every migration inside [PGlite](https://pglite.dev) (Postgres
 brand/source/            Official logo artwork (untouched original)
 docs/                    Product brief, architecture, design system, roadmap
 public/brand/            Logo lockup, wordmark, symbol and app icons (generated)
-scripts/                 Brand asset pipeline
+scripts/                 Brand asset pipeline, help-centre screenshot capture
 src/app/                 Routes (App Router)
   (marketing)/           Public website
   (auth)/                Sign-in, sign-up, password reset
@@ -75,6 +76,8 @@ src/app/                 Routes (App Router)
   admin/                 Platform administration
   design-system/         Living design-system reference
 src/components/ui/       Design-system components (buttons, forms, dialogs, …)
+src/content/help/        Help-centre courses (nl, en) and screenshot click targets
+src/i18n/                Languages: config, dictionaries (nl, en), server and client helpers
 src/lib/                 Domain logic: auth & permissions, booking engine, time zones, validation
 src/styles/tokens.css    Design tokens (single source of truth)
 supabase/migrations/     Database schema, RLS policies and functions

@@ -38,7 +38,7 @@ export default async function AdminPage() {
       .order("created_at", { ascending: false })
       .limit(20),
     supabase.from("plans").select("id, name").eq("is_active", true).order("sort_order"),
-    supabase.from("business_subscriptions").select("business_id, plan_id, status"),
+    supabase.from("business_subscriptions").select("business_id, plan_id, status, trial_ends_at"),
   ]);
   const s = (stats ?? {}) as Record<string, number>;
   const figures = [
@@ -56,15 +56,9 @@ export default async function AdminPage() {
 
   return (
     <div className="grid gap-8">
-      <PageHeader
-        title={a.title}
-        description={a.description}
-      />
+      <PageHeader title={a.title} description={a.description} />
 
-      <section
-        aria-label={a.statsLabel}
-        className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
-      >
+      <section aria-label={a.statsLabel} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {figures.map(([label, value]) => (
           <Card key={label} className="p-5">
             <p className="text-sm font-semibold text-fg-muted">{label}</p>
@@ -122,13 +116,26 @@ export default async function AdminPage() {
                 <TableCell>
                   <SubscriptionForm
                     businessId={b.id}
-                    planId={subscriptionFor.get(b.id)?.plan_id ?? "early_access"}
+                    planId={subscriptionFor.get(b.id)?.plan_id ?? "basic"}
                     status={subscriptionFor.get(b.id)?.status ?? "trialing"}
                     plans={(plans ?? []).map((plan) => ({
                       id: plan.id,
                       name: t.common.plans[plan.id]?.name ?? plan.name,
                     }))}
                   />
+                  {subscriptionFor.get(b.id)?.status === "trialing" &&
+                    subscriptionFor.get(b.id)?.trial_ends_at && (
+                      <p className="mt-1 text-xs text-fg-muted">
+                        {a.trialUntil(
+                          formatDate(
+                            subscriptionFor.get(b.id)!.trial_ends_at!,
+                            undefined,
+                            {},
+                            intl,
+                          ),
+                        )}
+                      </p>
+                    )}
                 </TableCell>
                 <TableCell>
                   <StatusForm businessId={b.id} status={b.status} />
@@ -167,7 +174,9 @@ export default async function AdminPage() {
                       </span>
                     )}
                   </span>
-                  <span className="text-fg-muted">{formatDateTime(event.created_at, undefined, intl)}</span>
+                  <span className="text-fg-muted">
+                    {formatDateTime(event.created_at, undefined, intl)}
+                  </span>
                 </li>
               ))}
             </ul>

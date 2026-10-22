@@ -75,7 +75,7 @@ export default async function StaffDetailPage({
         <CardHeader>
           <div>
             <CardTitle>{s.services}</CardTitle>
-<CardDescription>{s.servicesDescription(staff.display_name)}</CardDescription>
+            <CardDescription>{s.servicesDescription(staff.display_name)}</CardDescription>
           </div>
         </CardHeader>
         <CardContent>

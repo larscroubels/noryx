@@ -1,6 +1,8 @@
 export const retail = {
   products: {
     title: "Products",
+    notIncluded: "Products and stock are part of Pro",
+    notIncludedText: "Manage retail products, stock levels and low-stock warnings with NORYX Pro.",
     description: "Retail products, stock levels and what you sell in your online shop.",
     new: "New product",
     searchLabel: "Search products",

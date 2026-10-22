@@ -67,12 +67,7 @@ export function ProductForm({
             inputMode="decimal"
           />
         </Field>
-        <Field
-          label={f.cost}
-          hint={f.costHint}
-          error={fieldError(state, "cost")}
-          optional
-        >
+        <Field label={f.cost} hint={f.costHint} error={fieldError(state, "cost")} optional>
           <Input
             name="cost"
             defaultValue={product?.cost_cents != null ? centsToInput(product.cost_cents) : ""}

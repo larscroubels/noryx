@@ -70,12 +70,8 @@ export default async function ServicesPage({ searchParams }: PageProps<"/app/ser
           ) : undefined
         }
       />
-      {typeof params.saved === "string" && (
-        <Alert tone="success">{sv.saved(params.saved)}</Alert>
-      )}
-      {params.deleted === "1" && (
-<Alert tone="success">{sv.deleted}</Alert>
-      )}
+      {typeof params.saved === "string" && <Alert tone="success">{sv.saved(params.saved)}</Alert>}
+      {params.deleted === "1" && <Alert tone="success">{sv.deleted}</Alert>}
 
       {groups.length === 0 ? (
         <Card>

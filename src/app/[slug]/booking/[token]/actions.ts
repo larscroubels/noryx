@@ -26,8 +26,7 @@ export async function cancelOwnBooking(
     p_token: token,
     p_reason: String(formData.get("reason") ?? "").slice(0, 500) || undefined,
   });
-  if (error)
-    return failure(MESSAGES[error.message] ?? m.failed);
+  if (error) return failure(MESSAGES[error.message] ?? m.failed);
   revalidatePath(`/${slug}/booking/${token}`);
   return success(m.done);
 }

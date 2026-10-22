@@ -106,8 +106,7 @@ export async function saveService(_prev: ActionState, formData: FormData): Promi
         service_id: savedId,
       })),
     );
-    if (error)
-      return failure(databaseErrorMessage(error, t, t.services.errors.staffSync));
+    if (error) return failure(databaseErrorMessage(error, t, t.services.errors.staffSync));
   }
 
   revalidatePath("/app/services");

@@ -36,7 +36,8 @@ export const services: typeof en = {
     promo: "Actieprijs",
     buffer: "Buffer achteraf",
     bufferHint: "Tijd om op te ruimen of voor te bereiden.",
-    activeHint: "Inactieve behandelingen kunnen niet geboekt worden maar blijven in je geschiedenis.",
+    activeHint:
+      "Inactieve behandelingen kunnen niet geboekt worden maar blijven in je geschiedenis.",
     online: "Online boekbaar",
     onlineHint: "Toon deze behandeling op je publieke boekingspagina.",
     who: "Wie voert deze behandeling uit?",
@@ -50,6 +51,7 @@ export const services: typeof en = {
   errors: {
     manage: "Je hebt geen toestemming om behandelingen te beheren.",
     gone: "Deze behandeling bestaat niet meer.",
-    staffSync: "De behandeling is opgeslagen, maar de toegewezen medewerkers konden niet bijgewerkt worden.",
+    staffSync:
+      "De behandeling is opgeslagen, maar de toegewezen medewerkers konden niet bijgewerkt worden.",
   },
 };

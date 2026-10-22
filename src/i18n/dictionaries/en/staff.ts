@@ -73,8 +73,7 @@ export const staff = {
   },
   mySchedule: {
     title: "My schedule",
-    description:
-      "Your working hours and time off. Changes update online availability immediately.",
+    description: "Your working hours and time off. Changes update online availability immediately.",
     noProfile: "No professional profile linked",
     noProfileText:
       "Ask the salon owner to link your account to your staff profile so you can manage your hours.",

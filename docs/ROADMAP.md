@@ -1,6 +1,6 @@
 # NORYX roadmap
 
-Status as of 21 October 2026. The full product brief is in [`PRODUCT_BRIEF.md`](PRODUCT_BRIEF.md).
+Status as of 22 October 2026. The full product brief is in [`PRODUCT_BRIEF.md`](PRODUCT_BRIEF.md).
 
 ## Phase 1 — Audit and foundation ✅
 
@@ -50,20 +50,26 @@ Status as of 21 October 2026. The full product brief is in [`PRODUCT_BRIEF.md`](
 ## Phase 7 — SaaS administration ✅ (first version)
 
 - Platform admin area with statistics, business list, status and plan management, audit log; least-privilege access.
-- Plans and central entitlements (features + limits enforced in the database).
+- Plans and central entitlements (features + limits enforced in the database): Basic (booking system, up to 250 customers) and Pro (payments & finance, stock, webshop, branding, custom permissions), with a 14-day Pro trial that falls back to Basic. Public pricing page at `/pricing` (prices "coming soon") and FAQ page at `/faq`.
 - **Open:** billing provider (subscriptions, invoices), feature flags, support tooling.
+
+## Languages and help centre ✅
+
+- The whole product is available in Dutch (default) and English with an NL | EN switch on every page; the choice is stored in a cookie, otherwise the browser language decides. Dates use nl-BE / en-GB formatting; the demo salon's data is Dutch.
+- Help centre at `/help` (and `/app/help` inside the workspace): eight courses with real screenshots per language, animated click-throughs and FAQs, plus a search.
+- **Open:** French, translated transactional emails, per-business default language for public pages.
 
 ## Phase 8 — Launch preparation ⏳
 
-- Done so far: automated accessibility audit (axe, WCAG 2.2 AA) on 17 key pages, security headers, end-to-end flows in Chrome.
-- Open: nonce-based CSP, shared rate limiting, Playwright tests in CI, performance review, error monitoring, privacy policy and terms (legal review required), Dutch and French translations, deployment.
+- Done so far: automated accessibility audit (axe, WCAG 2.2 AA) on 17 key pages in both languages plus the help centre, security headers, end-to-end flows in Chrome.
+- Open: nonce-based CSP, shared rate limiting, Playwright tests in CI, performance review, error monitoring, privacy policy and terms (legal review required), French translation, deployment.
 
 ## Decisions needed from the product owner
 
 1. **Supabase project** (EU region) for staging/production.
 2. **Email provider** for transactional mail (e.g. Postmark, Resend) — also used as Supabase Auth SMTP.
 3. **Payment provider** for deposits, webshop and subscriptions (Mollie vs Stripe — both support Bancontact).
-4. **Plans and prices** (the plan catalogue is a placeholder: Early access, Solo, Salon, Studio).
-5. **Languages** at launch (nl-BE, fr-BE, en) — the UI is English today; formatting is already locale-aware.
+4. **Prices** for Basic and Pro (the pricing page says "price coming soon"), and whether an expired trial should keep falling back to Basic (current behaviour) or become read-only.
+5. **French** at launch? Dutch and English are done; the dictionaries are ready for a third language.
 6. **Domain** and whether salons get subdomains or custom domains.
 7. **Vector logo** (SVG) from the designer.

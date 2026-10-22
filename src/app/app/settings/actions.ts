@@ -149,7 +149,9 @@ export async function uploadBrandImage(
   const kind = formData.get("kind") === "cover" ? "cover" : "logo";
   const file = formData.get("file");
   if (!(file instanceof File) || file.size === 0)
-    return failure(t.settings.branding.chooseImage, { file: [t.settings.branding.chooseImageField] });
+    return failure(t.settings.branding.chooseImage, {
+      file: [t.settings.branding.chooseImageField],
+    });
   if (file.size > MAX_IMAGE_BYTES)
     return failure(t.settings.branding.tooLarge, { file: [t.settings.branding.tooLargeField] });
 
@@ -180,7 +182,9 @@ export async function uploadBrandImage(
   }
   if (previous) await supabase.storage.from(BUSINESS_ASSETS_BUCKET).remove([previous]);
   revalidateBusiness(workspace.business.slug);
-  return success(kind === "logo" ? t.settings.branding.logoUpdated : t.settings.branding.coverUpdated);
+  return success(
+    kind === "logo" ? t.settings.branding.logoUpdated : t.settings.branding.coverUpdated,
+  );
 }
 
 export async function removeBrandImage(formData: FormData) {

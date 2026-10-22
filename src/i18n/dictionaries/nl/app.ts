@@ -22,6 +22,13 @@ export const app: typeof en = {
   readOnlyTitle: "Deze zaak is momenteel alleen-lezen",
   readOnlyText: (suspended) =>
     `Het NORYX-team heeft dit account ${suspended ? "opgeschort" : "gesloten"}. Je kunt je gegevens nog bekijken en exporteren. Neem contact op met support als je denkt dat dit een vergissing is.`,
+  trial: {
+    running: (days) =>
+      `Je probeert NORYX Pro gratis — nog ${days} ${days === 1 ? "dag" : "dagen"}.`,
+    ended:
+      "Je proefperiode van Pro is afgelopen. Je zaak werkt verder met Basic: het boekingssysteem tot 250 klanten.",
+    plans: "Abonnementen vergelijken",
+  },
   overview: {
     greeting: { morning: "Goedemorgen", afternoon: "Goedemiddag", evening: "Goedenavond" },
     lead: (name) => `Dit gebeurt er vandaag bij ${name}.`,
@@ -47,14 +54,20 @@ export const app: typeof en = {
     addAppointment: "Een afspraak toevoegen",
     customer: "Klant",
     pending: (count) =>
-      count === 1 ? "1 boeking wacht op je goedkeuring" : `${count} boekingen wachten op je goedkeuring`,
+      count === 1
+        ? "1 boeking wacht op je goedkeuring"
+        : `${count} boekingen wachten op je goedkeuring`,
     review: "Aanvragen bekijken",
     orders: (count) =>
-      count === 1 ? "1 webshopbestelling klaar te maken" : `${count} webshopbestellingen klaar te maken`,
+      count === 1
+        ? "1 webshopbestelling klaar te maken"
+        : `${count} webshopbestellingen klaar te maken`,
     viewOrders: "Bestellingen bekijken",
     lowStock: "Lage voorraad",
     lowStockText: (count) =>
-      count === 1 ? "1 product moet aangevuld worden" : `${count} producten moeten aangevuld worden`,
+      count === 1
+        ? "1 product moet aangevuld worden"
+        : `${count} producten moeten aangevuld worden`,
     left: (count) => `nog ${count}`,
     finish: "Rond je installatie af",
     finishProgress: (done, total) => `${done} van ${total} klaar`,
@@ -68,5 +81,7 @@ export const app: typeof en = {
     todo: "(te doen)",
     yourPage: "Je boekingspagina",
     shareText: "Deel deze link op Instagram, Google of je website.",
+    customerLimit: (count, limit) => `${count} van de ${limit} klanten in Basic zijn in gebruik.`,
+    customerLimitText: "Pro heeft geen limiet op het aantal klanten.",
   },
 };

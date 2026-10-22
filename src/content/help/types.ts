@@ -7,14 +7,7 @@
  */
 
 export type HelpIcon =
-  | "rocket"
-  | "calendar"
-  | "globe"
-  | "users"
-  | "scissors"
-  | "shopping"
-  | "wallet"
-  | "settings";
+  "rocket" | "calendar" | "globe" | "users" | "scissors" | "shopping" | "wallet" | "settings";
 
 export type HelpAudience = "owner" | "team" | "everyone";
 
@@ -39,6 +32,8 @@ export type HelpCourse = {
   slug: string;
   icon: HelpIcon;
   audience: HelpAudience;
+  /** Set when the course covers a module that is only part of Pro. */
+  plan?: "pro";
   minutes: number;
   title: string;
   summary: string;

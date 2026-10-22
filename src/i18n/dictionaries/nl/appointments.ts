@@ -22,7 +22,8 @@ export const appointments: typeof en = {
   },
   new: {
     title: "Nieuwe afspraak",
-    description: "Plan een klant rechtstreeks in — voor telefoontjes, binnenlopers of vervolgafspraken.",
+    description:
+      "Plan een klant rechtstreeks in — voor telefoontjes, binnenlopers of vervolgafspraken.",
     noService: "Voeg eerst een behandeling toe",
     noStaff: "Voeg eerst een medewerker toe",
     needBoth: "Voor afspraken heb je minstens één actieve behandeling en één medewerker nodig.",
@@ -63,7 +64,8 @@ export const appointments: typeof en = {
     cancelledBy: (byClient) => `Geannuleerd door ${byClient ? "de klant" : "de zaak"}`,
     noReason: "Geen reden opgegeven.",
     reschedule: "Verplaatsen",
-    paymentText: "Registreer hoe de klant in de salon betaalde. NORYX verwerkt zelf geen betalingen.",
+    paymentText:
+      "Registreer hoe de klant in de salon betaalde. NORYX verwerkt zelf geen betalingen.",
     refunded: " · terugbetaald",
     paidInFull: "Volledig betaald.",
     internalNote: "Interne notitie",

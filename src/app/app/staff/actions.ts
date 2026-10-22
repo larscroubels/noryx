@@ -73,8 +73,7 @@ export async function saveStaffProfile(
     .insert(values)
     .select("id")
     .single();
-  if (error || !created)
-    return failure(databaseErrorMessage(error, t));
+  if (error || !created) return failure(databaseErrorMessage(error, t));
 
   // New professionals start with the location's opening hours; refine them on the next screen.
   if (data.locationId) {
@@ -145,8 +144,7 @@ export async function saveStaffServices(
       duration_minutes: duration,
     });
   }
-  if (Object.keys(fieldErrors).length > 0)
-    return failure(t.staff.servicesForm.check, fieldErrors);
+  if (Object.keys(fieldErrors).length > 0) return failure(t.staff.servicesForm.check, fieldErrors);
 
   const supabase = await createClient();
   const { error: deleteError } = await supabase

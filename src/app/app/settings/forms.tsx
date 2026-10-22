@@ -38,7 +38,14 @@ const TIME_ZONES = [
   "Europe/Dublin",
 ];
 
-export function BusinessProfileForm({ business }: { business: Business }) {
+export function BusinessProfileForm({
+  business,
+  branding,
+}: {
+  business: Business;
+  /** Accent colour is part of Pro; without it the current value is kept as is. */
+  branding: boolean;
+}) {
   const [state, action] = useActionState(saveBusinessProfile, IDLE);
   const t = useT();
   const st = t.settings;
@@ -50,7 +57,11 @@ export function BusinessProfileForm({ business }: { business: Business }) {
         <Field label={t.onboarding.business.name} error={fieldError(state, "name")} required>
           <Input name="name" defaultValue={business.name} />
         </Field>
-        <Field label={t.onboarding.business.type} error={fieldError(state, "businessType")} required>
+        <Field
+          label={t.onboarding.business.type}
+          error={fieldError(state, "businessType")}
+          required
+        >
           <Select name="businessType" defaultValue={business.business_type}>
             {BUSINESS_TYPES.map((type) => (
               <option key={type} value={type}>
@@ -99,16 +110,21 @@ export function BusinessProfileForm({ business }: { business: Business }) {
           optional
         >
           <div className="flex items-center gap-3">
+            {!branding && (
+              <input type="hidden" name="brandColor" value={business.brand_color ?? ""} />
+            )}
             <input
               type="color"
               aria-label={st.profile.pickAccent}
               value={color}
+              disabled={!branding}
               onChange={(event) => setColor(event.target.value.toUpperCase())}
-              className="size-10 shrink-0 cursor-pointer rounded-md border border-border-control bg-surface p-1"
+              className="size-10 shrink-0 cursor-pointer rounded-md border border-border-control bg-surface p-1 disabled:cursor-not-allowed disabled:opacity-50"
             />
             <Input
-              name="brandColor"
+              name={branding ? "brandColor" : undefined}
               value={color}
+              disabled={!branding}
               onChange={(event) => setColor(event.target.value)}
             />
           </div>
@@ -374,10 +390,13 @@ export function BrandImageForm({
   kind,
   currentUrl,
   removeAction,
+  disabled = false,
 }: {
   kind: "logo" | "cover";
   currentUrl: string | null;
   removeAction: (formData: FormData) => Promise<void>;
+  /** Uploading is part of Pro; removing an existing image stays possible. */
+  disabled?: boolean;
 }) {
   const [state, action] = useActionState(uploadBrandImage, IDLE);
   const t = useT();
@@ -418,6 +437,7 @@ export function BrandImageForm({
             name="file"
             accept="image/png,image/jpeg,image/webp"
             className="h-auto py-2"
+            disabled={disabled}
             onChange={(event) => {
               const file = event.target.files?.[0];
               setPreview(file ? URL.createObjectURL(file) : null);
@@ -430,7 +450,9 @@ export function BrandImageForm({
               {t.common.remove}
             </Button>
           )}
-          <SubmitButton variant="secondary">{b.upload}</SubmitButton>
+          <SubmitButton variant="secondary" disabled={disabled}>
+            {b.upload}
+          </SubmitButton>
         </div>
       </form>
     </div>

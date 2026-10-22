@@ -3,9 +3,11 @@ import type { auth as en } from "../en/auth";
 export const auth: typeof en = {
   panelTitleStart: "Jouw salon, prachtig",
   panelTitleEmphasis: "georganiseerd",
-  panelText: "Afspraken, personeel, klanten en online boeken — samen in één rustige, elegante werkruimte.",
+  panelText:
+    "Afspraken, personeel, klanten en online boeken — samen in één rustige, elegante werkruimte.",
   notConfiguredTitle: "Aanmelden is niet ingesteld",
-  notConfiguredText: "Voeg de Supabase-variabelen uit .env.example toe aan .env.local om inloggen mogelijk te maken.",
+  notConfiguredText:
+    "Voeg de Supabase-variabelen uit .env.example toe aan .env.local om inloggen mogelijk te maken.",
   fields: {
     email: "E-mailadres",
     workEmail: "Zakelijk e-mailadres",
@@ -28,7 +30,7 @@ export const auth: typeof en = {
   signup: {
     metaTitle: "Account aanmaken",
     title: "Maak je NORYX-account aan",
-    lead: "Zet je salon in enkele minuten op. Geen betaalgegevens nodig.",
+    lead: "Probeer NORYX Pro 14 dagen gratis. Geen betaalgegevens nodig.",
     terms: "Ik ga akkoord met de gebruiksvoorwaarden en het privacybeleid",
     termsHint: "We gebruiken je gegevens alleen om je NORYX-account te beheren.",
     submit: "Account aanmaken",
@@ -50,9 +52,11 @@ export const auth: typeof en = {
   reset: {
     metaTitle: "Kies een nieuw wachtwoord",
     title: "Kies een nieuw wachtwoord",
-    signedInAs: (email) => `Ingelogd als ${email}. Kies een wachtwoord dat je nergens anders gebruikt.`,
+    signedInAs: (email) =>
+      `Ingelogd als ${email}. Kies een wachtwoord dat je nergens anders gebruikt.`,
     invalidTitle: "Deze link is niet meer geldig",
-    invalidText: "Links om je wachtwoord opnieuw in te stellen verlopen na een uur en werken maar één keer.",
+    invalidText:
+      "Links om je wachtwoord opnieuw in te stellen verlopen na een uur en werken maar één keer.",
     requestNew: "Vraag een nieuwe link aan",
     submit: "Wachtwoord bijwerken",
   },
@@ -62,8 +66,10 @@ export const auth: typeof en = {
     weakPassword: "Kies een sterker wachtwoord.",
     emailRateLimit: "We stuurden je net een e-mail. Wacht even voor je het opnieuw probeert.",
     signupFailed: "We konden je account niet aanmaken. Probeer het opnieuw.",
-    confirmationSent: (email) => `We stuurden een bevestigingslink naar ${email}. Open die om je account te activeren.`,
-    resetSent: "Als er een account bestaat voor dit e-mailadres, hebben we een link gestuurd om het wachtwoord opnieuw in te stellen.",
+    confirmationSent: (email) =>
+      `We stuurden een bevestigingslink naar ${email}. Open die om je account te activeren.`,
+    resetSent:
+      "Als er een account bestaat voor dit e-mailadres, hebben we een link gestuurd om het wachtwoord opnieuw in te stellen.",
     resetExpired: "Je link is verlopen. Vraag een nieuwe aan.",
     samePassword: "Kies een wachtwoord dat verschilt van je huidige wachtwoord.",
     updateFailed: "We konden je wachtwoord niet bijwerken. Vraag een nieuwe link aan.",

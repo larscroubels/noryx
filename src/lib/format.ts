@@ -63,7 +63,11 @@ export function formatDate(
   }).format(toDate(value));
 }
 
-export function formatTime(value: DateInput, timeZone = DEFAULT_TIME_ZONE, locale: string = UI_LOCALE) {
+export function formatTime(
+  value: DateInput,
+  timeZone = DEFAULT_TIME_ZONE,
+  locale: string = UI_LOCALE,
+) {
   return new Intl.DateTimeFormat(locale, {
     timeZone,
     hour: "2-digit",
@@ -72,7 +76,11 @@ export function formatTime(value: DateInput, timeZone = DEFAULT_TIME_ZONE, local
   }).format(toDate(value));
 }
 
-export function formatDateTime(value: DateInput, timeZone = DEFAULT_TIME_ZONE, locale: string = UI_LOCALE) {
+export function formatDateTime(
+  value: DateInput,
+  timeZone = DEFAULT_TIME_ZONE,
+  locale: string = UI_LOCALE,
+) {
   return `${formatDate(value, timeZone, { weekday: "short" }, locale)} · ${formatTime(value, timeZone, locale)}`;
 }
 

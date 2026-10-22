@@ -17,10 +17,7 @@ export default async function AccountPage() {
   const a = t.account;
   return (
     <div className="grid max-w-3xl gap-8">
-      <PageHeader
-        title={a.title}
-        description={a.description}
-      />
+      <PageHeader title={a.title} description={a.description} />
       <Card>
         <CardHeader>
           <CardTitle>{a.profile}</CardTitle>
@@ -60,7 +57,9 @@ export default async function AccountPage() {
                 className="flex items-center justify-between gap-4 py-3 text-sm"
               >
                 <span className="font-semibold">{m.business.name}</span>
-                <Badge tone={m.role === "owner" ? "brand" : "neutral"}>{t.common.roles[m.role]}</Badge>
+                <Badge tone={m.role === "owner" ? "brand" : "neutral"}>
+                  {t.common.roles[m.role]}
+                </Badge>
               </li>
             ))}
           </ul>

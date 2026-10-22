@@ -52,6 +52,7 @@ describe("role-aware navigation", () => {
     const keys = visibleNav(owner, new Set(["online_booking"])).map((item) => item.key);
     expect(keys).not.toContain("finance");
     expect(keys).not.toContain("orders");
-    expect(keys).toContain("products");
+    expect(keys).not.toContain("products");
+    expect(keys).toContain("calendar");
   });
 });

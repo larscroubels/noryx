@@ -38,6 +38,8 @@ export const team: typeof en = {
     ownersAll: "Eigenaars hebben altijd alle rechten.",
     permissions: "Rechten",
     inRole: "Inbegrepen in deze rol",
+    permissionsPro:
+      "Eigen rechten per teamlid zitten in Pro. In Basic krijgt iedereen de standaardrechten van de rol.",
     save: "Toegang opslaan",
   },
   permissions: {
@@ -77,7 +79,8 @@ export const team: typeof en = {
       staff_already_linked: "Dat medewerkersprofiel is al aan een andere login gekoppeld.",
       "You do not have permission to invite team members":
         "Je hebt geen toestemming om teamleden uit te nodigen.",
-      "Only owners can invite another owner": "Alleen eigenaars kunnen een andere eigenaar uitnodigen.",
+      "Only owners can invite another owner":
+        "Alleen eigenaars kunnen een andere eigenaar uitnodigen.",
       "You do not have permission to change this member":
         "Je hebt geen toestemming om dit lid te wijzigen.",
       "You cannot change your own role or permissions":
@@ -90,10 +93,12 @@ export const team: typeof en = {
   invitePage: {
     metaTitle: "Teamuitnodiging",
     notFound: "Uitnodiging niet gevonden",
-    notFoundText: "Controleer of je de volledige link hebt gekopieerd, of vraag een nieuwe uitnodiging.",
+    notFoundText:
+      "Controleer of je de volledige link hebt gekopieerd, of vraag een nieuwe uitnodiging.",
     used: "Uitnodiging al gebruikt",
     expired: "Uitnodiging verlopen",
-    askNew: (business) => `Vraag de eigenaar van ${business} om je een nieuwe uitnodiging te sturen.`,
+    askNew: (business) =>
+      `Vraag de eigenaar van ${business} om je een nieuwe uitnodiging te sturen.`,
     eyebrow: "Teamuitnodiging",
     join: (business) => `Word lid van ${business}`,
     invitedAs: "Je bent uitgenodigd als",

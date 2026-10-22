@@ -101,5 +101,4 @@ export const EXPENSE_CATEGORIES = [
 ] as const;
 
 export const methodLabel = (t: Dictionary, value: string) => t.finance.methods[value] ?? value;
-export const categoryLabel = (t: Dictionary, value: string) =>
-  t.finance.categories[value] ?? value;
+export const categoryLabel = (t: Dictionary, value: string) => t.finance.categories[value] ?? value;

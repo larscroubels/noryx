@@ -49,7 +49,10 @@ export const en: HelpContent = {
             "In the last step you choose whether your booking page goes live right away. Click **Go to my dashboard** to finish.",
             "The **Overview** then shows today's appointments, your key figures and a short list of what's left to set up.",
           ],
-          image: { name: "overview", alt: "The workspace overview with key figures and today's schedule" },
+          image: {
+            name: "overview",
+            alt: "The workspace overview with key figures and today's schedule",
+          },
           tip: "Share your booking page link on Instagram, Google or your website. You can always find it via **View booking page** at the top right.",
         },
       ],
@@ -100,7 +103,10 @@ export const en: HelpContent = {
             "Click an appointment to open its details. At the top you'll find the actions available at that moment: **Confirm**, **Mark completed**, **Mark no-show** or **Cancel**.",
             "Every change is added to the appointment's **History**, with date and time.",
           ],
-          image: { name: "appointment-detail", alt: "An appointment's detail page with status, rescheduling and payment" },
+          image: {
+            name: "appointment-detail",
+            alt: "An appointment's detail page with status, rescheduling and payment",
+          },
         },
         {
           title: "Move or cancel",
@@ -156,7 +162,11 @@ export const en: HelpContent = {
             "The client chooses a service, optionally a professional, and then a day and a free time. NORYX only shows times that really work: within your opening hours and the professional's schedule, without overlap and with the buffers you set.",
             "Finally the client enters their name, email and phone number and accepts the booking terms.",
           ],
-          image: { name: "booking-time", alt: "A client choosing a time on their phone", mobile: true },
+          image: {
+            name: "booking-time",
+            alt: "A client choosing a time on their phone",
+            mobile: true,
+          },
         },
         {
           title: "Set your booking rules",
@@ -237,6 +247,10 @@ export const en: HelpContent = {
           q: "A client booked online with a different email address. Is that a new customer?",
           a: "Yes, NORYX recognises customers by email address. Update the address on the profile if it's the same person.",
         },
+        {
+          q: "How many customers can I keep?",
+          a: "Up to 250 on Basic, unlimited on Pro. The **Overview** shows a notice when you get close to the Basic limit.",
+        },
       ],
     },
     {
@@ -299,7 +313,7 @@ export const en: HelpContent = {
         },
         {
           q: "How many professionals can I add?",
-          a: "That depends on your plan. You'll find the limits under **Settings** › **Plan**.",
+          a: "As many as you like: Basic and Pro have no limit on professionals or team logins. Custom permissions per team member are part of Pro.",
         },
       ],
     },
@@ -307,6 +321,7 @@ export const en: HelpContent = {
       slug: "webshop-en-voorraad",
       icon: "shopping",
       audience: "owner",
+      plan: "pro",
       minutes: 6,
       title: "Webshop and stock",
       summary:
@@ -318,7 +333,10 @@ export const en: HelpContent = {
             "Open **Products** and click **New product**. Enter the selling price, the purchase cost (for your margin) and the level at which you want a low-stock warning.",
             "Products running low get a label and appear on the **Overview**.",
           ],
-          image: { name: "products", alt: "The product list with stock levels and low-stock labels" },
+          image: {
+            name: "products",
+            alt: "The product list with stock levels and low-stock labels",
+          },
         },
         {
           title: "Update stock",
@@ -359,9 +377,11 @@ export const en: HelpContent = {
       slug: "financien",
       icon: "wallet",
       audience: "owner",
+      plan: "pro",
       minutes: 5,
       title: "Payments and finance",
-      summary: "Record payments and expenses, follow your revenue and export everything for your accountant.",
+      summary:
+        "Record payments and expenses, follow your revenue and export everything for your accountant.",
       steps: [
         {
           title: "Record a payment",
@@ -411,13 +431,14 @@ export const en: HelpContent = {
       audience: "owner",
       minutes: 4,
       title: "Settings and account",
-      summary: "Adjust your profile, branding, opening hours and plan, and manage your personal account.",
+      summary:
+        "Adjust your profile, branding, opening hours and plan, and manage your personal account.",
       steps: [
         {
           title: "Profile and branding",
           body: [
             "Under **Settings** › **Business profile** you add your description, public contact details, website, Instagram and an accent colour for your booking page.",
-            "Under **Branding** you upload your logo and a cover photo: PNG, JPG or WebP, up to 2 MB.",
+            "Under **Branding** you upload your logo and a cover photo: PNG, JPG or WebP, up to 2 MB. Your own logo, cover photo and accent colour are part of Pro.",
           ],
           image: { name: "settings", alt: "Settings showing the business profile" },
         },
@@ -431,7 +452,8 @@ export const en: HelpContent = {
         {
           title: "Your plan",
           body: [
-            "Under **Plan** you see which features are included and how many professionals and logins you can use. During early access you aren't charged.",
+            "Under **Plan** you see whether you use Basic or Pro, which features are included and how many days of your free Pro trial are left.",
+            "After the trial you choose Basic or Pro. If you don't choose, your business continues on Basic. As long as paying through NORYX isn't possible, nothing is charged.",
           ],
         },
         {

@@ -31,6 +31,7 @@ export const admin = {
   usage: (members: number, staff: number, bookings: number) =>
     `${members} ${members === 1 ? "member" : "members"} · ${staff} staff · ${bookings} bookings/30d`,
   pageLive: "Page live",
+  trialUntil: (date: string) => `trial until ${date}`,
   statuses: { active: "Active", suspended: "Suspended", closed: "Closed" } as Record<
     string,
     string

@@ -36,12 +36,7 @@ export function InviteForm({
         <Alert tone="success" title={f.ready}>
           <p>{state.message}</p>
           <div className="mt-3 flex flex-col gap-2 sm:flex-row">
-            <Input
-              readOnly
-              value={state.inviteUrl}
-              aria-label={f.link}
-              className="bg-white"
-            />
+            <Input readOnly value={state.inviteUrl} aria-label={f.link} className="bg-white" />
             <Button
               type="button"
               variant="secondary"
@@ -93,6 +88,7 @@ export function InviteForm({
 export function MemberAccessDialog({
   member,
   canAssignOwner,
+  customPermissions,
 }: {
   member: {
     id: string;
@@ -102,6 +98,8 @@ export function MemberAccessDialog({
     revoked_permissions: string[];
   };
   canAssignOwner: boolean;
+  /** Per-member permission changes are part of Pro. */
+  customPermissions: boolean;
 }) {
   const [state, action] = useActionState(saveMemberAccess, IDLE);
   const [role, setRole] = useState<MemberRole>(member.role);
@@ -122,11 +120,7 @@ export function MemberAccessDialog({
           <Settings2 aria-hidden="true" /> {f.access}
         </Button>
       </DialogTrigger>
-      <DialogContent
-        title={f.accessFor(member.name)}
-        description={f.accessText}
-        size="lg"
-      >
+      <DialogContent title={f.accessFor(member.name)} description={f.accessText} size="lg">
         <form action={action} className="grid gap-5" noValidate>
           <input type="hidden" name="memberId" value={member.id} />
           <FormAlert state={state} />
@@ -146,12 +140,21 @@ export function MemberAccessDialog({
           {role === "owner" ? (
             <p className="text-sm text-fg-muted">{f.ownersAll}</p>
           ) : (
-            <fieldset className="grid gap-3 sm:grid-cols-2" key={role}>
+            <fieldset
+              className="grid gap-3 sm:grid-cols-2"
+              key={role}
+              disabled={!customPermissions}
+            >
               <legend className="mb-2 text-sm font-semibold">{f.permissions}</legend>
+              {!customPermissions && (
+                <p className="text-sm text-fg-muted sm:col-span-2">{f.permissionsPro}</p>
+              )}
               {ALL_PERMISSIONS.map((permission) => {
                 const id = `${member.id}-${permission}`;
                 const checked =
-                  role === member.role ? current.has(permission) : defaults.has(permission);
+                  customPermissions && role === member.role
+                    ? current.has(permission)
+                    : defaults.has(permission);
                 return (
                   <ChoiceRow
                     key={permission}

@@ -25,7 +25,11 @@ export function newAppointmentSchema(t: Dictionary) {
     })
     .superRefine((data, ctx) => {
       if (data.customerMode === "existing" && !z.uuid().safeParse(data.customerId).success) {
-        ctx.addIssue({ code: "custom", path: ["customerId"], message: t.validation.chooseCustomer });
+        ctx.addIssue({
+          code: "custom",
+          path: ["customerId"],
+          message: t.validation.chooseCustomer,
+        });
       }
       if (data.customerMode === "new" && !data.firstName) {
         ctx.addIssue({

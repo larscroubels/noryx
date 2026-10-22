@@ -172,7 +172,7 @@ export default async function OrderPage({ params }: PageProps<"/app/orders/[id]"
               <CardTitle>{o.payment}</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-3 text-sm">
-<p className="text-fg-muted">{d.paymentText}</p>
+              <p className="text-fg-muted">{d.paymentText}</p>
               <form action={setOrderPayment} className="flex flex-wrap gap-2">
                 <input type="hidden" name="orderId" value={order.id} />
                 {order.payment_status !== "paid" && (

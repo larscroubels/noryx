@@ -42,6 +42,11 @@ export function databaseErrorMessage(
     plan_limit_staff: t.errors.planLimitStaff,
     plan_limit_members: t.errors.planLimitMembers,
     plan_feature_shop: t.errors.planFeatureShop,
+    plan_limit_customers: t.errors.planLimitCustomers,
+    plan_feature_finance: t.errors.planFeatureFinance,
+    plan_feature_inventory: t.errors.planFeatureInventory,
+    plan_feature_branding: t.errors.planFeatureBranding,
+    plan_feature_team_permissions: t.errors.planFeatureTeamPermissions,
   };
   if (plan[error.message]) return plan[error.message]!;
   switch (error.code) {

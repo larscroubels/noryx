@@ -59,7 +59,8 @@ export async function signUp(_prev: ActionState, formData: FormData): Promise<Ac
   });
 
   if (error) {
-    if (error.code === "weak_password") return failure(t.auth.messages.weakPassword, { password: [t.auth.messages.weakPassword] });
+    if (error.code === "weak_password")
+      return failure(t.auth.messages.weakPassword, { password: [t.auth.messages.weakPassword] });
     if (error.code === "over_email_send_rate_limit") return failure(t.auth.messages.emailRateLimit);
     logger.warn("auth.sign_up_failed", { code: error.code });
     return failure(t.auth.messages.signupFailed);
@@ -70,7 +71,10 @@ export async function signUp(_prev: ActionState, formData: FormData): Promise<Ac
   return success(t.auth.messages.confirmationSent(parsed.data.email));
 }
 
-export async function requestPasswordReset(_prev: ActionState, formData: FormData): Promise<ActionState> {
+export async function requestPasswordReset(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
   const t = await getT();
   if (await limited("password-reset", 5)) return failure(t.errors.tooManyAttempts);
   const parsed = forgotPasswordSchema(t).safeParse(formToObject(formData));

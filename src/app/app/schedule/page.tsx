@@ -18,19 +18,12 @@ export default async function MySchedulePage() {
   const m = (await getT()).staff.mySchedule;
   return (
     <div className="grid max-w-4xl gap-8">
-      <PageHeader
-        title={m.title}
-        description={m.description}
-      />
+      <PageHeader title={m.title} description={m.description} />
       {workspace.staffId ? (
         <SchedulePanels staffId={workspace.staffId} timeZone={workspace.business.timezone} />
       ) : (
         <Card>
-          <EmptyState
-            icon={<Clock4 />}
-            title={m.noProfile}
-            description={m.noProfileText}
-          />
+          <EmptyState icon={<Clock4 />} title={m.noProfile} description={m.noProfileText} />
         </Card>
       )}
     </div>

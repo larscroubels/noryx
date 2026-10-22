@@ -48,7 +48,8 @@ export const staff: typeof en = {
   },
   hours: {
     title: "Werkuren",
-    description: "Klanten kunnen alleen binnen deze uren boeken. Voeg een pauze toe om een dag te splitsen.",
+    description:
+      "Klanten kunnen alleen binnen deze uren boeken. Voeg een pauze toe om een dag te splitsen.",
     submit: "Werkuren opslaan",
     check: "Controleer de werkuren.",
     saved: "Werkuren opgeslagen. De online beschikbaarheid is bijgewerkt.",

@@ -18,7 +18,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getT } from "@/i18n/server";
+import { PlanLocked } from "@/components/billing/plan-locked";
 import { can, requireWorkspace } from "@/lib/auth/session";
+import { getEntitlements, hasFeature } from "@/lib/billing/entitlements";
 import { formatMoney } from "@/lib/format";
 import { createClient } from "@/lib/supabase/server";
 
@@ -32,6 +34,8 @@ export default async function ProductsPage({ searchParams }: PageProps<"/app/pro
   const p = t.retail.products;
   if (!can(workspace, "products.manage") && !can(workspace, "inventory.manage")) notFound();
   const { business } = workspace;
+  if (!hasFeature(await getEntitlements(business.id), "inventory"))
+    return <PlanLocked title={p.title} heading={p.notIncluded} text={p.notIncludedText} />;
   const q = typeof params.q === "string" ? params.q.trim().slice(0, 80) : "";
   const lowOnly = params.filter === "low";
 
@@ -100,9 +104,7 @@ export default async function ProductsPage({ searchParams }: PageProps<"/app/pro
           <EmptyState
             icon={<Package />}
             title={q || lowOnly ? p.noMatch : p.empty}
-            description={
-              q || lowOnly ? p.noMatchText : p.emptyText
-            }
+            description={q || lowOnly ? p.noMatchText : p.emptyText}
             action={
               !q && !lowOnly && can(workspace, "products.manage") ? (
                 <Button asChild>

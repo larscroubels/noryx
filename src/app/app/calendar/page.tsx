@@ -356,12 +356,8 @@ export default async function CalendarPage({ searchParams }: PageProps<"/app/cal
     body = (
       <EmptyState
         icon={<CalendarPlus />}
-        title={
-          seesAll ? c.addStaffTitle : c.notLinkedTitle
-        }
-        description={
-          seesAll ? c.addStaffText : c.notLinkedText
-        }
+        title={seesAll ? c.addStaffTitle : c.notLinkedTitle}
+        description={seesAll ? c.addStaffText : c.notLinkedText}
         action={
           seesAll && can(workspace, "staff.manage") ? (
             <Button asChild>

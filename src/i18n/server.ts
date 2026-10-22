@@ -3,7 +3,13 @@ import "server-only";
 import { cookies, headers } from "next/headers";
 import { cache } from "react";
 
-import { INTL_LOCALE, isLocale, LOCALE_COOKIE, localeFromAcceptLanguage, type Locale } from "./config";
+import {
+  INTL_LOCALE,
+  isLocale,
+  LOCALE_COOKIE,
+  localeFromAcceptLanguage,
+  type Locale,
+} from "./config";
 import { dictionaries, type Dictionary } from "./dictionaries";
 
 /** The visitor's interface language: their choice (cookie), else their browser language. */

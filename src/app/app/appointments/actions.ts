@@ -81,8 +81,7 @@ export async function createAppointment(
   const supabase = await createClient();
   const businessId = workspace.business.id;
   const terms = await serviceTerms(supabase, workspace, data.serviceId, data.staffId);
-  if (!terms)
-    return failure(e.chooseService, { serviceId: [e.serviceGone] });
+  if (!terms) return failure(e.chooseService, { serviceId: [e.serviceGone] });
 
   let customerId = data.customerId ?? "";
   if (data.customerMode === "new") {
@@ -241,8 +240,7 @@ export async function rescheduleAppointment(
   ) {
     return failure(e.moveOwn);
   }
-  if (appointment.status === "cancelled")
-    return failure(e.cancelledMove);
+  if (appointment.status === "cancelled") return failure(e.cancelledMove);
 
   const bufferMs =
     new Date(appointment.blocked_until).getTime() - new Date(appointment.ends_at).getTime();

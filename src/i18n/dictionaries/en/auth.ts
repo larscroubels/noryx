@@ -1,9 +1,11 @@
 export const auth = {
   panelTitleStart: "Your salon, beautifully",
   panelTitleEmphasis: "organised",
-  panelText: "Appointments, staff, customers and online booking — together in one calm, elegant workspace.",
+  panelText:
+    "Appointments, staff, customers and online booking — together in one calm, elegant workspace.",
   notConfiguredTitle: "Authentication is not configured",
-  notConfiguredText: "Add the Supabase variables from .env.example to .env.local to enable sign-in.",
+  notConfiguredText:
+    "Add the Supabase variables from .env.example to .env.local to enable sign-in.",
   fields: {
     email: "Email",
     workEmail: "Work email",
@@ -26,7 +28,7 @@ export const auth = {
   signup: {
     metaTitle: "Create your account",
     title: "Create your NORYX account",
-    lead: "Set up your salon in a few minutes. No payment details needed.",
+    lead: "Try NORYX Pro free for 14 days. No payment details needed.",
     terms: "I agree to the terms of service and privacy policy",
     termsHint: "We only use your details to run your NORYX account.",
     submit: "Create account",
@@ -48,19 +50,22 @@ export const auth = {
   reset: {
     metaTitle: "Choose a new password",
     title: "Choose a new password",
-    signedInAs: (email: string) => `Signed in as ${email}. Pick a password you don't use elsewhere.`,
+    signedInAs: (email: string) =>
+      `Signed in as ${email}. Pick a password you don't use elsewhere.`,
     invalidTitle: "This reset link is no longer valid",
     invalidText: "Reset links expire after one hour and can only be used once.",
     requestNew: "Request a new link",
     submit: "Update password",
   },
   messages: {
-    confirmFirst: "Please confirm your email address first — check your inbox for the link we sent.",
+    confirmFirst:
+      "Please confirm your email address first — check your inbox for the link we sent.",
     wrongCredentials: "That email and password combination is not correct.",
     weakPassword: "Choose a stronger password.",
     emailRateLimit: "We just sent you an email. Please wait a minute before trying again.",
     signupFailed: "We couldn't create your account. Please try again.",
-    confirmationSent: (email: string) => `We sent a confirmation link to ${email}. Open it to activate your account.`,
+    confirmationSent: (email: string) =>
+      `We sent a confirmation link to ${email}. Open it to activate your account.`,
     resetSent: "If an account exists for that email, we've sent a link to reset the password.",
     resetExpired: "Your reset link has expired. Please request a new one.",
     samePassword: "Choose a password that is different from your current one.",

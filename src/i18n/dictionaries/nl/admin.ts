@@ -33,6 +33,7 @@ export const admin: typeof en = {
   usage: (members, staff, bookings) =>
     `${members} ${members === 1 ? "lid" : "leden"} · ${staff} medewerkers · ${bookings} boekingen/30d`,
   pageLive: "Pagina online",
+  trialUntil: (date) => `proef tot ${date}`,
   statuses: { active: "Actief", suspended: "Opgeschort", closed: "Gesloten" },
   audit: "Auditlog",
   noEvents: "Nog geen gebeurtenissen.",

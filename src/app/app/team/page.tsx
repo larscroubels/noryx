@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/table";
 import { getI18n, getT } from "@/i18n/server";
 import { requirePermission } from "@/lib/auth/session";
+import { getEntitlements, hasFeature } from "@/lib/billing/entitlements";
 import { formatDate } from "@/lib/format";
 import { createClient } from "@/lib/supabase/server";
 
@@ -52,19 +53,17 @@ export default async function TeamPage() {
   ]);
   const staffNames = new Map((staff ?? []).map((s) => [s.id, s.display_name]));
   const isOwner = role === "owner";
+  const customPermissions = hasFeature(await getEntitlements(business.id), "team_permissions");
 
   return (
     <div className="grid max-w-5xl gap-8">
-      <PageHeader
-        title={tm.title}
-        description={tm.description}
-      />
+      <PageHeader title={tm.title} description={tm.description} />
 
       <Card className="overflow-hidden">
         <CardHeader className="pb-5">
           <div>
             <CardTitle>{tm.members}</CardTitle>
-<CardDescription>{tm.membersText}</CardDescription>
+            <CardDescription>{tm.membersText}</CardDescription>
           </div>
         </CardHeader>
         <Table>
@@ -122,6 +121,7 @@ export default async function TeamPage() {
                             revoked_permissions: member.revoked_permissions,
                           }}
                           canAssignOwner={isOwner}
+                          customPermissions={customPermissions}
                         />
                         <ConfirmAction
                           trigger={<UserMinus aria-label={tm.remove(name)} />}
@@ -149,7 +149,7 @@ export default async function TeamPage() {
               <CardTitle className="flex items-center gap-2">
                 <MailPlus className="size-4 text-fg-muted" aria-hidden="true" /> {tm.invite}
               </CardTitle>
-<CardDescription>{tm.inviteText}</CardDescription>
+              <CardDescription>{tm.inviteText}</CardDescription>
             </div>
           </CardHeader>
           <CardContent>

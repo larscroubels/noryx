@@ -42,12 +42,7 @@ export function EmptyState({ icon, title, description, action, className }: Stat
 }
 
 /** Explains that something failed and how to recover. Never shows raw error details. */
-export function ErrorState({
-  title,
-  description,
-  action,
-  className,
-}: Partial<StateProps>) {
+export function ErrorState({ title, description, action, className }: Partial<StateProps>) {
   return (
     <div
       role="alert"

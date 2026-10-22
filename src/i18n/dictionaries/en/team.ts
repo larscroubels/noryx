@@ -15,8 +15,7 @@ export const team = {
     "They can no longer sign in to this workspace. Their staff profile and appointment history are kept.",
   removeConfirm: "Remove access",
   invite: "Invite someone",
-  inviteText:
-    "They create a login (or use their existing one) and join with the role you choose.",
+  inviteText: "They create a login (or use their existing one) and join with the role you choose.",
   pending: "Pending invitations",
   noPending: "No open invitations.",
   staffProfileLower: "staff profile",
@@ -36,6 +35,8 @@ export const team = {
     ownersAll: "Owners always have every permission.",
     permissions: "Permissions",
     inRole: "Included in this role",
+    permissionsPro:
+      "Custom permissions per team member are part of Pro. On Basic, everyone gets their role's default permissions.",
     save: "Save access",
   },
   permissions: {

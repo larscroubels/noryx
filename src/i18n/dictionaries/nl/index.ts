@@ -11,6 +11,7 @@ import { finance } from "./finance";
 import { help } from "./help";
 import { marketing } from "./marketing";
 import { onboarding } from "./onboarding";
+import { pricing } from "./pricing";
 import { retail } from "./retail";
 import { services } from "./services";
 import { settings } from "./settings";
@@ -18,4 +19,25 @@ import { staff } from "./staff";
 import { team } from "./team";
 import { validation } from "./validation";
 
-export const nl = { common, marketing, auth, validation, errors, onboarding, settings, staff, booking, app, appointments, finance, admin, customers, services, team, retail, account, help };
+export const nl = {
+  common,
+  marketing,
+  auth,
+  validation,
+  errors,
+  onboarding,
+  settings,
+  staff,
+  booking,
+  app,
+  appointments,
+  finance,
+  admin,
+  customers,
+  services,
+  team,
+  retail,
+  account,
+  help,
+  pricing,
+};

@@ -1042,6 +1042,7 @@ export type Database = {
           features: string[];
           id: string;
           is_active: boolean;
+          max_customers: number | null;
           max_members: number | null;
           max_staff: number | null;
           monthly_price_cents: number | null;
@@ -1055,6 +1056,7 @@ export type Database = {
           features?: string[];
           id: string;
           is_active?: boolean;
+          max_customers?: number | null;
           max_members?: number | null;
           max_staff?: number | null;
           monthly_price_cents?: number | null;
@@ -1067,6 +1069,7 @@ export type Database = {
           features?: string[];
           id?: string;
           is_active?: boolean;
+          max_customers?: number | null;
           max_members?: number | null;
           max_staff?: number | null;
           monthly_price_cents?: number | null;
@@ -1544,6 +1547,7 @@ export type Database = {
         Returns: undefined;
       };
       appointment_paid_cents: { Args: { p_appointment_id: string }; Returns: number };
+      business_effective_plan: { Args: { p_business_id: string }; Returns: string };
       business_has_feature: {
         Args: { p_business_id: string; p_feature: string };
         Returns: boolean;
@@ -1613,9 +1617,11 @@ export type Database = {
         };
         Returns: Json;
       };
+      current_plan: { Args: { p_business_id: string }; Returns: string };
       get_booking_by_token: { Args: { p_token: string }; Returns: Json };
       get_invitation: { Args: { p_token: string }; Returns: Json };
       get_public_business: { Args: { p_slug: string }; Returns: Json };
+      get_public_business_data: { Args: { p_slug: string }; Returns: Json };
       get_public_busy_periods: {
         Args: { p_business_id: string; p_from: string; p_to: string };
         Returns: {

@@ -22,6 +22,7 @@ import { Textarea } from "@/components/ui/input";
 import { getI18n, getT } from "@/i18n/server";
 import { NEXT_STATUSES } from "@/lib/appointments/status";
 import { can, requireWorkspace } from "@/lib/auth/session";
+import { getEntitlements, hasFeature } from "@/lib/billing/entitlements";
 import {
   formatDateTime,
   formatDuration,
@@ -96,9 +97,12 @@ export default async function AppointmentPage({
       .eq("is_active", true)
       .order("display_name"),
   ]);
-  const canSeeFinance = can(workspace, "finance.view");
+  // Payments are part of Pro (the database enforces this as well).
+  const paymentsEnabled = hasFeature(await getEntitlements(business.id), "finance");
+  const canSeeFinance = paymentsEnabled && can(workspace, "finance.view");
   const canRecordPayment =
-    can(workspace, "finance.manage") || can(workspace, "appointments.manage_all");
+    paymentsEnabled &&
+    (can(workspace, "finance.manage") || can(workspace, "appointments.manage_all"));
   const [{ data: paidCents }, { data: payments }] = await Promise.all([
     supabase.rpc("appointment_paid_cents", { p_appointment_id: id }),
     canSeeFinance
@@ -133,9 +137,8 @@ export default async function AppointmentPage({
         <div>
           <p className="eyebrow">{formatLocalDate(local.date, undefined, intl)}</p>
           <h1 className="mt-2 font-display text-display-sm font-semibold">
-            {formatTime(appointment.starts_at, tz, intl)}–{formatTime(appointment.ends_at, tz, intl)}{" "}
-            ·{" "}
-            {appointment.service_name}
+            {formatTime(appointment.starts_at, tz, intl)}–
+            {formatTime(appointment.ends_at, tz, intl)} · {appointment.service_name}
           </h1>
           <div className="mt-3 flex flex-wrap items-center gap-2">
             <AppointmentStatusBadge status={appointment.status} />
@@ -192,7 +195,9 @@ export default async function AppointmentPage({
               <dl className="grid gap-4 text-sm sm:grid-cols-3">
                 <div>
                   <dt className="text-fg-muted">{t.common.fields.duration}</dt>
-                  <dd className="font-semibold">{formatDuration(appointment.duration_minutes, intl)}</dd>
+                  <dd className="font-semibold">
+                    {formatDuration(appointment.duration_minutes, intl)}
+                  </dd>
                 </div>
                 <div>
                   <dt className="text-fg-muted">{d.priceAtBooking}</dt>
@@ -233,7 +238,8 @@ export default async function AppointmentPage({
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <CalendarClock className="size-4 text-fg-muted" aria-hidden="true" /> {d.reschedule}
+                  <CalendarClock className="size-4 text-fg-muted" aria-hidden="true" />{" "}
+                  {d.reschedule}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -255,7 +261,7 @@ export default async function AppointmentPage({
               <CardHeader>
                 <div>
                   <CardTitle>{d.payment}</CardTitle>
-<p className="mt-1 text-sm text-fg-muted">{d.paymentText}</p>
+                  <p className="mt-1 text-sm text-fg-muted">{d.paymentText}</p>
                 </div>
               </CardHeader>
               <CardContent className="grid gap-5">

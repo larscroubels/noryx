@@ -20,6 +20,13 @@ export const app = {
   readOnlyTitle: "This business is currently read-only",
   readOnlyText: (suspended: boolean) =>
     `The NORYX team has ${suspended ? "suspended" : "closed"} this account. You can still view and export your data. Contact support if you believe this is a mistake.`,
+  trial: {
+    running: (days: number) =>
+      `You're trying NORYX Pro for free — ${days} ${days === 1 ? "day" : "days"} left.`,
+    ended:
+      "Your Pro trial has ended. Your business continues on Basic: the booking system with up to 250 customers.",
+    plans: "Compare plans",
+  },
   overview: {
     greeting: { morning: "Good morning", afternoon: "Good afternoon", evening: "Good evening" },
     lead: (name: string) => `Here's what's happening at ${name} today.`,
@@ -66,5 +73,8 @@ export const app = {
     todo: "(to do)",
     yourPage: "Your booking page",
     shareText: "Share this link on Instagram, Google or your website.",
+    customerLimit: (count: number, limit: number) =>
+      `${count} of the ${limit} customers in Basic are in use.`,
+    customerLimitText: "Pro has no customer limit.",
   },
 };

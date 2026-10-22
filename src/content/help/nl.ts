@@ -26,7 +26,10 @@ export const nl: HelpContent = {
             "Geef de naam van je zaak en het soort zaak in. NORYX stelt meteen een adres voor je boekingspagina voor, zoals **noryx.app/atelier-noor**. Je kunt dat adres aanpassen zolang het nog vrij is.",
             "Klik op **Mijn zaak aanmaken**. Alles wat je in de installatie invult, kun je later nog wijzigen bij **Instellingen**.",
           ],
-          image: { name: "onboarding-business", alt: "Stap 1 van de installatie: gegevens van de zaak" },
+          image: {
+            name: "onboarding-business",
+            alt: "Stap 1 van de installatie: gegevens van de zaak",
+          },
         },
         {
           title: "Vul je adres en openingsuren in",
@@ -49,7 +52,10 @@ export const nl: HelpContent = {
             "In de laatste stap kies je of je boekingspagina meteen online komt. Klik op **Naar mijn dashboard** om af te ronden.",
             "Op het **Overzicht** zie je daarna je afspraken van vandaag, je kerncijfers en een lijstje met wat je nog kunt instellen.",
           ],
-          image: { name: "overview", alt: "Het overzicht van de werkruimte met kerncijfers en de planning van vandaag" },
+          image: {
+            name: "overview",
+            alt: "Het overzicht van de werkruimte met kerncijfers en de planning van vandaag",
+          },
           tip: "Deel de link van je boekingspagina op Instagram, Google of je website. Je vindt ze altijd via **Boekingspagina bekijken** rechtsboven.",
         },
       ],
@@ -83,7 +89,10 @@ export const nl: HelpContent = {
             "Open **Agenda** in het menu. In de **Dag**-weergave krijgt elke medewerker een eigen kolom. **Week** en **Maand** geven je een overzicht van een langere periode.",
             "Met de pijltjes en **Vandaag** blader je door de tijd. Met **Alle medewerkers** toon je de agenda van één persoon.",
           ],
-          image: { name: "calendar-week", alt: "De weekweergave van de agenda met afspraken per dag" },
+          image: {
+            name: "calendar-week",
+            alt: "De weekweergave van de agenda met afspraken per dag",
+          },
           tip: "Een gestreepte balk betekent afwezigheid, zoals vakantie of ziekte. In die periode kan niemand online boeken.",
         },
         {
@@ -92,7 +101,10 @@ export const nl: HelpContent = {
             "Klik op **Nieuwe afspraak**. Kies een **Bestaande klant** of maak meteen een **Nieuwe klant** aan, en kies daarna de behandeling, de medewerker, de datum en het beginuur.",
             "De duur en prijs komen van de behandeling (of van de eigen prijs van de medewerker). Overlapt de afspraak met een andere, dan krijg je een melding en wordt ze niet opgeslagen.",
           ],
-          image: { name: "new-appointment", alt: "Het formulier om een nieuwe afspraak in te plannen" },
+          image: {
+            name: "new-appointment",
+            alt: "Het formulier om een nieuwe afspraak in te plannen",
+          },
         },
         {
           title: "Werk de status bij",
@@ -100,7 +112,10 @@ export const nl: HelpContent = {
             "Klik op een afspraak om de details te openen. Bovenaan staan de acties die op dat moment kunnen: **Bevestigen**, **Markeren als afgerond**, **Markeren als niet opgedaagd** of **Annuleren**.",
             "Elke wijziging komt in de **Geschiedenis** van de afspraak, met datum en uur.",
           ],
-          image: { name: "appointment-detail", alt: "De detailpagina van een afspraak met status, verplaatsen en betaling" },
+          image: {
+            name: "appointment-detail",
+            alt: "De detailpagina van een afspraak met status, verplaatsen en betaling",
+          },
         },
         {
           title: "Verplaats of annuleer",
@@ -115,7 +130,10 @@ export const nl: HelpContent = {
             "Heb je **Online boekingen handmatig goedkeuren** aangezet bij **Instellingen**, dan komen nieuwe boekingen binnen als ‘in afwachting’. Het tijdstip blijft intussen gereserveerd.",
             "Op het **Overzicht** verschijnt dan een melding. Klik op **Aanvragen bekijken** en bevestig of annuleer elke aanvraag.",
           ],
-          image: { name: "requests", alt: "De lijst met boekingsaanvragen die op bevestiging wachten" },
+          image: {
+            name: "requests",
+            alt: "De lijst met boekingsaanvragen die op bevestiging wachten",
+          },
         },
       ],
       faq: [
@@ -156,7 +174,11 @@ export const nl: HelpContent = {
             "De klant kiest een behandeling, eventueel een medewerker, en daarna een dag en een vrij tijdstip. NORYX toont alleen tijdstippen die echt kunnen: binnen je openingsuren, het rooster van de medewerker, zonder overlap en met de buffers die je instelde.",
             "Tot slot vult de klant naam, e-mail en telefoonnummer in en gaat akkoord met de boekingsvoorwaarden.",
           ],
-          image: { name: "booking-time", alt: "Een klant kiest een tijdstip op de gsm", mobile: true },
+          image: {
+            name: "booking-time",
+            alt: "Een klant kiest een tijdstip op de gsm",
+            mobile: true,
+          },
         },
         {
           title: "Stel je boekingsregels in",
@@ -195,7 +217,8 @@ export const nl: HelpContent = {
       audience: "everyone",
       minutes: 5,
       title: "Klanten en privacy",
-      summary: "Zoek klanten, bekijk hun geschiedenis, houd notities bij en behandel privacyverzoeken.",
+      summary:
+        "Zoek klanten, bekijk hun geschiedenis, houd notities bij en behandel privacyverzoeken.",
       steps: [
         {
           title: "Je klantenlijst",
@@ -211,7 +234,10 @@ export const nl: HelpContent = {
             "Klik op een klant om de geplande afspraken, de geschiedenis, het aantal afgeronde bezoeken en de waarde ervan te zien. Met **Afspraak boeken** plan je meteen een nieuwe afspraak in.",
             "Bij **Privénotities** noteer je bijvoorbeeld een kleurformule of voorkeuren. Die zijn alleen zichtbaar voor teamleden met toegang tot klantnotities.",
           ],
-          image: { name: "customer-detail", alt: "Het profiel van een klant met afspraken en notities" },
+          image: {
+            name: "customer-detail",
+            alt: "Het profiel van een klant met afspraken en notities",
+          },
           tip: "Noteer geen gezondheidsgegevens tenzij de klant daar uitdrukkelijk mee akkoord ging.",
         },
         {
@@ -236,6 +262,10 @@ export const nl: HelpContent = {
         {
           q: "Een klant boekte online met een ander e-mailadres. Wordt dat een nieuwe klant?",
           a: "Ja, NORYX herkent klanten aan hun e-mailadres. Pas het adres aan in het profiel als het om dezelfde persoon gaat.",
+        },
+        {
+          q: "Hoeveel klanten kan ik bewaren?",
+          a: "In Basic tot 250 klanten, in Pro onbeperkt. Op het **Overzicht** zie je een melding wanneer je de limiet van Basic nadert.",
         },
       ],
     },
@@ -262,7 +292,10 @@ export const nl: HelpContent = {
             "Onderaan het formulier vink je aan welke medewerkers de behandeling uitvoeren. Alleen zij kunnen ervoor geboekt worden.",
             "Heeft iemand een eigen prijs of duur? Stel dat in op het profiel van de medewerker bij **Behandelingen**.",
           ],
-          image: { name: "service-form", alt: "Een behandeling bewerken met de toegewezen medewerkers" },
+          image: {
+            name: "service-form",
+            alt: "Een behandeling bewerken met de toegewezen medewerkers",
+          },
         },
         {
           title: "Werkuren en afwezigheid",
@@ -299,7 +332,7 @@ export const nl: HelpContent = {
         },
         {
           q: "Hoeveel medewerkers kan ik toevoegen?",
-          a: "Dat hangt af van je abonnement. Bij **Instellingen** › **Abonnement** zie je de limieten.",
+          a: "Zoveel als je wil: Basic en Pro hebben geen limiet op medewerkers of teamlogins. Eigen rechten per teamlid zitten in Pro.",
         },
       ],
     },
@@ -307,6 +340,7 @@ export const nl: HelpContent = {
       slug: "webshop-en-voorraad",
       icon: "shopping",
       audience: "owner",
+      plan: "pro",
       minutes: 6,
       title: "Webshop en voorraad",
       summary:
@@ -318,7 +352,10 @@ export const nl: HelpContent = {
             "Open **Producten** en klik op **Nieuw product**. Vul verkoopprijs, aankoopprijs (voor je marge) en het niveau voor een waarschuwing bij lage voorraad in.",
             "Producten met een lage voorraad krijgen een label en verschijnen op het **Overzicht**.",
           ],
-          image: { name: "products", alt: "De productlijst met voorraad en labels voor lage voorraad" },
+          image: {
+            name: "products",
+            alt: "De productlijst met voorraad en labels voor lage voorraad",
+          },
         },
         {
           title: "Voorraad bijwerken",
@@ -359,6 +396,7 @@ export const nl: HelpContent = {
       slug: "financien",
       icon: "wallet",
       audience: "owner",
+      plan: "pro",
       minutes: 5,
       title: "Betalingen en financiën",
       summary:
@@ -419,7 +457,7 @@ export const nl: HelpContent = {
           title: "Profiel en huisstijl",
           body: [
             "Bij **Instellingen** › **Profiel van de zaak** vul je je beschrijving, publieke contactgegevens, website, Instagram en een accentkleur voor je boekingspagina in.",
-            "Bij **Huisstijl** upload je je logo en een omslagfoto: PNG, JPG of WebP, maximaal 2 MB.",
+            "Bij **Huisstijl** upload je je logo en een omslagfoto: PNG, JPG of WebP, maximaal 2 MB. Een eigen logo, omslagfoto en accentkleur zitten in Pro.",
           ],
           image: { name: "settings", alt: "De instellingen met het profiel van de zaak" },
         },
@@ -433,7 +471,8 @@ export const nl: HelpContent = {
         {
           title: "Je abonnement",
           body: [
-            "Bij **Abonnement** zie je welke functies inbegrepen zijn en hoeveel medewerkers en logins je kunt gebruiken. Tijdens de vroege toegang betaal je niets.",
+            "Bij **Abonnement** zie je of je Basic of Pro gebruikt, welke functies inbegrepen zijn en hoeveel dagen je gratis proefperiode van Pro nog loopt.",
+            "Na de proefperiode kies je Basic of Pro. Kies je niets, dan werkt je zaak verder met Basic. Zolang betalen via NORYX niet mogelijk is, wordt er niets aangerekend.",
           ],
         },
         {

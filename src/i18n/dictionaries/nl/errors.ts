@@ -9,7 +9,14 @@ export const errors: typeof en = {
   notAllowedValues: "Sommige waarden zijn niet toegestaan.",
   tooManyAttempts: "Te veel pogingen. Wacht enkele minuten en probeer het opnieuw.",
   noAccessBusiness: "Je hebt geen toegang tot deze zaak.",
-  planLimitStaff: "Het maximumaantal medewerkers van je abonnement is bereikt. Zet iemand op inactief of neem contact op met NORYX om je abonnement te wijzigen.",
-  planLimitMembers: "Het maximumaantal teamlogins van je abonnement is bereikt. Verwijder een lid of neem contact op met NORYX om je abonnement te wijzigen.",
+  planLimitStaff:
+    "Het maximumaantal medewerkers van je abonnement is bereikt. Zet iemand op inactief of neem contact op met NORYX om je abonnement te wijzigen.",
+  planLimitMembers:
+    "Het maximumaantal teamlogins van je abonnement is bereikt. Verwijder een lid of neem contact op met NORYX om je abonnement te wijzigen.",
   planFeatureShop: "De webshop zit niet in je huidige abonnement.",
+  planLimitCustomers: "Basic bevat tot 250 klanten. Stap over naar Pro om er meer toe te voegen.",
+  planFeatureFinance: "Betalingen en financiën zitten in Pro.",
+  planFeatureInventory: "Producten en voorraad zitten in Pro.",
+  planFeatureBranding: "Een eigen logo, omslagfoto en kleur zitten in Pro.",
+  planFeatureTeamPermissions: "Eigen rechten per teamlid zitten in Pro.",
 };

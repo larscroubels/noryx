@@ -197,9 +197,7 @@ export function BookingFlow({
 
   const steps: { key: Step; label: string }[] = [
     { key: "service", label: f.steps.service },
-    ...(business.policy.allow_staff_choice
-      ? [{ key: "staff" as Step, label: f.steps.staff }]
-      : []),
+    ...(business.policy.allow_staff_choice ? [{ key: "staff" as Step, label: f.steps.staff }] : []),
     { key: "time", label: f.steps.time },
     { key: "details", label: f.steps.details },
   ];
@@ -287,7 +285,7 @@ export function BookingFlow({
         {result.manageUrl && (
           <div className="mt-5 rounded-lg border border-champagne-200 bg-surface-warm p-4 text-sm">
             <p className="font-semibold">{f.needCancel}</p>
-<p className="mt-1 text-fg-muted">{f.keepLink}</p>
+            <p className="mt-1 text-fg-muted">{f.keepLink}</p>
             <a
               href={result.manageUrl}
               className="mt-2 block font-semibold break-all text-pink-700 hover:underline"
@@ -356,7 +354,8 @@ export function BookingFlow({
         <Card className="flex flex-wrap items-center gap-x-6 gap-y-2 p-4 text-sm">
           <span className="font-semibold">{service.name}</span>
           <span className="flex items-center gap-1.5 text-fg-muted">
-            <Clock className="size-3.5" aria-hidden="true" /> {formatDuration(displayDuration, intl)}
+            <Clock className="size-3.5" aria-hidden="true" />{" "}
+            {formatDuration(displayDuration, intl)}
           </span>
           <span className="font-semibold tabular-nums">{money(displayPrice)}</span>
           {step !== "staff" && business.policy.allow_staff_choice && (
@@ -367,8 +366,7 @@ export function BookingFlow({
           )}
           {slot && step === "details" && (
             <span className="font-semibold">
-              {day(date, { weekday: "short", day: "numeric", month: "short" })} ·{" "}
-              {slot.label}
+              {day(date, { weekday: "short", day: "numeric", month: "short" })} · {slot.label}
             </span>
           )}
         </Card>
@@ -697,7 +695,7 @@ export function BookingFlow({
                 {business.policy.requires_approval ? f.request : f.confirm}
               </Button>
             </div>
-<p className="text-sm text-fg-muted">{f.noPayment}</p>
+            <p className="text-sm text-fg-muted">{f.noPayment}</p>
           </form>
         </section>
       )}

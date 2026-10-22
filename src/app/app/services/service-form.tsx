@@ -65,7 +65,7 @@ export function ServiceForm({
         <CardHeader>
           <div>
             <CardTitle>{f.details}</CardTitle>
-<CardDescription>{f.detailsText}</CardDescription>
+            <CardDescription>{f.detailsText}</CardDescription>
           </div>
         </CardHeader>
         <CardContent className="grid gap-5">
@@ -81,7 +81,11 @@ export function ServiceForm({
 
           <div className="grid gap-2">
             {categoryMode === "existing" ? (
-              <Field label={t.common.fields.category} error={fieldError(state, "categoryId")} optional>
+              <Field
+                label={t.common.fields.category}
+                error={fieldError(state, "categoryId")}
+                optional
+              >
                 <Select name="categoryId" defaultValue={service?.category_id ?? ""}>
                   <option value="">{f.noCategory}</option>
                   {categories.map((category) => (
@@ -122,7 +126,11 @@ export function ServiceForm({
           </Field>
 
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            <Field label={t.common.fields.duration} error={fieldError(state, "durationMinutes")} required>
+            <Field
+              label={t.common.fields.duration}
+              error={fieldError(state, "durationMinutes")}
+              required
+            >
               <Input
                 name="durationMinutes"
                 type="number"
@@ -205,17 +213,14 @@ export function ServiceForm({
         <CardHeader>
           <div>
             <CardTitle>{f.who}</CardTitle>
-<CardDescription>{f.whoText}</CardDescription>
+            <CardDescription>{f.whoText}</CardDescription>
           </div>
         </CardHeader>
         <CardContent>
           {staff.length === 0 ? (
             <p className="text-sm text-fg-muted">
               {f.noStaffYet}{" "}
-              <Link
-                href="/app/staff/new"
-                className="font-semibold text-pink-700 hover:underline"
-              >
+              <Link href="/app/staff/new" className="font-semibold text-pink-700 hover:underline">
                 {f.addStaff}
               </Link>{" "}
               {f.toMakeBookable}

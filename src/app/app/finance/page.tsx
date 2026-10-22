@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { getI18n, getT } from "@/i18n/server";
+import { PlanLocked } from "@/components/billing/plan-locked";
 import { can, requirePermission } from "@/lib/auth/session";
 import { formatDate, formatDateTime, formatLocalDate, formatMoney } from "@/lib/format";
 import {
@@ -46,16 +47,8 @@ export default async function FinancePage({ searchParams }: PageProps<"/app/fina
     typeof params.to === "string" && DATE.test(params.to) && params.to >= from ? params.to : today;
   const start = dayBoundsUtc(from, tz).start.toISOString();
   const end = dayBoundsUtc(to, tz).end.toISOString();
-  if (!hasFeature(await getEntitlements(business.id), "finance")) {
-    return (
-      <div className="grid max-w-3xl gap-6">
-        <PageHeader title={f.title} />
-        <Alert tone="info" title={f.notIncluded}>
-          {f.notIncludedText}
-        </Alert>
-      </div>
-    );
-  }
+  if (!hasFeature(await getEntitlements(business.id), "finance"))
+    return <PlanLocked title={f.title} heading={f.notIncluded} text={f.notIncludedText} />;
   const canManage = can(workspace, "finance.manage");
   const money = (cents: number) => formatMoney(cents, business.currency, business.locale);
 
@@ -170,11 +163,7 @@ export default async function FinancePage({ searchParams }: PageProps<"/app/fina
           value={money(summary.expensesCents)}
           hint={f.entries((expenses ?? []).length)}
         />
-        <Total
-          label={f.result}
-          value={money(summary.resultCents)}
-          hint={f.resultHint}
-        />
+        <Total label={f.result} value={money(summary.resultCents)} hint={f.resultHint} />
         <Total
           label={f.booked}
           value={money(summary.bookedValueCents)}
@@ -186,9 +175,19 @@ export default async function FinancePage({ searchParams }: PageProps<"/app/fina
       <Alert tone="neutral">{f.disclaimer}</Alert>
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <BreakdownCard title={f.byService} rows={summary.byService} money={money} empty={f.noRevenue} />
+        <BreakdownCard
+          title={f.byService}
+          rows={summary.byService}
+          money={money}
+          empty={f.noRevenue}
+        />
         <BreakdownCard title={f.byStaff} rows={summary.byStaff} money={money} empty={f.noRevenue} />
-        <BreakdownCard title={f.byMethod} rows={summary.byMethod} money={money} empty={f.noRevenue} />
+        <BreakdownCard
+          title={f.byMethod}
+          rows={summary.byMethod}
+          money={money}
+          empty={f.noRevenue}
+        />
       </div>
 
       <div className="grid gap-6 xl:grid-cols-2">
@@ -196,12 +195,12 @@ export default async function FinancePage({ searchParams }: PageProps<"/app/fina
           <CardHeader>
             <div>
               <CardTitle>{f.payments}</CardTitle>
-<CardDescription>{f.paymentsText}</CardDescription>
+              <CardDescription>{f.paymentsText}</CardDescription>
             </div>
           </CardHeader>
           <CardContent>
             {(payments ?? []).length === 0 ? (
-<p className="text-sm text-fg-muted">{f.noPayments}</p>
+              <p className="text-sm text-fg-muted">{f.noPayments}</p>
             ) : (
               <ul className="divide-y divide-border">
                 {(payments ?? []).slice(0, 50).map((payment) => (
@@ -211,7 +210,8 @@ export default async function FinancePage({ searchParams }: PageProps<"/app/fina
                         {payment.appointment?.service_name ?? f.payment}
                       </span>
                       <span className="block text-fg-muted">
-                        {formatDateTime(payment.paid_at, tz, intl)} · {methodLabel(t, payment.method)}
+                        {formatDateTime(payment.paid_at, tz, intl)} ·{" "}
+                        {methodLabel(t, payment.method)}
                         {payment.appointment?.staff?.display_name
                           ? ` · ${payment.appointment.staff.display_name}`
                           : ""}

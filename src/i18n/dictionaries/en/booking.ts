@@ -91,6 +91,8 @@ export const booking = {
       outside_booking_window: "This time is too soon or too far ahead to book online.",
       invalid_slot: "Please choose one of the offered times.",
       slot_unavailable: "This time is no longer available. Please choose another.",
+      plan_limit_customers:
+        "This salon can't take new clients online right now. Please contact the salon directly.",
     } as Record<string, string>,
   },
   manage: {
@@ -144,8 +146,7 @@ export const booking = {
     rpc: {
       shop_unavailable: "This shop isn't taking orders right now.",
       product_unavailable: "One of the products is no longer available. Please review your cart.",
-      out_of_stock:
-        "One of the products doesn't have enough stock left. Please review your cart.",
+      out_of_stock: "One of the products doesn't have enough stock left. Please review your cart.",
       invalid_items: "Please review the quantities in your cart.",
     } as Record<string, string>,
   },

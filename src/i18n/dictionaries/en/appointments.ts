@@ -57,8 +57,7 @@ export const appointments = {
     recorded: (amount: string) => `${amount} recorded`,
     notRecorded: "Not recorded",
     clientNote: "Note from the client",
-    cancelledBy: (byClient: boolean) =>
-      `Cancelled by ${byClient ? "the client" : "the business"}`,
+    cancelledBy: (byClient: boolean) => `Cancelled by ${byClient ? "the client" : "the business"}`,
     noReason: "No reason given.",
     reschedule: "Reschedule",
     paymentText: "Record how the client paid at the salon. NORYX does not process payments.",

@@ -40,8 +40,19 @@ const FEATURE_ICONS = [
   <ShoppingBag key="bag" />,
   <ChartNoAxesColumn key="chart" />,
 ];
-const TEAM_ICONS = [<UserRound key="user" />, <ShieldCheck key="shield" />, <CalendarCheck2 key="calendar" />, <UsersRound key="users" />];
-const ROADMAP_ICONS = [<CreditCard key="card" />, <MessageSquareText key="message" />, <UsersRound key="users" />, <Globe key="globe" />, <Smartphone key="phone" />];
+const TEAM_ICONS = [
+  <UserRound key="user" />,
+  <ShieldCheck key="shield" />,
+  <CalendarCheck2 key="calendar" />,
+  <UsersRound key="users" />,
+];
+const ROADMAP_ICONS = [
+  <CreditCard key="card" />,
+  <MessageSquareText key="message" />,
+  <UsersRound key="users" />,
+  <Globe key="globe" />,
+  <Smartphone key="phone" />,
+];
 
 export default async function LandingPage() {
   const t = await getT();
@@ -60,7 +71,8 @@ export default async function LandingPage() {
               {m.hero.badge}
             </Badge>
             <h1 className="mt-6 font-display text-display-lg font-semibold text-fg sm:text-display-xl">
-              {m.hero.titleStart} <em className="text-pink-700">{m.hero.titleEmphasis}</em> {m.hero.titleEnd}
+              {m.hero.titleStart} <em className="text-pink-700">{m.hero.titleEmphasis}</em>{" "}
+              {m.hero.titleEnd}
             </h1>
             <p className="mt-6 max-w-xl text-lg text-fg-muted">{m.hero.lead}</p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -86,7 +98,10 @@ export default async function LandingPage() {
       </section>
 
       {/* Features */}
-      <section id="features" className="scroll-mt-20 border-t border-border bg-surface-subtle py-20 sm:py-24">
+      <section
+        id="features"
+        className="scroll-mt-20 border-t border-border bg-surface-subtle py-20 sm:py-24"
+      >
         <div className="container-page">
           <div className="max-w-2xl">
             <p className="eyebrow">{m.features.eyebrow}</p>
@@ -95,7 +110,10 @@ export default async function LandingPage() {
           </div>
           <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {m.features.items.map((feature, index) => (
-              <li key={feature.title} className="rounded-xl border border-neutral-200/70 bg-surface p-6 shadow-sm">
+              <li
+                key={feature.title}
+                className="rounded-xl border border-neutral-200/70 bg-surface p-6 shadow-sm"
+              >
                 <span
                   aria-hidden="true"
                   className="flex size-11 items-center justify-center rounded-lg bg-champagne-50 text-rosegold-700 ring-1 ring-champagne-200 [&_svg]:size-5"
@@ -121,7 +139,10 @@ export default async function LandingPage() {
             <ul className="mt-8 grid gap-4">
               {m.booking.points.map((point) => (
                 <li key={point.title} className="flex gap-4">
-                  <span aria-hidden="true" className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-full bg-pink-50 text-pink-700">
+                  <span
+                    aria-hidden="true"
+                    className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-full bg-pink-50 text-pink-700"
+                  >
                     <Check className="size-3.5" />
                   </span>
                   <span>
@@ -144,7 +165,10 @@ export default async function LandingPage() {
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:col-span-2">
             {m.team.items.map((item, index) => (
-              <div key={item.title} className="rounded-xl bg-surface p-6 shadow-sm ring-1 ring-neutral-200/70">
+              <div
+                key={item.title}
+                className="rounded-xl bg-surface p-6 shadow-sm ring-1 ring-neutral-200/70"
+              >
                 <span aria-hidden="true" className="text-rosegold-700 [&_svg]:size-5">
                   {TEAM_ICONS[index]}
                 </span>
@@ -160,10 +184,15 @@ export default async function LandingPage() {
       <section id="for-you" className="scroll-mt-20 py-20 sm:py-24">
         <div className="container-page text-center">
           <p className="eyebrow">{m.forYou.eyebrow}</p>
-          <h2 className="mx-auto mt-3 max-w-2xl font-display text-display-md font-semibold">{m.forYou.title}</h2>
+          <h2 className="mx-auto mt-3 max-w-2xl font-display text-display-md font-semibold">
+            {m.forYou.title}
+          </h2>
           <ul className="mx-auto mt-10 flex max-w-4xl flex-wrap justify-center gap-3">
             {m.forYou.types.map((type) => (
-              <li key={type} className="rounded-full border border-champagne-200 bg-surface-warm px-5 py-2.5 text-sm font-semibold text-fg">
+              <li
+                key={type}
+                className="rounded-full border border-champagne-200 bg-surface-warm px-5 py-2.5 text-sm font-semibold text-fg"
+              >
                 {type}
               </li>
             ))}
@@ -181,7 +210,10 @@ export default async function LandingPage() {
           </div>
           <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {m.roadmap.items.map((item, index) => (
-              <li key={item.title} className="rounded-xl border border-dashed border-border-strong bg-surface/70 p-5">
+              <li
+                key={item.title}
+                className="rounded-xl border border-dashed border-border-strong bg-surface/70 p-5"
+              >
                 <span aria-hidden="true" className="text-fg-subtle [&_svg]:size-5">
                   {ROADMAP_ICONS[index]}
                 </span>
@@ -196,38 +228,14 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section id="faq" className="scroll-mt-20 py-20 sm:py-24">
-        <div className="container-page grid gap-10 lg:grid-cols-[1fr_1.6fr]">
-          <div>
-            <p className="eyebrow">{m.faq.eyebrow}</p>
-            <h2 className="mt-3 font-display text-display-md font-semibold">{m.faq.title}</h2>
-          </div>
-          <div className="divide-y divide-border border-y border-border">
-            {m.faq.items.map((item) => (
-              <details key={item.q} className="group py-5">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold [&::-webkit-details-marker]:hidden">
-                  {item.q}
-                  <span
-                    aria-hidden="true"
-                    className="flex size-7 shrink-0 items-center justify-center rounded-full bg-champagne-50 text-rosegold-700 transition-transform group-open:rotate-45"
-                  >
-                    +
-                  </span>
-                </summary>
-                <p className="mt-3 text-fg-muted">{item.a}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Final CTA */}
       <section className="pb-20 sm:pb-24">
         <div className="container-page">
           <div className="relative overflow-hidden rounded-2xl bg-surface-warm px-6 py-14 text-center ring-1 ring-champagne-200 sm:px-12 sm:py-16">
             <Logo variant="symbol" height={56} alt="" className="mx-auto" />
-            <h2 className="mx-auto mt-6 max-w-2xl font-display text-display-md font-semibold">{m.finalCta.title}</h2>
+            <h2 className="mx-auto mt-6 max-w-2xl font-display text-display-md font-semibold">
+              {m.finalCta.title}
+            </h2>
             <p className="mx-auto mt-4 max-w-xl text-lg text-fg-muted">{m.finalCta.lead}</p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Button asChild size="lg">
@@ -244,7 +252,11 @@ export default async function LandingPage() {
   );
 }
 
-function BookingPreview({ labels }: { labels: { title: string; days: [string, string][]; morning: string; confirm: string } }) {
+function BookingPreview({
+  labels,
+}: {
+  labels: { title: string; days: [string, string][]; morning: string; confirm: string };
+}) {
   return (
     <div aria-hidden="true" className="relative mx-auto w-full max-w-sm">
       <div className="absolute -inset-8 rounded-[3rem] bg-gradient-to-tr from-rosegold-100/70 via-transparent to-champagne-100/80 blur-2xl" />
@@ -273,7 +285,9 @@ function BookingPreview({ labels }: { labels: { title: string; days: [string, st
             </span>
           ))}
         </div>
-        <div className="mt-5 flex h-11 items-center justify-center rounded-md bg-pink-700 text-sm font-semibold text-white">{labels.confirm}</div>
+        <div className="mt-5 flex h-11 items-center justify-center rounded-md bg-pink-700 text-sm font-semibold text-white">
+          {labels.confirm}
+        </div>
       </div>
     </div>
   );

@@ -7,7 +7,13 @@ import { CourseGrid } from "./course-grid";
 import { FaqList } from "./faq-list";
 
 /** Help-centre home, shared by the public site (/help) and the workspace (/app/help). */
-export async function HelpHome({ basePath, compact = false }: { basePath: string; compact?: boolean }) {
+export async function HelpHome({
+  basePath,
+  compact = false,
+}: {
+  basePath: string;
+  compact?: boolean;
+}) {
   const { t, locale } = await getI18n();
   const content = helpContent[locale];
   const h = t.help;

@@ -132,29 +132,24 @@ export const common: typeof en = {
   copyLink: "Link kopiëren",
   copied: "Gekopieerd",
   plans: {
-    early_access: {
-      name: "Vroege toegang",
+    basic: {
+      name: "Basic",
       description:
-        "Alle functies zolang NORYX in vroege toegang is. Facturatie start pas wanneer de abonnementen aangekondigd zijn.",
+        "Het boekingssysteem: online boeken, agenda, behandelingen, roosters van je team en tot 250 klanten.",
     },
-    solo: {
-      name: "Solo",
-      description: "Voor zelfstandigen: één boekbare medewerker en online boeken.",
-    },
-    salon: {
-      name: "Salon",
-      description: "Voor groeiende salons: tot 8 medewerkers, webshop en financieel overzicht.",
-    },
-    studio: {
-      name: "Studio",
-      description: "Voor grotere teams: onbeperkt medewerkers en eigen teamrechten.",
+    pro: {
+      name: "Pro",
+      description:
+        "Alles uit Basic plus onbeperkt klanten, betalingen en financiën, voorraad, webshop en een eigen huisstijl voor je boekingspagina.",
     },
   },
   noPlan: "Geen abonnement",
   features: {
-    online_booking: "Online boekingspagina",
-    shop: "Webshop & click & collect",
-    finance: "Financieel overzicht & exports",
-    team_permissions: "Eigen teamrechten",
+    online_booking: "Online boekingssysteem",
+    finance: "Betalingen & financiën",
+    inventory: "Producten & voorraad",
+    shop: "Webshop (click & collect)",
+    branding: "Eigen huisstijl op je boekingspagina",
+    team_permissions: "Eigen rechten per teamlid",
   },
 };
