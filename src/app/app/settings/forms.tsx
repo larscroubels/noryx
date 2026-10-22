@@ -9,8 +9,9 @@ import { ChoiceRow, Switch } from "@/components/ui/choice";
 import { Field } from "@/components/ui/field";
 import { Input, Select, Textarea } from "@/components/ui/input";
 import { useT } from "@/i18n/client";
+import { LOCALE_LABELS, localeFromIntl } from "@/i18n/config";
 import { IDLE } from "@/lib/actions";
-import { BUSINESS_TYPES } from "@/lib/validation/business";
+import { BUSINESS_LOCALES, BUSINESS_TYPES } from "@/lib/validation/business";
 import type { HoursRange } from "@/lib/validation/hours";
 import type { Tables } from "@/types/database";
 
@@ -137,6 +138,20 @@ export function BusinessProfileForm({
             ).map((zone) => (
               <option key={zone} value={zone}>
                 {zone.replace("_", " ")}
+              </option>
+            ))}
+          </Select>
+        </Field>
+        <Field
+          label={st.profile.language}
+          hint={st.profile.languageHint}
+          error={fieldError(state, "locale")}
+          required
+        >
+          <Select name="locale" defaultValue={business.locale}>
+            {BUSINESS_LOCALES.map((value) => (
+              <option key={value} value={value} lang={value.slice(0, 2)}>
+                {LOCALE_LABELS[localeFromIntl(value)!].name}
               </option>
             ))}
           </Select>

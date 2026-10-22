@@ -26,6 +26,9 @@ export const settings: typeof en = {
     accentHint: "Voor kleine accenten; tekst blijft altijd goed leesbaar.",
     pickAccent: "Kies een accentkleur",
     timeZone: "Tijdzone",
+    language: "Taal van de salon",
+    languageHint:
+      "De werkruimte van je team gebruikt deze taal. Klanten zien je boekingspagina standaard in deze taal en kunnen wisselen naar Nederlands, Frans of Engels.",
     submit: "Profiel opslaan",
     saved: "Profiel van de zaak opgeslagen.",
   },

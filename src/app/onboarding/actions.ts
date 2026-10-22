@@ -11,8 +11,9 @@ import {
   validationFailure,
   type ActionState,
 } from "@/lib/actions";
+import { INTL_LOCALE } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
-import { getT } from "@/i18n/server";
+import { getLocale, getT } from "@/i18n/server";
 import { ACTIVE_BUSINESS_COOKIE, getMemberships, requireUser } from "@/lib/auth/session";
 import { logger } from "@/lib/logger";
 import { createClient } from "@/lib/supabase/server";
@@ -46,6 +47,8 @@ export async function createBusinessAction(
     p_slug: parsed.data.slug,
     p_business_type: parsed.data.businessType,
     p_timezone: parsed.data.timezone,
+    // The salon starts in the language its owner set it up in; Settings can change it.
+    p_locale: INTL_LOCALE[await getLocale()],
   });
   if (error || !data) {
     if (error?.code === "23505")

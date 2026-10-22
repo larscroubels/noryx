@@ -26,6 +26,9 @@ export const settings: typeof en = {
     accentHint: "Utilisée pour de petits accents ; le texte reste toujours lisible.",
     pickAccent: "Choisir la couleur d'accent",
     timeZone: "Fuseau horaire",
+    language: "Langue du salon",
+    languageHint:
+      "L'espace de travail de votre équipe utilise cette langue. Vos clients voient votre page de réservation dans cette langue par défaut et peuvent passer au néerlandais, au français ou à l'anglais.",
     submit: "Enregistrer le profil",
     saved: "Profil de l'établissement enregistré.",
   },

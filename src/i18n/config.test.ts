@@ -1,6 +1,15 @@
 import { describe, expect, it } from "vitest";
 
-import { localeFromAcceptLanguage } from "./config";
+import { localeFromAcceptLanguage, localeFromIntl } from "./config";
+
+describe("localeFromIntl", () => {
+  it("maps a salon's locale to an interface language", () => {
+    expect(localeFromIntl("fr-BE")).toBe("fr");
+    expect(localeFromIntl("nl-BE")).toBe("nl");
+    expect(localeFromIntl("de-DE")).toBeNull();
+    expect(localeFromIntl(null)).toBeNull();
+  });
+});
 
 describe("localeFromAcceptLanguage", () => {
   it("uses the first supported browser language", () => {

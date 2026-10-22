@@ -19,7 +19,6 @@ import Link from "next/link";
 
 import { Logo } from "@/components/brand/logo";
 import { BusinessSwitcher } from "@/components/layout/business-switcher";
-import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { SidebarNav, type NavItem } from "@/components/layout/sidebar-nav";
 import { UserMenu } from "@/components/layout/user-menu";
@@ -111,8 +110,8 @@ export default async function WorkspaceLayout({ children }: LayoutProps<"/app">)
           <Link href="/app" className="lg:hidden">
             <Logo variant="symbol" height={26} />
           </Link>
+          {/* The workspace language is the salon's own (Settings › Business profile). */}
           <div className="ml-auto flex items-center gap-2">
-            <LanguageSwitcher />
             {business.booking_enabled && (
               <Button asChild variant="secondary" size="sm">
                 <a href={`/${business.slug}`} target="_blank" rel="noreferrer">

@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
+import { PATHNAME_HEADER } from "@/i18n/config";
 import { updateSession } from "@/lib/supabase/proxy";
 
 /** Routes that need a signed-in user. Real authorisation happens again on the server and in RLS. */
@@ -8,6 +9,8 @@ const PROTECTED_PREFIXES = ["/app", "/onboarding", "/admin"];
 const GUEST_ONLY = ["/login", "/signup", "/forgot-password"];
 
 export async function proxy(request: NextRequest) {
+  // Always overwritten, so a visitor can't pick another route's language by sending it.
+  request.headers.set(PATHNAME_HEADER, request.nextUrl.pathname);
   const { response, userId } = await updateSession(request);
   const { pathname, search } = request.nextUrl;
 

@@ -48,7 +48,10 @@ export type Business = Tables<"businesses">;
 
 export type Membership = {
   role: MemberRole;
-  business: Pick<Business, "id" | "slug" | "name" | "status" | "onboarding_completed_at">;
+  business: Pick<
+    Business,
+    "id" | "slug" | "name" | "status" | "onboarding_completed_at" | "locale"
+  >;
 };
 
 /** Active memberships of the signed-in user. */
@@ -58,7 +61,7 @@ export const getMemberships = cache(async (): Promise<Membership[]> => {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("business_members")
-    .select("role, business:businesses(id, slug, name, status, onboarding_completed_at)")
+    .select("role, business:businesses(id, slug, name, status, onboarding_completed_at, locale)")
     .eq("user_id", user.id)
     .eq("status", "active")
     .order("created_at");

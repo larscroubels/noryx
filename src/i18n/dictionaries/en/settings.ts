@@ -24,6 +24,9 @@ export const settings = {
     accentHint: "Used for small accents; text always stays readable.",
     pickAccent: "Pick accent colour",
     timeZone: "Time zone",
+    language: "Salon language",
+    languageHint:
+      "Your team's workspace uses this language. Clients see your booking page in it by default and can switch to Dutch, French or English.",
     submit: "Save profile",
     saved: "Business profile saved.",
   },

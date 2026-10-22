@@ -23,6 +23,9 @@ export const BUSINESS_TYPES = [
 
 const SLOT_INTERVALS = [5, 10, 15, 20, 30, 45, 60];
 
+/** A salon's language: its workspace interface, the default on its public pages and money formatting. */
+export const BUSINESS_LOCALES = ["nl-BE", "fr-BE", "en-GB"] as const;
+
 export function businessFields(t: Dictionary) {
   const v = t.validation;
   return {
@@ -84,6 +87,7 @@ export function businessProfileSchema(t: Dictionary) {
           .nullable(),
       ),
     timezone: f.timezone,
+    locale: z.enum(BUSINESS_LOCALES, { error: t.validation.chooseOption }),
   });
 }
 

@@ -48,6 +48,7 @@ export async function saveBusinessProfile(
       instagram_handle: d.instagramHandle,
       brand_color: d.brandColor,
       timezone: d.timezone,
+      locale: d.locale,
     })
     .eq("id", workspace.business.id);
   if (error) return failure(databaseErrorMessage(error, t));
