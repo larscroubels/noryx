@@ -8,6 +8,7 @@ import { ALL_PERMISSIONS, ROLE_PERMISSIONS, type Permission } from "@/lib/auth/p
 import type { Dictionary } from "@/i18n/dictionaries";
 import { getT } from "@/i18n/server";
 import { authorize } from "@/lib/auth/session";
+import { getEntitlements, hasFeature } from "@/lib/billing/entitlements";
 import { publicEnv } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
 import { rules } from "@/lib/validation/common";
@@ -66,11 +67,14 @@ export async function saveMemberAccess(
   if (!role.success) return failure(t.team.errors.chooseRole);
   const chosen = new Set(formData.getAll("permissions").map(String));
   const defaults = role.data === "owner" ? ALL_PERMISSIONS : ROLE_PERMISSIONS[role.data];
-  const granted =
-    role.data === "owner"
-      ? []
-      : ALL_PERMISSIONS.filter((p) => chosen.has(p) && !defaults.includes(p));
-  const revoked = role.data === "owner" ? [] : defaults.filter((p: Permission) => !chosen.has(p));
+  // Custom permissions per member are part of Pro; on Basic the role defaults apply.
+  const custom =
+    role.data !== "owner" &&
+    hasFeature(await getEntitlements(workspace.business.id), "team_permissions");
+  const granted = custom
+    ? ALL_PERMISSIONS.filter((p) => chosen.has(p) && !defaults.includes(p))
+    : [];
+  const revoked = custom ? defaults.filter((p: Permission) => !chosen.has(p)) : [];
 
   const supabase = await createClient();
   const { error } = await supabase.rpc("update_member", {
@@ -79,8 +83,7 @@ export async function saveMemberAccess(
     p_granted: granted,
     p_revoked: revoked,
   });
-  if (error)
-    return failure(t.team.errors.rpc[error.message] ?? t.team.errors.saveFailed);
+  if (error) return failure(t.team.errors.rpc[error.message] ?? t.team.errors.saveFailed);
   revalidatePath("/app/team");
   return success(t.team.accessUpdated);
 }

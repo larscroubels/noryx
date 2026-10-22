@@ -2,9 +2,9 @@ import type { finance as en } from "../en/finance";
 
 export const finance: typeof en = {
   title: "Financiën",
-  notIncluded: "Financiën zit niet in je abonnement",
+  notIncluded: "Betalingen en financiën zitten in Pro",
   notIncludedText:
-    "Het financieel overzicht en de exports horen bij de abonnementen Salon en Studio. Neem contact op met NORYX om je abonnement te wijzigen.",
+    "Registreer betalingen en uitgaven, volg je omzet en exporteer alles voor je boekhouder met NORYX Pro.",
   paymentsCsv: "Betalingen (CSV)",
   expensesCsv: "Uitgaven (CSV)",
   from: "Van",
@@ -30,7 +30,8 @@ export const finance: typeof en = {
   unlinkedStaff: "Niet gekoppeld aan een medewerker",
   noRevenue: "Nog geen geregistreerde omzet.",
   payments: "Betalingen",
-  paymentsText: "Geregistreerd vanuit afspraken. Terugbetalingen blijven zichtbaar voor de opvolging.",
+  paymentsText:
+    "Geregistreerd vanuit afspraken. Terugbetalingen blijven zichtbaar voor de opvolging.",
   noPayments:
     "Geen betalingen geregistreerd in deze periode. Registreer ze vanop de pagina van een afspraak.",
   payment: "Betaling",

@@ -3,6 +3,9 @@ import type { retail as en } from "../en/retail";
 export const retail: typeof en = {
   products: {
     title: "Producten",
+    notIncluded: "Producten en voorraad zitten in Pro",
+    notIncludedText:
+      "Beheer je verkoopproducten, voorraad en waarschuwingen bij lage voorraad met NORYX Pro.",
     description: "Verkoopproducten, voorraad en wat je in je webshop verkoopt.",
     new: "Nieuw product",
     searchLabel: "Producten zoeken",
@@ -11,7 +14,8 @@ export const retail: typeof en = {
     noMatch: "Geen producten gevonden",
     noMatchText: "Probeer een andere zoekterm of filter.",
     empty: "Nog geen producten",
-    emptyText: "Voeg de producten toe die je verkoopt, met voorraad en waarschuwing bij lage voorraad.",
+    emptyText:
+      "Voeg de producten toe die je verkoopt, met voorraad en waarschuwing bij lage voorraad.",
     addFirst: "Je eerste product toevoegen",
     product: "Product",
     inStock: "Op voorraad",
@@ -104,7 +108,8 @@ export const retail: typeof en = {
       title: (number) => `Bestelling #${number}`,
       cancel: "Bestelling annuleren",
       cancelTitle: "Deze bestelling annuleren?",
-      cancelText: "De gereserveerde producten gaan terug naar de voorraad. Dit kan niet ongedaan gemaakt worden.",
+      cancelText:
+        "De gereserveerde producten gaan terug naar de voorraad. Dit kan niet ongedaan gemaakt worden.",
       pickup: "Ophalen in de salon",
       items: "Artikels",
       qty: "Aantal",

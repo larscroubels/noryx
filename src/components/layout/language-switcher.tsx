@@ -19,7 +19,11 @@ export function LanguageSwitcher({ className }: { className?: string }) {
     <div
       role="group"
       aria-label={t.common.language}
-      className={cn("inline-flex shrink-0 rounded-full border border-border-strong bg-surface p-0.5", pending && "opacity-70", className)}
+      className={cn(
+        "inline-flex shrink-0 rounded-full border border-border-strong bg-surface p-0.5",
+        pending && "opacity-70",
+        className,
+      )}
     >
       {LOCALES.map((locale) => (
         <button

@@ -322,7 +322,8 @@ export default function DesignSystemPage() {
               ))}
             </div>
             <p className="text-sm text-fg-muted">
-              Appointment statuses: {statuses.map((s) => dictionaries.en.common.appointmentStatus[s]).join(", ")}.
+              Appointment statuses:{" "}
+              {statuses.map((s) => dictionaries.en.common.appointmentStatus[s]).join(", ")}.
             </p>
           </div>
         </Section>

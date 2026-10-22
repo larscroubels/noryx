@@ -91,9 +91,7 @@ export default async function CustomerPage({
           </>
         }
       />
-      {query.erased === "1" && (
-<Alert tone="success">{d.erased}</Alert>
-      )}
+      {query.erased === "1" && <Alert tone="success">{d.erased}</Alert>}
 
       <section aria-label={d.statistics} className="grid gap-4 sm:grid-cols-3">
         {[
@@ -160,7 +158,7 @@ export default async function CustomerPage({
               <CardHeader>
                 <div>
                   <CardTitle>{d.notes}</CardTitle>
-<CardDescription>{d.notesText}</CardDescription>
+                  <CardDescription>{d.notesText}</CardDescription>
                 </div>
               </CardHeader>
               <CardContent className="grid gap-5">

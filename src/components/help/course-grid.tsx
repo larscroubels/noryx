@@ -61,8 +61,12 @@ export function CourseGrid({ courses, basePath }: { courses: HelpCourse[]; baseP
         <p className="rounded-xl bg-surface-subtle p-8 text-center text-fg-muted">{h.noResults}</p>
       ) : (
         <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {shown.map((course) => (
-            <li key={course.slug}>
+          {shown.map((course, index) => (
+            <li
+              key={course.slug}
+              className="motion-safe:animate-card-in"
+              style={{ animationDelay: `${index * 70}ms` }}
+            >
               <Link
                 href={`${basePath}/${course.slug}`}
                 className="group flex h-full flex-col rounded-xl border border-neutral-200/70 bg-surface p-5 shadow-sm transition hover:border-rosegold-300 hover:shadow-md"
@@ -77,6 +81,7 @@ export function CourseGrid({ courses, basePath }: { courses: HelpCourse[]; baseP
                 <span className="mt-1.5 flex-1 text-sm text-fg-muted">{course.summary}</span>
                 <span className="mt-5 flex flex-wrap items-center gap-2 text-xs text-fg-muted">
                   <Badge tone="neutral">{h.audience[course.audience]}</Badge>
+                  {course.plan === "pro" && <Badge tone="brand">Pro</Badge>}
                   <span>
                     {h.steps(course.steps.length)} · {h.minutes(course.minutes)}
                   </span>

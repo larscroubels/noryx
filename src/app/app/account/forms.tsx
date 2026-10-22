@@ -62,7 +62,11 @@ export function PasswordForm() {
         >
           <Input name="password" type="password" autoComplete="new-password" />
         </Field>
-        <Field label={t.auth.fields.confirmPassword} error={fieldError(state, "confirmPassword")} required>
+        <Field
+          label={t.auth.fields.confirmPassword}
+          error={fieldError(state, "confirmPassword")}
+          required
+        >
           <Input name="confirmPassword" type="password" autoComplete="new-password" />
         </Field>
       </div>

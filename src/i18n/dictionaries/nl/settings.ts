@@ -30,7 +30,8 @@ export const settings: typeof en = {
     saved: "Profiel van de zaak opgeslagen.",
   },
   branding: {
-    description: "Je logo en omslagfoto verschijnen op je publieke boekingspagina en in je webshop.",
+    description:
+      "Je logo en omslagfoto verschijnen op je publieke boekingspagina en in je webshop.",
     logo: "Logo",
     cover: "Omslagfoto",
     logoPreview: "Voorbeeld van het logo",
@@ -50,6 +51,7 @@ export const settings: typeof en = {
     uploadFailed: "De afbeelding kon niet worden geüpload. Probeer het opnieuw.",
     logoUpdated: "Logo bijgewerkt.",
     coverUpdated: "Omslagfoto bijgewerkt.",
+    proOnly: "Een eigen logo, omslagfoto en accentkleur op je boekingspagina zitten in Pro.",
   },
   location: {
     description: "Waar klanten naartoe komen voor hun afspraak.",
@@ -83,7 +85,8 @@ export const settings: typeof en = {
     interval: "Starttijden elke",
     minutes: (count) => `${count} minuten`,
     buffer: "Buffer tussen afspraken",
-    bufferHint: "Geldt voor elke boeking; de eigen buffer van een behandeling wint als die langer is.",
+    bufferHint:
+      "Geldt voor elke boeking; de eigen buffer van een behandeling wint als die langer is.",
     cancellationNotice: "Gratis annuleren tot",
     cancellationHint: "Wordt aan klanten getoond als je annuleringsbeleid.",
     hoursBefore: "uur vooraf",
@@ -107,17 +110,23 @@ export const settings: typeof en = {
   },
   plan: {
     status: {
-      trialing: "Vroege toegang",
+      trialing: "Proefperiode",
       active: "Actief",
       past_due: "Betaling achterstallig",
       cancelled: "Stopgezet",
     },
     included: " (inbegrepen)",
     notIncluded: " (niet inbegrepen)",
-    limits: (staff, members) => `Medewerkers: ${staff} · Teamlogins: ${members}`,
+    customers: (limit) => `Klanten: ${limit}`,
     unlimited: "onbeperkt",
+    trialRunning: (days, date) =>
+      `Je gratis proefperiode van Pro loopt nog ${days} ${days === 1 ? "dag" : "dagen"}, tot ${date}.`,
+    trialEnded: "Je proefperiode van Pro is afgelopen. Je zaak werkt nu verder met Basic.",
+    afterTrial:
+      "Na de proefperiode kies je Basic of Pro. Kies je niets, dan werkt je zaak verder met Basic.",
+    comparePlans: "Basic en Pro vergelijken",
     billingConnected: "De facturatie wordt beheerd door je betaalprovider.",
     billingNotConnected:
-      "Facturatie is nog niet gekoppeld. Tijdens de vroege toegang beheert het NORYX-team je abonnement en betaal je niets.",
+      "Facturatie is nog niet gekoppeld, dus je betaalt niets. De prijzen worden eerst aangekondigd; tot dan wijzigt het NORYX-team je abonnement op vraag.",
   },
 };

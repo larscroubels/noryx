@@ -25,7 +25,10 @@ export function LoginForm({ next }: { next: string }) {
         <Input name="password" type="password" autoComplete="current-password" />
       </Field>
       <div className="-mt-2 text-right">
-        <Link href="/forgot-password" className="text-sm font-semibold text-pink-700 hover:underline">
+        <Link
+          href="/forgot-password"
+          className="text-sm font-semibold text-pink-700 hover:underline"
+        >
           {t.auth.login.forgot}
         </Link>
       </div>

@@ -62,7 +62,11 @@ export function InternalNoteForm({
     <form action={action} className="grid gap-3" noValidate>
       <input type="hidden" name="appointmentId" value={appointmentId} />
       <FormAlert state={state} />
-      <Field label={t.appointments.detail.internalNote} hint={t.appointments.new.internalHint} hideLabel>
+      <Field
+        label={t.appointments.detail.internalNote}
+        hint={t.appointments.new.internalHint}
+        hideLabel
+      >
         <Textarea
           name="internalNote"
           defaultValue={note ?? ""}

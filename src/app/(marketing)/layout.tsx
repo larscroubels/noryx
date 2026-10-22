@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { Logo } from "@/components/brand/logo";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
+import { SiteMenu } from "@/components/marketing/site-menu";
 import { Button } from "@/components/ui/button";
 import { getT } from "@/i18n/server";
 import { getSessionUser } from "@/lib/auth/session";
@@ -9,10 +10,12 @@ import { getSessionUser } from "@/lib/auth/session";
 export default async function MarketingLayout({ children }: { children: React.ReactNode }) {
   const [user, t] = await Promise.all([getSessionUser(), getT()]);
   const nav = [
-    { href: "/#features", label: t.marketing.nav.features },
+    // Section links on the home page; shown in the header from the xl breakpoint.
+    { href: "/#features", label: t.marketing.nav.features, wide: true },
     { href: "/#booking", label: t.marketing.nav.booking },
-    { href: "/#for-you", label: t.marketing.nav.forYou },
-    { href: "/#faq", label: t.marketing.nav.faq },
+    { href: "/#for-you", label: t.marketing.nav.forYou, wide: true },
+    { href: "/pricing", label: t.marketing.nav.pricing },
+    { href: "/faq", label: t.marketing.nav.faq },
     { href: "/help", label: t.marketing.nav.help },
   ];
   return (
@@ -22,11 +25,17 @@ export default async function MarketingLayout({ children }: { children: React.Re
           <Link href="/" className="shrink-0" aria-label="NORYX">
             <Logo variant="wordmark" height={20} priority alt="NORYX" />
           </Link>
-          <nav aria-label={t.common.mainNavigation} className="hidden flex-1 justify-center lg:flex">
+          <nav
+            aria-label={t.common.mainNavigation}
+            className="hidden flex-1 justify-center lg:flex"
+          >
             <ul className="flex gap-1">
               {nav.map((item) => (
-                <li key={item.href}>
-                  <a href={item.href} className="rounded-md px-3 py-2 text-sm font-semibold text-fg-muted transition-colors hover:text-fg">
+                <li key={item.href} className={item.wide ? "hidden xl:block" : undefined}>
+                  <a
+                    href={item.href}
+                    className="rounded-md px-3 py-2 text-sm font-semibold whitespace-nowrap text-fg-muted transition-colors hover:text-fg"
+                  >
                     {item.label}
                   </a>
                 </li>
@@ -36,7 +45,7 @@ export default async function MarketingLayout({ children }: { children: React.Re
           <div className="ml-auto flex items-center gap-2 lg:ml-0">
             <LanguageSwitcher />
             {user ? (
-              <Button asChild size="sm" className="sm:h-10 sm:px-4">
+              <Button asChild size="sm" className="hidden sm:inline-flex sm:h-10 sm:px-4">
                 <Link href="/app">{t.common.openWorkspace}</Link>
               </Button>
             ) : (
@@ -44,11 +53,22 @@ export default async function MarketingLayout({ children }: { children: React.Re
                 <Button asChild variant="ghost" className="hidden sm:inline-flex">
                   <Link href="/login">{t.common.signIn}</Link>
                 </Button>
-                <Button asChild size="sm" className="sm:h-10 sm:px-4">
+                <Button asChild size="sm" className="hidden sm:inline-flex sm:h-10 sm:px-4">
                   <Link href="/signup">{t.common.getStarted}</Link>
                 </Button>
               </>
             )}
+            <SiteMenu
+              items={nav.map(({ href, label }) => ({ href, label }))}
+              account={
+                user
+                  ? [{ href: "/app", label: t.common.openWorkspace, primary: true }]
+                  : [
+                      { href: "/signup", label: t.common.getStarted, primary: true },
+                      { href: "/login", label: t.common.signIn },
+                    ]
+              }
+            />
           </div>
         </div>
       </header>

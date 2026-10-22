@@ -11,7 +11,10 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
   return (
     <div className="grid min-h-dvh lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
       <aside className="relative hidden flex-col justify-between overflow-hidden bg-surface-subtle p-12 lg:flex">
-        <div aria-hidden="true" className="pointer-events-none absolute -top-40 -right-40 size-[32rem] rounded-full bg-champagne-100/70 blur-3xl" />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-40 -right-40 size-[32rem] rounded-full bg-champagne-100/70 blur-3xl"
+        />
         <Link href="/" className="relative w-fit">
           <Logo variant="wordmark" height={24} priority />
         </Link>

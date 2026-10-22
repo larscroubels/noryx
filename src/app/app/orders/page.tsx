@@ -55,10 +55,7 @@ export default async function OrdersPage({ searchParams }: PageProps<"/app/order
 
   return (
     <div className="grid gap-6">
-      <PageHeader
-        title={o.title}
-        description={o.description}
-      />
+      <PageHeader title={o.title} description={o.description} />
       {!business.shop_enabled && (
         <Alert tone="info" title={o.shopOff}>
           {o.shopOffBefore} <Link href="/app/settings#shop">{t.app.nav.settings}</Link>{" "}
@@ -84,11 +81,7 @@ export default async function OrdersPage({ searchParams }: PageProps<"/app/order
       </nav>
       <Card className="overflow-hidden">
         {!orders || orders.length === 0 ? (
-          <EmptyState
-            icon={<ShoppingBag />}
-            title={o.empty}
-            description={o.emptyText}
-          />
+          <EmptyState icon={<ShoppingBag />} title={o.empty} description={o.emptyText} />
         ) : (
           <Table>
             <TableHeader>

@@ -5,7 +5,9 @@ import { PageHeader } from "@/components/layout/page-header";
 import { Alert } from "@/components/ui/alert";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getI18n, getT } from "@/i18n/server";
+import { PlanLocked } from "@/components/billing/plan-locked";
 import { can, requireWorkspace } from "@/lib/auth/session";
+import { getEntitlements, hasFeature } from "@/lib/billing/entitlements";
 import { formatDateTime, formatMoney } from "@/lib/format";
 import { createClient } from "@/lib/supabase/server";
 
@@ -27,6 +29,8 @@ export default async function ProductPage({
   const canStock = can(workspace, "inventory.manage");
   if (!canEdit && !canStock) notFound();
   const { business } = workspace;
+  if (!hasFeature(await getEntitlements(business.id), "inventory"))
+    return <PlanLocked title={p.title} heading={p.notIncluded} text={p.notIncludedText} />;
   const supabase = await createClient();
   const [{ data: product }, { data: movements }] = await Promise.all([
     supabase
@@ -80,9 +84,7 @@ export default async function ProductPage({
           <p className="mt-1 text-3xl font-semibold tabular-nums">
             {product.cost_cents != null ? money(product.price_cents - product.cost_cents) : "—"}
           </p>
-          {product.cost_cents == null && (
-            <p className="mt-1 text-xs text-fg-muted">{p.addCost}</p>
-          )}
+          {product.cost_cents == null && <p className="mt-1 text-xs text-fg-muted">{p.addCost}</p>}
         </Card>
       </section>
 

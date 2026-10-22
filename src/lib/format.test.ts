@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { formatDuration, formatLocalDate, formatMoney, formatTime, parseMoneyToCents } from "./format";
+import {
+  formatDuration,
+  formatLocalDate,
+  formatMoney,
+  formatTime,
+  parseMoneyToCents,
+} from "./format";
 import {
   addDays,
   dayBoundsUtc,

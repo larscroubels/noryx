@@ -14,7 +14,10 @@ export const onboarding: typeof en = {
       title: "Waar vinden klanten je?",
       description: "Je adres en contactgegevens verschijnen op je boekingspagina.",
     },
-    { title: "Wanneer ben je open?", description: "Klanten kunnen alleen binnen je openingsuren boeken." },
+    {
+      title: "Wanneer ben je open?",
+      description: "Klanten kunnen alleen binnen je openingsuren boeken.",
+    },
     {
       title: "Voeg je eerste behandelingen toe",
       description: "Begin met een paar populaire behandelingen — de rest kun je later toevoegen.",

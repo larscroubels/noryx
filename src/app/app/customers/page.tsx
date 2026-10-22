@@ -116,9 +116,7 @@ export default async function CustomersPage({ searchParams }: PageProps<"/app/cu
           <EmptyState
             icon={<UsersRound />}
             title={q ? c.noMatch : c.empty}
-            description={
-              q ? c.noMatchText : c.emptyText
-            }
+            description={q ? c.noMatchText : c.emptyText}
             action={
               canManage && !q ? (
                 <Button asChild>

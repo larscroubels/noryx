@@ -1,6 +1,7 @@
 import type { Locale } from "@/i18n/config";
 
 import { en } from "./en";
+import hotspotData from "./hotspots.json";
 import { nl } from "./nl";
 import type { HelpContent, HelpCourse } from "./types";
 
@@ -10,6 +11,16 @@ export const helpContent: Record<Locale, HelpContent> = { nl, en };
 
 export function getCourse(locale: Locale, slug: string): HelpCourse | undefined {
   return helpContent[locale].courses.find((course) => course.slug === slug);
+}
+
+/** A clickable area on a screenshot, in percent of its width and height. */
+export type HelpHotspot = { x: number; y: number; w: number; h: number };
+
+const hotspots = hotspotData as Record<Locale, Record<string, HelpHotspot[]>>;
+
+/** Where the animated cursor clicks on a screenshot (measured when the screenshots are captured). */
+export function helpHotspots(locale: Locale, name: string): HelpHotspot[] {
+  return hotspots[locale]?.[name] ?? [];
 }
 
 /** Public path of a course screenshot in the visitor's language. */

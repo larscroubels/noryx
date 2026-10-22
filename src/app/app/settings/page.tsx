@@ -1,14 +1,17 @@
 import { Check, Minus } from "lucide-react";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getT } from "@/i18n/server";
+import { Alert } from "@/components/ui/alert";
+import { getI18n, getT } from "@/i18n/server";
 import { requirePermission } from "@/lib/auth/session";
 import { FEATURES, getEntitlements } from "@/lib/billing/entitlements";
 import { removeBrandImage } from "./actions";
 import { publicEnv } from "@/lib/env";
+import { formatLocalDate } from "@/lib/format";
 import { publicAssetUrl } from "@/lib/uploads";
 import { createClient } from "@/lib/supabase/server";
 
@@ -29,7 +32,7 @@ const SECTIONS = ["profile", "branding", "location", "hours", "booking", "shop",
 
 export default async function SettingsPage() {
   const { business } = await requirePermission("settings.manage");
-  const t = await getT();
+  const { t, intl } = await getI18n();
   const st = t.settings;
   const supabase = await createClient();
   const { data: location } = await supabase
@@ -52,6 +55,7 @@ export default async function SettingsPage() {
     .eq("is_online", true)
     .eq("is_active", true);
   const entitlements = await getEntitlements(business.id);
+  const branding = entitlements.features.has("branding");
   const host = new URL(publicEnv.siteUrl).host;
 
   return (
@@ -81,23 +85,33 @@ export default async function SettingsPage() {
               </div>
             </CardHeader>
             <CardContent>
-              <BusinessProfileForm business={business} />
+              <BusinessProfileForm business={business} branding={branding} />
             </CardContent>
           </Card>
           <Card id="branding" className="scroll-mt-24">
             <CardHeader>
               <div>
                 <CardTitle>{st.sections.branding}</CardTitle>
-<CardDescription>{st.branding.description}</CardDescription>
+                <CardDescription>{st.branding.description}</CardDescription>
               </div>
             </CardHeader>
             <CardContent className="grid gap-8 md:grid-cols-[12rem_minmax(0,1fr)]">
+              {!branding && (
+                <Alert tone="info" className="md:col-span-2">
+                  {st.branding.proOnly}{" "}
+                  <Link href="/pricing" className="font-semibold">
+                    {st.plan.comparePlans}
+                  </Link>
+                </Alert>
+              )}
               <BrandImageForm
+                disabled={!branding}
                 kind="logo"
                 currentUrl={publicAssetUrl(publicEnv.supabaseUrl ?? "", business.logo_path)}
                 removeAction={removeBrandImage}
               />
               <BrandImageForm
+                disabled={!branding}
                 kind="cover"
                 currentUrl={publicAssetUrl(publicEnv.supabaseUrl ?? "", business.cover_path)}
                 removeAction={removeBrandImage}
@@ -121,7 +135,7 @@ export default async function SettingsPage() {
                 <CardHeader>
                   <div>
                     <CardTitle>{st.sections.hours}</CardTitle>
-<CardDescription>{st.hours.description}</CardDescription>
+                    <CardDescription>{st.hours.description}</CardDescription>
                   </div>
                 </CardHeader>
                 <CardContent>
@@ -134,7 +148,7 @@ export default async function SettingsPage() {
             <CardHeader>
               <div>
                 <CardTitle>{st.sections.booking}</CardTitle>
-<CardDescription>{st.policy.description}</CardDescription>
+                <CardDescription>{st.policy.description}</CardDescription>
               </div>
             </CardHeader>
             <CardContent>
@@ -145,7 +159,7 @@ export default async function SettingsPage() {
             <CardHeader>
               <div>
                 <CardTitle>{st.sections.shop}</CardTitle>
-<CardDescription>{st.shop.description}</CardDescription>
+                <CardDescription>{st.shop.description}</CardDescription>
               </div>
             </CardHeader>
             <CardContent>
@@ -160,7 +174,7 @@ export default async function SettingsPage() {
             <CardHeader>
               <div>
                 <CardTitle className="flex flex-wrap items-center gap-2">
-                  {t.common.plans[entitlements.planId]?.name ?? entitlements.planName}
+                  {t.common.plans[entitlements.planId]?.name ?? t.common.noPlan}
                   <Badge
                     tone={
                       entitlements.status === "past_due"
@@ -170,15 +184,30 @@ export default async function SettingsPage() {
                           : "gold"
                     }
                   >
-{st.plan.status[entitlements.status]}
+                    {st.plan.status[entitlements.status]}
                   </Badge>
                 </CardTitle>
                 <CardDescription>
-                  {t.common.plans[entitlements.planId]?.description ?? entitlements.planDescription}
+                  {t.common.plans[entitlements.planId]?.description}
                 </CardDescription>
               </div>
             </CardHeader>
             <CardContent className="grid gap-5 text-sm">
+              {(entitlements.trialDaysLeft !== null || entitlements.trialEnded) && (
+                <Alert tone={entitlements.trialEnded ? "warning" : "info"}>
+                  {entitlements.trialDaysLeft !== null && entitlements.trialEndsAt
+                    ? st.plan.trialRunning(
+                        entitlements.trialDaysLeft,
+                        formatLocalDate(
+                          entitlements.trialEndsAt.slice(0, 10),
+                          { day: "numeric", month: "long" },
+                          intl,
+                        ),
+                      )
+                    : st.plan.trialEnded}{" "}
+                  {st.plan.afterTrial}
+                </Alert>
+              )}
               <ul className="grid gap-2 sm:grid-cols-2">
                 {FEATURES.map((feature) => (
                   <li key={feature} className="flex items-center gap-2">
@@ -197,17 +226,19 @@ export default async function SettingsPage() {
                     <span className={entitlements.features.has(feature) ? "" : "text-fg-muted"}>
                       {t.common.features[feature]}
                       <span className="sr-only">
-                        {entitlements.features.has(feature) ? st.plan.included : st.plan.notIncluded}
+                        {entitlements.features.has(feature)
+                          ? st.plan.included
+                          : st.plan.notIncluded}
                       </span>
                     </span>
                   </li>
                 ))}
               </ul>
               <p className="text-fg-muted">
-                {st.plan.limits(
-                  String(entitlements.maxStaff ?? st.plan.unlimited),
-                  String(entitlements.maxMembers ?? st.plan.unlimited),
-                )}
+                {st.plan.customers(String(entitlements.maxCustomers ?? st.plan.unlimited))} ·{" "}
+                <Link href="/pricing" className="font-semibold text-pink-700 hover:underline">
+                  {st.plan.comparePlans}
+                </Link>
               </p>
               <p className="rounded-lg bg-surface-subtle p-4 text-fg-muted">
                 {entitlements.billingConnected

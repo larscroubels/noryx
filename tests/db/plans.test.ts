@@ -23,6 +23,9 @@ function setPlan(by: string, plan: string, status = "active") {
   );
 }
 
+const asOwner = (sql: string, params: unknown[] = []) =>
+  as(db, user(owner), (tx) => tx.query(sql, params), { commit: true });
+
 beforeAll(async () => {
   db = await createTestDatabase();
   owner = await createUser(db, "Owner");
@@ -31,54 +34,122 @@ beforeAll(async () => {
   businessId = await createBusiness(db, owner, "studio-plans", "Studio Plans");
 });
 
-describe("plans and entitlements", () => {
-  it("starts every new business on early access with all features", async () => {
+describe("Basic and Pro plans", () => {
+  it("starts every new business with a 14-day Pro trial", async () => {
     const { rows } = await as(db, user(owner), (tx) =>
-      tx.query<{ plan_id: string; shop: boolean }>(
-        "select plan_id, public.business_has_feature(business_id, 'shop') as shop from public.business_subscriptions",
+      tx.query<{ plan_id: string; status: string; days: number; plan: string; shop: boolean }>(
+        `select plan_id, status::text, round(extract(epoch from trial_ends_at - now()) / 86400)::int as days,
+                public.current_plan(business_id) as plan,
+                public.business_has_feature(business_id, 'shop') as shop
+         from public.business_subscriptions`,
       ),
     );
-    expect(rows).toEqual([{ plan_id: "early_access", shop: true }]);
+    expect(rows).toEqual([
+      { plan_id: "pro", status: "trialing", days: 14, plan: "pro", shop: true },
+    ]);
+  });
+
+  it("only shows the current plan to members", async () => {
+    const stranger = await createUser(db, "Stranger");
+    const { rows } = await as(db, user(stranger), (tx) =>
+      tx.query<{ plan: string | null }>("select public.current_plan($1) as plan", [businessId]),
+    );
+    expect(rows[0]!.plan).toBeNull();
   });
 
   it("only lets platform admins change a plan, with an audit trail", async () => {
-    await expect(setPlan(owner, "studio")).rejects.toThrow(/Platform administrator/);
+    await expect(setPlan(owner, "pro")).rejects.toThrow(/Platform administrator/);
     await db.query("update public.businesses set shop_enabled = true where id = $1", [businessId]);
-    await setPlan(admin, "solo");
+    await setPlan(admin, "basic");
     const audit = await db.query(
       "select 1 from public.audit_events where action = 'subscription.changed'",
     );
     expect(audit.rows).toHaveLength(1);
   });
 
-  it("switches the webshop off when the plan no longer includes it, and blocks re-enabling", async () => {
+  it("switches the webshop off on Basic and blocks every Pro feature", async () => {
     const { rows } = await db.query<{ shop_enabled: boolean }>(
       "select shop_enabled from public.businesses where id = $1",
       [businessId],
     );
     expect(rows[0]!.shop_enabled).toBe(false);
     await expect(
-      as(db, user(owner), (tx) =>
-        tx.query("update public.businesses set shop_enabled = true where id = $1", [businessId]),
-      ),
+      asOwner("update public.businesses set shop_enabled = true where id = $1", [businessId]),
     ).rejects.toThrow(/plan_feature_shop/);
+    await expect(
+      asOwner("update public.businesses set brand_color = '#B83D5D' where id = $1", [businessId]),
+    ).rejects.toThrow(/plan_feature_branding/);
+    await expect(
+      asOwner(
+        "insert into public.products (business_id, name, price_cents) values ($1, 'Mask', 2000)",
+        [businessId],
+      ),
+    ).rejects.toThrow(/plan_feature_inventory/);
+    await expect(
+      asOwner(
+        "insert into public.expenses (business_id, category, description, amount_cents, spent_on) values ($1, 'rent', 'Rent', 1000, current_date)",
+        [businessId],
+      ),
+    ).rejects.toThrow(/plan_feature_finance/);
   });
 
-  it("enforces the staff limit of the plan", async () => {
-    const insertStaff = (name: string) =>
-      as(
-        db,
-        user(owner),
-        (tx) =>
-          tx.query("insert into public.staff_members (business_id, display_name) values ($1, $2)", [
-            businessId,
-            name,
-          ]),
-        { commit: true },
+  it("still allows removing branding on Basic", async () => {
+    await expect(
+      asOwner("update public.businesses set brand_color = null, logo_path = null where id = $1", [
+        businessId,
+      ]),
+    ).resolves.toBeTruthy();
+  });
+
+  it("limits Basic to 250 customers", async () => {
+    await db.query(
+      `insert into public.customers (business_id, first_name)
+       select $1, 'Client ' || i from generate_series(1, 249) as i`,
+      [businessId],
+    );
+    const insertCustomer = (name: string) =>
+      asOwner("insert into public.customers (business_id, first_name) values ($1, $2)", [
+        businessId,
+        name,
+      ]);
+    await expect(insertCustomer("Number 250")).resolves.toBeTruthy();
+    await expect(insertCustomer("Number 251")).rejects.toThrow(/plan_limit_customers/);
+    await setPlan(admin, "pro");
+    await expect(insertCustomer("Number 251")).resolves.toBeTruthy();
+  });
+
+  it("falls back to Basic when a trial ends without a plan", async () => {
+    await setPlan(admin, "pro", "trialing");
+    await db.query(
+      "update public.business_subscriptions set trial_ends_at = now() - interval '1 minute' where business_id = $1",
+      [businessId],
+    );
+    const { rows } = await as(db, user(owner), (tx) =>
+      tx.query<{ plan: string; finance: boolean; booking: boolean }>(
+        `select public.current_plan($1) as plan,
+                public.business_has_feature($1, 'finance') as finance,
+                public.business_has_feature($1, 'online_booking') as booking`,
+        [businessId],
+      ),
+    );
+    expect(rows).toEqual([{ plan: "basic", finance: false, booking: true }]);
+  });
+
+  it("hides branding on the public page without the branding feature", async () => {
+    await setPlan(admin, "pro");
+    await db.query(
+      "update public.businesses set booking_enabled = true, logo_path = 'x/logo.png', brand_color = '#B83D5D' where id = $1",
+      [businessId],
+    );
+    await setPlan(admin, "basic");
+    const publicPage = () =>
+      as(db, { role: "anon" }, (tx) =>
+        tx.query<{ logo: string | null; colour: string | null }>(
+          "select d ->> 'logo_path' as logo, d ->> 'brand_color' as colour from public.get_public_business('studio-plans') as d",
+        ),
       );
-    await insertStaff("First professional");
-    await expect(insertStaff("Second professional")).rejects.toThrow(/plan_limit_staff/);
-    await setPlan(admin, "salon");
-    await expect(insertStaff("Second professional")).resolves.toBeTruthy();
+    expect((await publicPage()).rows[0]).toEqual({ logo: null, colour: null });
+    await setPlan(admin, "pro");
+    expect((await publicPage()).rows[0]).toEqual({ logo: "x/logo.png", colour: "#B83D5D" });
   });
 });

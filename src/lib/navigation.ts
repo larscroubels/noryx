@@ -49,6 +49,7 @@ export const WORKSPACE_NAV: NavDefinition[] = [
     key: "products",
     href: "/app/products",
     anyOf: ["products.manage", "inventory.manage"],
+    feature: "inventory",
   },
   {
     key: "orders",

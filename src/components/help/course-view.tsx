@@ -3,11 +3,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Badge } from "@/components/ui/badge";
-import { getCourse, helpContent } from "@/content/help";
+import { getCourse, helpContent, helpHotspots, helpImageSrc } from "@/content/help";
 import { getI18n } from "@/i18n/server";
 
+import { CourseToc } from "./course-toc";
 import { FaqList } from "./faq-list";
 import { HelpIcon } from "./help-icon";
+import { Reveal } from "./reveal";
 import { RichText } from "./rich-text";
 import { Screenshot } from "./screenshot";
 
@@ -43,6 +45,7 @@ export async function CourseView({ basePath, slug }: { basePath: string; slug: s
           <p className="mt-2 text-fg-muted sm:text-lg">{course.summary}</p>
           <p className="mt-4 flex flex-wrap items-center gap-3 text-sm text-fg-muted">
             <Badge tone="neutral">{h.audience[course.audience]}</Badge>
+            {course.plan === "pro" && <Badge tone="brand">Pro</Badge>}
             <span className="inline-flex items-center gap-1.5">
               <Clock3 className="size-4" aria-hidden="true" /> {h.minutes(course.minutes)}
             </span>
@@ -52,36 +55,26 @@ export async function CourseView({ basePath, slug }: { basePath: string; slug: s
       </header>
 
       <div className="grid gap-10 lg:grid-cols-[14rem_minmax(0,1fr)] xl:gap-14">
-        <nav aria-label={h.contents} className="hidden lg:block">
-          <div className="sticky top-24">
-            <p className="eyebrow">{h.contents}</p>
-            <ol className="mt-3 grid gap-1 border-l border-border text-sm">
-              {course.steps.map((step, index) => (
-                <li key={step.title}>
-                  <a
-                    href={`#step-${index + 1}`}
-                    className="-ml-px block border-l-2 border-transparent py-1.5 pl-4 text-fg-muted hover:border-rosegold-400 hover:text-fg"
-                  >
-                    {index + 1}. {step.title}
-                  </a>
-                </li>
-              ))}
-              <li>
-                <a
-                  href="#course-faq"
-                  className="-ml-px block border-l-2 border-transparent py-1.5 pl-4 text-fg-muted hover:border-rosegold-400 hover:text-fg"
-                >
-                  {h.courseFaq}
-                </a>
-              </li>
-            </ol>
-          </div>
-        </nav>
+        <CourseToc
+          label={h.contents}
+          items={[
+            ...course.steps.map((step, index) => ({
+              id: `step-${index + 1}`,
+              title: `${index + 1}. ${step.title}`,
+            })),
+            { id: "course-faq", title: h.courseFaq },
+          ]}
+        />
 
         <div className="grid gap-14">
           <ol className="grid gap-14">
             {course.steps.map((step, index) => (
-              <li key={step.title} id={`step-${index + 1}`} className="grid scroll-mt-24 gap-5">
+              <Reveal
+                as="li"
+                key={step.title}
+                id={`step-${index + 1}`}
+                className="grid scroll-mt-24 gap-5"
+              >
                 <div className="flex items-start gap-4">
                   <span
                     aria-hidden="true"
@@ -101,7 +94,10 @@ export async function CourseView({ basePath, slug }: { basePath: string; slug: s
                     ))}
                     {step.tip && (
                       <p className="flex max-w-2xl gap-3 rounded-lg bg-surface-warm p-4 text-sm ring-1 ring-champagne-200">
-                        <Lightbulb className="mt-0.5 size-4 shrink-0 text-rosegold-700" aria-hidden="true" />
+                        <Lightbulb
+                          className="mt-0.5 size-4 shrink-0 text-rosegold-700"
+                          aria-hidden="true"
+                        />
                         <span>
                           <strong className="font-semibold">{h.tip}: </strong>
                           <RichText text={step.tip} />
@@ -112,14 +108,22 @@ export async function CourseView({ basePath, slug }: { basePath: string; slug: s
                 </div>
                 {step.image && (
                   <figure className="grid gap-2 sm:pl-13">
-                    <Screenshot image={step.image} locale={locale} />
+                    <Screenshot
+                      image={step.image}
+                      src={helpImageSrc(locale, step.image.name)}
+                      hotspots={helpHotspots(locale, step.image.name)}
+                    />
                   </figure>
                 )}
-              </li>
+              </Reveal>
             ))}
           </ol>
 
-          <section id="course-faq" aria-labelledby="course-faq-title" className="grid scroll-mt-24 gap-6">
+          <section
+            id="course-faq"
+            aria-labelledby="course-faq-title"
+            className="grid scroll-mt-24 gap-6"
+          >
             <h2 id="course-faq-title" className="font-display text-display-sm font-semibold">
               {h.courseFaq}
             </h2>
@@ -133,7 +137,9 @@ export async function CourseView({ basePath, slug }: { basePath: string; slug: s
               className="group inline-flex items-center gap-3 rounded-xl border border-border bg-surface px-5 py-4 shadow-xs hover:border-rosegold-300"
             >
               <span>
-                <span className="block text-xs font-semibold text-fg-muted uppercase">{h.next}</span>
+                <span className="block text-xs font-semibold text-fg-muted uppercase">
+                  {h.next}
+                </span>
                 <span className="font-semibold">{next.title}</span>
               </span>
               <ArrowRight

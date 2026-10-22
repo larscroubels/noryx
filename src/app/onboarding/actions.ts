@@ -169,8 +169,7 @@ export async function saveServicesAction(
       sort_order: index,
     });
   }
-  if (Object.keys(fieldErrors).length > 0)
-    return failure(t.onboarding.services.check, fieldErrors);
+  if (Object.keys(fieldErrors).length > 0) return failure(t.onboarding.services.check, fieldErrors);
 
   if (rows.length > 0) {
     const supabase = await createClient();

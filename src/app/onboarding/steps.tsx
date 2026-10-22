@@ -210,9 +210,7 @@ export function ServicesStep({
     <form action={action} className="grid gap-5" noValidate>
       <input type="hidden" name="businessId" value={businessId} />
       <FormAlert state={state} />
-      {hasServices && (
-        <p className="text-sm text-fg-muted">{t.onboarding.services.already}</p>
-      )}
+      {hasServices && <p className="text-sm text-fg-muted">{t.onboarding.services.already}</p>}
       {examples.map((example, index) => (
         <div
           key={index}
@@ -225,7 +223,10 @@ export function ServicesStep({
               placeholder={t.onboarding.services.placeholder}
             />
           </Field>
-          <Field label={t.common.fields.duration} error={fieldError(state, `service-${index}-duration`)}>
+          <Field
+            label={t.common.fields.duration}
+            error={fieldError(state, `service-${index}-duration`)}
+          >
             <Input
               name={`service-${index}-duration`}
               type="number"
@@ -280,7 +281,11 @@ export function TeamStep({ businessId, defaultName }: { businessId: string; defa
       </RadioGroup>
       {choice === "yes" && (
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field label={t.onboarding.team.displayName} error={fieldError(state, "displayName")} required>
+          <Field
+            label={t.onboarding.team.displayName}
+            error={fieldError(state, "displayName")}
+            required
+          >
             <Input name="displayName" defaultValue={defaultName} />
           </Field>
           <Field label={t.common.fields.jobTitle} optional>

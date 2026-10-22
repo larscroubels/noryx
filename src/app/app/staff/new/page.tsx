@@ -24,10 +24,7 @@ export default async function NewStaffPage() {
     .order("sort_order");
   return (
     <div className="grid max-w-3xl gap-8">
-      <PageHeader
-        title={s.newTitle}
-        description={s.newDescription}
-      />
+      <PageHeader title={s.newTitle} description={s.newDescription} />
       <Card>
         <CardContent>
           <StaffProfileForm locations={locations ?? []} />

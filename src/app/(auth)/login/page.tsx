@@ -25,7 +25,10 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
       <LoginForm next={next} />
       <p className="mt-8 text-center text-sm text-fg-muted">
         {t.auth.login.newHere}{" "}
-        <Link href={`/signup?next=${encodeURIComponent(next)}`} className="font-semibold text-pink-700 hover:underline">
+        <Link
+          href={`/signup?next=${encodeURIComponent(next)}`}
+          className="font-semibold text-pink-700 hover:underline"
+        >
           {t.auth.login.createAccount}
         </Link>
       </p>

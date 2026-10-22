@@ -38,7 +38,7 @@ export async function SchedulePanels({ staffId, timeZone }: { staffId: string; t
         <CardHeader>
           <div>
             <CardTitle>{t.staff.hours.title}</CardTitle>
-<CardDescription>{t.staff.hours.description}</CardDescription>
+            <CardDescription>{t.staff.hours.description}</CardDescription>
           </div>
         </CardHeader>
         <CardContent>
@@ -50,7 +50,7 @@ export async function SchedulePanels({ staffId, timeZone }: { staffId: string; t
         <CardHeader>
           <div>
             <CardTitle>{t.staff.timeOff.title}</CardTitle>
-<CardDescription>{t.staff.timeOff.description}</CardDescription>
+            <CardDescription>{t.staff.timeOff.description}</CardDescription>
           </div>
         </CardHeader>
         <CardContent className="grid gap-6">

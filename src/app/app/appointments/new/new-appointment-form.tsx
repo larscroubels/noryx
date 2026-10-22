@@ -81,10 +81,18 @@ export function NewAppointmentForm({
                 </Field>
               </TabsContent>
               <TabsContent value="new" className="grid gap-4 pt-4 sm:grid-cols-2">
-                <Field label={t.common.fields.firstName} error={fieldError(state, "firstName")} required>
+                <Field
+                  label={t.common.fields.firstName}
+                  error={fieldError(state, "firstName")}
+                  required
+                >
                   <Input name="firstName" autoComplete="off" />
                 </Field>
-                <Field label={t.common.fields.lastName} error={fieldError(state, "lastName")} optional>
+                <Field
+                  label={t.common.fields.lastName}
+                  error={fieldError(state, "lastName")}
+                  optional
+                >
                   <Input name="lastName" autoComplete="off" />
                 </Field>
                 <Field label={t.common.fields.email} error={fieldError(state, "email")} optional>
@@ -112,7 +120,11 @@ export function NewAppointmentForm({
                 ))}
               </Select>
             </Field>
-            <Field label={t.common.fields.professional} error={fieldError(state, "staffId")} required>
+            <Field
+              label={t.common.fields.professional}
+              error={fieldError(state, "staffId")}
+              required
+            >
               <Select
                 name="staffId"
                 defaultValue={

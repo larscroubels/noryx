@@ -12,7 +12,10 @@ export const onboarding = {
       title: "Where can clients find you?",
       description: "Your address and contact details appear on your booking page.",
     },
-    { title: "When are you open?", description: "Clients can only book within your opening hours." },
+    {
+      title: "When are you open?",
+      description: "Clients can only book within your opening hours.",
+    },
     {
       title: "Add your first services",
       description: "Start with a few popular treatments — you can add the rest later.",

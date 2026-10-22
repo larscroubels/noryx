@@ -16,10 +16,7 @@ export default async function NewCustomerPage() {
   const c = (await getT()).customers;
   return (
     <div className="grid max-w-3xl gap-8">
-      <PageHeader
-        title={c.newTitle}
-        description={c.newDescription}
-      />
+      <PageHeader title={c.newTitle} description={c.newDescription} />
       <Card>
         <CardContent>
           <CustomerForm />

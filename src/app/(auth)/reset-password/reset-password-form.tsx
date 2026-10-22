@@ -16,10 +16,19 @@ export function ResetPasswordForm() {
   return (
     <form action={action} className="mt-8 grid gap-5" noValidate>
       <FormAlert state={state} />
-      <Field label={t.auth.fields.newPassword} hint={t.auth.passwordHint} error={fieldError(state, "password")} required>
+      <Field
+        label={t.auth.fields.newPassword}
+        hint={t.auth.passwordHint}
+        error={fieldError(state, "password")}
+        required
+      >
         <Input name="password" type="password" autoComplete="new-password" autoFocus />
       </Field>
-      <Field label={t.auth.fields.confirmPassword} error={fieldError(state, "confirmPassword")} required>
+      <Field
+        label={t.auth.fields.confirmPassword}
+        error={fieldError(state, "confirmPassword")}
+        required
+      >
         <Input name="confirmPassword" type="password" autoComplete="new-password" />
       </Field>
       <SubmitButton size="lg">{t.auth.reset.submit}</SubmitButton>

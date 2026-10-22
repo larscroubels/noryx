@@ -1,0 +1,40 @@
+import { ArrowRight, LifeBuoy } from "lucide-react";
+import type { Metadata } from "next";
+import Link from "next/link";
+
+import { FaqList } from "@/components/help/faq-list";
+import { getT } from "@/i18n/server";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  return { title: t.marketing.faq.metaTitle, description: t.marketing.faq.lead };
+}
+
+export default async function FaqPage() {
+  const t = await getT();
+  const faq = t.marketing.faq;
+  return (
+    <div className="container-page grid gap-12 py-14 sm:py-20 lg:grid-cols-[1fr_1.6fr]">
+      <header className="lg:sticky lg:top-28 lg:self-start">
+        <p className="eyebrow">{faq.eyebrow}</p>
+        <h1 className="mt-3 font-display text-display-md font-semibold sm:text-display-lg">
+          {faq.title}
+        </h1>
+        <p className="mt-4 text-fg-muted sm:text-lg">{faq.lead}</p>
+        <div className="mt-8 rounded-xl bg-surface-warm p-5 ring-1 ring-champagne-200">
+          <p className="flex items-center gap-2 font-semibold">
+            <LifeBuoy className="size-4 text-rosegold-700" aria-hidden="true" /> {faq.helpTitle}
+          </p>
+          <p className="mt-1 text-sm text-fg-muted">{faq.helpText}</p>
+          <Link
+            href="/help"
+            className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-pink-700 hover:underline"
+          >
+            {faq.helpLink} <ArrowRight className="size-4" aria-hidden="true" />
+          </Link>
+        </div>
+      </header>
+      <FaqList items={faq.items} />
+    </div>
+  );
+}

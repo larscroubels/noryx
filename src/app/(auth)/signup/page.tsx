@@ -19,7 +19,10 @@ export default async function SignUpPage({ searchParams }: PageProps<"/signup">)
       <SignUpForm next={next} />
       <p className="mt-8 text-center text-sm text-fg-muted">
         {t.auth.signup.haveAccount}{" "}
-        <Link href={`/login?next=${encodeURIComponent(next)}`} className="font-semibold text-pink-700 hover:underline">
+        <Link
+          href={`/login?next=${encodeURIComponent(next)}`}
+          className="font-semibold text-pink-700 hover:underline"
+        >
           {t.auth.signup.signIn}
         </Link>
       </p>

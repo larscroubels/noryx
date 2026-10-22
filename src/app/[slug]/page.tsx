@@ -128,7 +128,7 @@ export default async function PublicBusinessPage({ params }: PageProps<"/[slug]"
               {p.services}
             </h2>
             {groups.length === 0 ? (
-<p className="mt-4 text-fg-muted">{p.noServices}</p>
+              <p className="mt-4 text-fg-muted">{p.noServices}</p>
             ) : (
               <div className="mt-6 grid gap-8">
                 {groups.map((group) => (
@@ -183,7 +183,9 @@ export default async function PublicBusinessPage({ params }: PageProps<"/[slug]"
                                     return (
                                       <>
                                         {prices.some((p) => p !== min) && (
-                                          <span className="font-normal text-fg-muted">{p.from}</span>
+                                          <span className="font-normal text-fg-muted">
+                                            {p.from}
+                                          </span>
                                         )}
                                         {money(min)}
                                       </>

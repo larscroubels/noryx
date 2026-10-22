@@ -57,8 +57,7 @@ export async function changePassword(_prev: ActionState, formData: FormData): Pr
   const supabase = await createClient();
   const { error } = await supabase.auth.updateUser({ password: parsed.data.password });
   if (error) {
-    if (error.code === "reauthentication_needed")
-      return failure(t.account.reauth);
+    if (error.code === "reauthentication_needed") return failure(t.account.reauth);
     if (error.code === "same_password") return failure(t.account.samePassword);
     return failure(t.account.passwordFailed);
   }

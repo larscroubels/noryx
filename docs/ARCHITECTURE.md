@@ -26,6 +26,7 @@ Future iOS/Android apps can use the same Supabase backend: all authorisation liv
 /<slug>                   public business page; /<slug>/book booking flow; /<slug>/shop click-and-collect;
                           /<slug>/booking/<token> private self-service link for a client's booking
 /invite/<token>           accept a team invitation
+/help, /app/help          help centre with courses (same content, public and inside the workspace)
 /design-system            living design-system reference (noindex)
 ```
 
@@ -88,9 +89,22 @@ Conventions: UUID keys; `timestamptz` in UTC, displayed in the business time zon
 - **Team**: invitations carry a 192-bit token stored only as a SHA-256 hash, expire after 7 days and can only be accepted by the invited email address. Member changes go through SECURITY DEFINER functions that block self-escalation, owner changes by non-owners and granting permissions the granter lacks.
 - **Retail**: stock changes only through `inventory_movements`; a CHECK constraint makes negative stock impossible. `create_online_order()` (service role only) locks product rows, computes totals from current prices and reserves stock atomically; `cancel_order()` restocks in the same transaction. Orders are unpaid until the salon marks them paid at pickup.
 - **Finance**: payments are records of what was paid at the salon (NORYX processes no payments). Front-desk staff can record payments without seeing figures; totals need `finance.view`. Recorded revenue, expenses and booked-value estimates are always shown separately. Not accounting or VAT software.
-- **Plans & entitlements**: `plans` holds features and limits; `business_has_feature()` / `business_plan_limit()` are the single source of truth, mirrored by `src/lib/billing/entitlements.ts`. Staff and login limits and the webshop feature are enforced by database triggers. New businesses start on "Early access" (all features). No billing provider is connected: plans are assigned by platform admins with an audit trail.
+- **Plans & entitlements**: two plans. **Basic** is the booking system with at most 250 customers. **Pro** adds unlimited customers, `finance`, `inventory`, `shop`, `branding` and `team_permissions`. New businesses get a 14-day Pro trial (`business_subscriptions.trial_ends_at`); `business_effective_plan()` makes an expired trial fall back to Basic. `business_has_feature()` / `business_plan_limit()` are the single source of truth, mirrored by `src/lib/billing/entitlements.ts`.
+  - **Enforcement**: database triggers enforce the customer limit and every Pro feature (payments, expenses, products, manual stock changes, orders, branding changes, per-member permissions).
+  - **Public pages**: they hide branding and the shop without the feature.
+  - **Billing**: prices are not set and no billing provider is connected, so platform admins assign plans with an audit trail.
 - **Client self-service**: each online booking gets a private management link (token hashed in `appointments.manage_token_hash`); cancellation through it is refused by the database after the salon's cancellation deadline.
 - **Uploads**: logo and cover images are validated by size (≤ 2 MB) and file signature (PNG/JPEG/WebP) on the server, then stored in the business's own Storage folder; Storage policies enforce the folder boundary.
+
+## Languages (i18n)
+
+Dutch is the default interface language, English the second. `src/i18n/config.ts` lists the locales; the visitor's choice is stored in the `noryx_locale` cookie (set by the NL | EN switch), otherwise the `Accept-Language` header decides.
+
+- Strings live in typed dictionaries per area in `src/i18n/dictionaries/{en,nl}/`. Each Dutch file is typed as `typeof` its English twin, so a missing key fails to compile, and `dictionaries.test.ts` also compares list lengths and function arities.
+- Server components and actions call `getT()` / `getI18n()` (`src/i18n/server.ts`); client components use `useT()` / `useIntlLocale()` from `I18nProvider`.
+- Validation schemas are factories that take the dictionary (`productSchema(t)`, built on `rules(t)` in `src/lib/validation/common.ts`), so error messages come back in the visitor's language. Database errors are mapped to translated messages in `databaseErrorMessage`.
+- Dates and durations use the interface locale (nl-BE / en-GB); money keeps the business locale.
+- Help-centre courses are long-form content in `src/content/help/{nl,en}.ts`; screenshots and the animated cursor targets come from `npm run help:screenshots`.
 
 ## Notifications
 

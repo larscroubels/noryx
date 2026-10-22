@@ -48,6 +48,7 @@ export const settings = {
     uploadFailed: "The image could not be uploaded. Please try again.",
     logoUpdated: "Logo updated.",
     coverUpdated: "Cover image updated.",
+    proOnly: "Your own logo, cover photo and accent colour on your booking page are part of Pro.",
   },
   location: {
     description: "Where clients come for their appointment.",
@@ -55,8 +56,7 @@ export const settings = {
     saved: "Location saved.",
   },
   hours: {
-    description:
-      "Online bookings are limited to these hours and each professional's own schedule.",
+    description: "Online bookings are limited to these hours and each professional's own schedule.",
     submit: "Save opening hours",
     saved: "Opening hours saved.",
   },
@@ -105,18 +105,23 @@ export const settings = {
   },
   plan: {
     status: {
-      trialing: "Early access",
+      trialing: "Trial",
       active: "Active",
       past_due: "Past due",
       cancelled: "Cancelled",
     },
     included: " (included)",
     notIncluded: " (not included)",
-    limits: (staff: string, members: string) =>
-      `Professionals: ${staff} · Team logins: ${members}`,
+    customers: (limit: string) => `Customers: ${limit}`,
     unlimited: "unlimited",
+    trialRunning: (days: number, date: string) =>
+      `Your free Pro trial runs for ${days} more ${days === 1 ? "day" : "days"}, until ${date}.`,
+    trialEnded: "Your Pro trial has ended. Your business now continues on Basic.",
+    afterTrial:
+      "After the trial you choose Basic or Pro. If you don't choose, your business continues on Basic.",
+    comparePlans: "Compare Basic and Pro",
     billingConnected: "Billing is managed by your payment provider.",
     billingNotConnected:
-      "Billing isn't connected yet. During early access your plan is managed by the NORYX team and you are not charged.",
+      "Billing isn't connected yet, so you aren't charged. Prices will be announced first; until then the NORYX team changes plans on request.",
   },
 };

@@ -12,7 +12,8 @@ function shape(node: Node, path = "", out = new Map<string, string>()) {
   } else if (typeof node === "function") {
     out.set(path, `function:${node.length}`);
   } else if (node && typeof node === "object") {
-    for (const [key, value] of Object.entries(node)) shape(value, path ? `${path}.${key}` : key, out);
+    for (const [key, value] of Object.entries(node))
+      shape(value, path ? `${path}.${key}` : key, out);
   } else {
     out.set(path, typeof node);
   }

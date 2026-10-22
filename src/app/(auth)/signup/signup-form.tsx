@@ -45,13 +45,25 @@ export function SignUpForm({ next }: { next: string }) {
       <Field label={t.auth.fields.workEmail} error={fieldError(state, "email")} required>
         <Input name="email" type="email" autoComplete="email" inputMode="email" />
       </Field>
-      <Field label={t.auth.fields.password} hint={t.auth.passwordHint} error={fieldError(state, "password")} required>
+      <Field
+        label={t.auth.fields.password}
+        hint={t.auth.passwordHint}
+        error={fieldError(state, "password")}
+        required
+      >
         <Input name="password" type="password" autoComplete="new-password" />
       </Field>
       <div className="grid gap-1.5">
         <ChoiceRow
           htmlFor="terms"
-          control={<Checkbox id="terms" name="terms" value="on" aria-invalid={termsError ? true : undefined} />}
+          control={
+            <Checkbox
+              id="terms"
+              name="terms"
+              value="on"
+              aria-invalid={termsError ? true : undefined}
+            />
+          }
           label={t.auth.signup.terms}
           description={t.auth.signup.termsHint}
         />

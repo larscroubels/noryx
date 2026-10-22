@@ -130,29 +130,24 @@ export const common = {
   copyLink: "Copy link",
   copied: "Copied",
   plans: {
-    early_access: {
-      name: "Early access",
+    basic: {
+      name: "Basic",
       description:
-        "Every feature while NORYX is in early access. Billing starts only once plans are announced.",
+        "The booking system: online booking, calendar, services, team schedules and up to 250 customers.",
     },
-    solo: {
-      name: "Solo",
-      description: "For independent professionals: one bookable professional and online booking.",
-    },
-    salon: {
-      name: "Salon",
-      description: "For growing salons: up to 8 professionals, webshop and finance overview.",
-    },
-    studio: {
-      name: "Studio",
-      description: "For larger teams: unlimited professionals and custom team permissions.",
+    pro: {
+      name: "Pro",
+      description:
+        "Everything in Basic plus unlimited customers, payments and finance, stock, webshop and your own booking-page branding.",
     },
   } as Record<string, { name: string; description: string }>,
   noPlan: "No plan",
   features: {
-    online_booking: "Online booking page",
-    shop: "Webshop & click-and-collect",
-    finance: "Finance overview & exports",
-    team_permissions: "Custom team permissions",
+    online_booking: "Online booking system",
+    finance: "Payments & finance",
+    inventory: "Products & stock",
+    shop: "Webshop (click & collect)",
+    branding: "Your own booking-page branding",
+    team_permissions: "Custom permissions per team member",
   },
 };

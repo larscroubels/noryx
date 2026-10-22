@@ -57,17 +57,12 @@ export default async function NewAppointmentPage({
 
   return (
     <div className="grid max-w-3xl gap-8">
-      <PageHeader
-        title={n.title}
-        description={n.description}
-      />
+      <PageHeader title={n.title} description={n.description} />
       {!services || services.length === 0 || allowedStaff.length === 0 ? (
         <Card>
           <EmptyState
             icon={<Scissors />}
-            title={
-              !services || services.length === 0 ? n.noService : n.noStaff
-            }
+            title={!services || services.length === 0 ? n.noService : n.noStaff}
             description={n.needBoth}
             action={
               <Button asChild>

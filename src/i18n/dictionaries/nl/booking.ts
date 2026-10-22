@@ -94,6 +94,8 @@ export const booking: typeof en = {
       outside_booking_window: "Dit tijdstip is te snel of te ver vooruit om online te boeken.",
       invalid_slot: "Kies een van de aangeboden tijdstippen.",
       slot_unavailable: "Dit tijdstip is niet meer beschikbaar. Kies een ander tijdstip.",
+      plan_limit_customers:
+        "Deze zaak kan momenteel geen nieuwe klanten online aannemen. Neem rechtstreeks contact op met de zaak.",
     },
   },
   manage: {
@@ -147,8 +149,10 @@ export const booking: typeof en = {
     failed: "We konden je bestelling niet plaatsen. Probeer het opnieuw.",
     rpc: {
       shop_unavailable: "Deze webshop neemt momenteel geen bestellingen aan.",
-      product_unavailable: "Een van de producten is niet meer beschikbaar. Controleer je winkelmand.",
-      out_of_stock: "Van een van de producten is er niet genoeg voorraad. Controleer je winkelmand.",
+      product_unavailable:
+        "Een van de producten is niet meer beschikbaar. Controleer je winkelmand.",
+      out_of_stock:
+        "Van een van de producten is er niet genoeg voorraad. Controleer je winkelmand.",
       invalid_items: "Controleer de aantallen in je winkelmand.",
     },
   },

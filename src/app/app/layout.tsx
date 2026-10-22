@@ -4,6 +4,7 @@ import {
   ExternalLink,
   LayoutDashboard,
   LifeBuoy,
+  Sparkles,
   Package,
   Scissors,
   Settings,
@@ -25,7 +26,7 @@ import { UserMenu } from "@/components/layout/user-menu";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { getT } from "@/i18n/server";
-import { requireWorkspace } from "@/lib/auth/session";
+import { can, requireWorkspace } from "@/lib/auth/session";
 import { getEntitlements } from "@/lib/billing/entitlements";
 import { visibleNav, type WorkspaceNavKey } from "@/lib/navigation";
 
@@ -129,6 +130,15 @@ export default async function WorkspaceLayout({ children }: LayoutProps<"/app">)
             <Alert tone="warning" title={t.app.readOnlyTitle} className="mb-6">
               {t.app.readOnlyText(business.status === "suspended")}
             </Alert>
+          )}
+          {entitlements.trialDaysLeft !== null && can(workspace, "settings.manage") && (
+            <p className="mx-auto mb-6 flex max-w-7xl flex-wrap items-center gap-x-3 gap-y-1 rounded-lg bg-pink-50 px-4 py-2.5 text-sm ring-1 ring-pink-100">
+              <Sparkles className="size-4 shrink-0 text-pink-700" aria-hidden="true" />
+              <span>{t.app.trial.running(entitlements.trialDaysLeft)}</span>
+              <Link href="/pricing" className="font-semibold text-pink-700 hover:underline">
+                {t.app.trial.plans}
+              </Link>
+            </p>
           )}
           <div className="mx-auto max-w-7xl">{children}</div>
         </main>

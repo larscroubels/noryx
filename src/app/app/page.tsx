@@ -19,6 +19,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { EmptyState } from "@/components/ui/feedback";
 import { getI18n, getT } from "@/i18n/server";
 import { can, requireWorkspace } from "@/lib/auth/session";
+import { getEntitlements, hasFeature } from "@/lib/billing/entitlements";
 import { formatLocalDate, formatMoney, formatTime } from "@/lib/format";
 import { createClient } from "@/lib/supabase/server";
 import {
@@ -137,9 +138,14 @@ export default async function OverviewPage({ searchParams }: PageProps<"/app">) 
     },
   ];
   const showChecklist = can(workspace, "settings.manage") && checklist.some((item) => !item.done);
-  const showStock = can(workspace, "products.manage") || can(workspace, "inventory.manage");
-  const showOrders = can(workspace, "orders.manage");
-  const [{ data: stockRows }, { count: openOrders }] = await Promise.all([
+  const entitlements = await getEntitlements(business.id);
+  const showStock =
+    hasFeature(entitlements, "inventory") &&
+    (can(workspace, "products.manage") || can(workspace, "inventory.manage"));
+  const showOrders = hasFeature(entitlements, "shop") && can(workspace, "orders.manage");
+  const isManager = can(workspace, "settings.manage");
+  const customerLimit = isManager ? entitlements.maxCustomers : null;
+  const [{ data: stockRows }, { count: openOrders }, { count: customerTotal }] = await Promise.all([
     showStock
       ? supabase
           .from("products")
@@ -155,7 +161,16 @@ export default async function OverviewPage({ searchParams }: PageProps<"/app">) 
           .eq("business_id", business.id)
           .in("status", ["pending", "confirmed", "ready"])
       : Promise.resolve({ count: null }),
+    customerLimit
+      ? supabase
+          .from("customers")
+          .select("id", { count: "exact", head: true })
+          .eq("business_id", business.id)
+      : Promise.resolve({ count: null }),
   ]);
+  // Basic includes a fixed number of customers; warn owners from 80% onwards.
+  const nearCustomerLimit =
+    customerLimit !== null && (customerTotal ?? 0) >= Math.floor(customerLimit * 0.8);
   const lowStock = (stockRows ?? []).filter((p) => p.stock_quantity <= p.low_stock_threshold);
   const now = utcToZoned(new Date(), tz);
   const firstName = (workspace.user.fullName ?? "").split(" ")[0];
@@ -182,8 +197,22 @@ export default async function OverviewPage({ searchParams }: PageProps<"/app">) 
           {o.welcomeText}
         </Alert>
       )}
-      {params.password === "updated" && (
-        <Alert tone="success">{o.passwordUpdated}</Alert>
+      {params.password === "updated" && <Alert tone="success">{o.passwordUpdated}</Alert>}
+      {isManager && entitlements.trialEnded && (
+        <Alert tone="info">
+          {t.app.trial.ended}{" "}
+          <Link href="/pricing" className="font-semibold">
+            {t.app.trial.plans}
+          </Link>
+        </Alert>
+      )}
+      {nearCustomerLimit && customerLimit !== null && (
+        <Alert tone="warning">
+          {o.customerLimit(customerTotal ?? 0, customerLimit)} {o.customerLimitText}{" "}
+          <Link href="/pricing" className="font-semibold">
+            {t.app.trial.plans}
+          </Link>
+        </Alert>
       )}
 
       <section aria-label={o.keyFigures} className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -214,7 +243,7 @@ export default async function OverviewPage({ searchParams }: PageProps<"/app">) 
           <CardHeader>
             <div>
               <CardTitle>{o.schedule}</CardTitle>
-<CardDescription>{o.appointments(todays.length)}</CardDescription>
+              <CardDescription>{o.appointments(todays.length)}</CardDescription>
             </div>
             <Button asChild variant="ghost" size="sm">
               <Link href={`/app/calendar?date=${today}`}>
@@ -227,9 +256,7 @@ export default async function OverviewPage({ searchParams }: PageProps<"/app">) 
               <EmptyState
                 icon={<Sparkles />}
                 title={o.emptyTitle}
-                description={
-                  business.booking_enabled ? o.emptyOnline : o.emptyOffline
-                }
+                description={business.booking_enabled ? o.emptyOnline : o.emptyOffline}
                 action={
                   canManageAppointments ? (
                     <Button asChild variant="secondary">
@@ -276,7 +303,7 @@ export default async function OverviewPage({ searchParams }: PageProps<"/app">) 
               <CardContent className="flex items-start gap-3">
                 <Clock3 className="mt-0.5 size-5 text-warning-600" aria-hidden="true" />
                 <div>
-<p className="font-semibold">{o.pending(pendingCount)}</p>
+                  <p className="font-semibold">{o.pending(pendingCount)}</p>
                   <Link
                     href="/app/calendar?status=pending"
                     className="mt-1 inline-block text-sm font-semibold text-pink-700 hover:underline"
@@ -293,7 +320,7 @@ export default async function OverviewPage({ searchParams }: PageProps<"/app">) 
               <CardContent className="flex items-start gap-3">
                 <ShoppingBag className="mt-0.5 size-5 text-pink-700" aria-hidden="true" />
                 <div>
-<p className="font-semibold">{o.orders(openOrders ?? 0)}</p>
+                  <p className="font-semibold">{o.orders(openOrders ?? 0)}</p>
                   <Link
                     href="/app/orders"
                     className="mt-1 inline-block text-sm font-semibold text-pink-700 hover:underline"
@@ -313,7 +340,7 @@ export default async function OverviewPage({ searchParams }: PageProps<"/app">) 
                     <TriangleAlert className="size-4 text-warning-600" aria-hidden="true" />{" "}
                     {o.lowStock}
                   </CardTitle>
-<CardDescription>{o.lowStockText(lowStock.length)}</CardDescription>
+                  <CardDescription>{o.lowStockText(lowStock.length)}</CardDescription>
                 </div>
               </CardHeader>
               <CardContent>
@@ -342,7 +369,10 @@ export default async function OverviewPage({ searchParams }: PageProps<"/app">) 
                 <div>
                   <CardTitle>{o.finish}</CardTitle>
                   <CardDescription>
-                    {o.finishProgress(checklist.filter((item) => item.done).length, checklist.length)}
+                    {o.finishProgress(
+                      checklist.filter((item) => item.done).length,
+                      checklist.length,
+                    )}
                   </CardDescription>
                 </div>
               </CardHeader>
@@ -377,7 +407,7 @@ export default async function OverviewPage({ searchParams }: PageProps<"/app">) 
             <Card className="bg-surface-warm">
               <CardContent>
                 <p className="eyebrow">{o.yourPage}</p>
-<p className="mt-2 text-sm text-fg-muted">{o.shareText}</p>
+                <p className="mt-2 text-sm text-fg-muted">{o.shareText}</p>
                 <a
                   href={`/${business.slug}`}
                   target="_blank"

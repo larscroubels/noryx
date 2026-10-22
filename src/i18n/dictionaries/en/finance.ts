@@ -1,8 +1,8 @@
 export const finance = {
   title: "Finance",
-  notIncluded: "Finance isn't included in your plan",
+  notIncluded: "Payments and finance are part of Pro",
   notIncludedText:
-    "The finance overview and exports are part of the Salon and Studio plans. Contact NORYX to change your plan.",
+    "Record payments and expenses, follow your revenue and export everything for your accountant with NORYX Pro.",
   paymentsCsv: "Payments CSV",
   expensesCsv: "Expenses CSV",
   from: "From",

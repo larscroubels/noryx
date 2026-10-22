@@ -78,11 +78,7 @@ export function NoteForm({ customerId }: { customerId: string }) {
       <input type="hidden" name="customerId" value={customerId} />
       <FormAlert state={state} />
       <Field label={t.customers.form.newNote} hideLabel error={fieldError(state, "body")}>
-        <Textarea
-          name="body"
-          rows={3}
-          placeholder={t.customers.form.notePlaceholder}
-        />
+        <Textarea name="body" rows={3} placeholder={t.customers.form.notePlaceholder} />
       </Field>
       <div className="flex justify-end">
         <SubmitButton variant="secondary" size="sm">

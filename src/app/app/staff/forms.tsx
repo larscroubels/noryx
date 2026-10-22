@@ -55,12 +55,7 @@ export function StaffProfileForm({
           />
         </Field>
       </div>
-      <Field
-        label={s.form.bio}
-        hint={s.form.bioHint}
-        error={fieldError(state, "bio")}
-        optional
-      >
+      <Field label={s.form.bio} hint={s.form.bioHint} error={fieldError(state, "bio")} optional>
         <Textarea name="bio" defaultValue={staff?.bio ?? ""} rows={3} />
       </Field>
       <div className="grid gap-5 sm:grid-cols-2">
@@ -224,7 +219,10 @@ export function StaffServicesForm({
                 label={service.name}
                 description={`${formatDuration(service.duration_minutes, intl)} · ${formatMoney(service.price_cents, currency, locale)}`}
               />
-              <Field label={s.servicesForm.ownPrice} error={fieldError(state, `price-${service.id}`)}>
+              <Field
+                label={s.servicesForm.ownPrice}
+                error={fieldError(state, `price-${service.id}`)}
+              >
                 <Input
                   name={`price-${service.id}`}
                   defaultValue={
@@ -235,7 +233,10 @@ export function StaffServicesForm({
                   disabled={!isChecked}
                 />
               </Field>
-              <Field label={s.servicesForm.ownDuration} error={fieldError(state, `duration-${service.id}`)}>
+              <Field
+                label={s.servicesForm.ownDuration}
+                error={fieldError(state, `duration-${service.id}`)}
+              >
                 <Input
                   name={`duration-${service.id}`}
                   type="number"

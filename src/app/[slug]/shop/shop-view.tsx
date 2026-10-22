@@ -82,11 +82,7 @@ export function ShopView({
   }
 
   if (products.length === 0) {
-    return (
-      <p className="rounded-xl bg-surface p-8 text-center text-fg-muted">
-        {s.none}
-      </p>
-    );
+    return <p className="rounded-xl bg-surface p-8 text-center text-fg-muted">{s.none}</p>;
   }
 
   return (
@@ -173,9 +169,7 @@ export function ShopView({
                 <span>{t.common.fields.total}</span>
                 <span className="tabular-nums">{money(subtotal)}</span>
               </p>
-              <p className="mt-1 text-xs text-fg-muted">
-                {s.pickupNote}
-              </p>
+              <p className="mt-1 text-xs text-fg-muted">{s.pickupNote}</p>
               {!checkout && (
                 <Button className="mt-4 w-full" onClick={() => setCheckout(true)}>
                   {s.continue(itemCount)}

@@ -40,6 +40,12 @@ export const resetPasswordSchema = (t: Dictionary) =>
 
 /** Only allow relative in-app redirect targets (prevents open redirects). */
 export function safeNextPath(next: unknown, fallback = "/app") {
-  if (typeof next !== "string" || !next.startsWith("/") || next.startsWith("//") || next.includes("\\")) return fallback;
+  if (
+    typeof next !== "string" ||
+    !next.startsWith("/") ||
+    next.startsWith("//") ||
+    next.includes("\\")
+  )
+    return fallback;
   return next;
 }

@@ -52,7 +52,7 @@ export default async function ShopPage({ params }: PageProps<"/[slug]/shop">) {
         <h1 className="font-display text-display-sm font-semibold sm:text-display-md">
           {t.booking.shop.title}
         </h1>
-<p className="mt-2 mb-8 text-fg-muted">{t.booking.shop.lead(business.name)}</p>
+        <p className="mt-2 mb-8 text-fg-muted">{t.booking.shop.lead(business.name)}</p>
         <ShopView
           slug={business.slug}
           businessName={business.name}

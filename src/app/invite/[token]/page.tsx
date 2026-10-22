@@ -49,10 +49,7 @@ export default async function InvitePage({ params }: PageProps<"/invite/[token]"
               {p.notFoundText}
             </Alert>
           ) : invitation.used || invitation.expired ? (
-            <Alert
-              tone="warning"
-              title={invitation.used ? p.used : p.expired}
-            >
+            <Alert tone="warning" title={invitation.used ? p.used : p.expired}>
               {p.askNew(invitation.business_name)}
             </Alert>
           ) : (
@@ -74,9 +71,7 @@ export default async function InvitePage({ params }: PageProps<"/invite/[token]"
                 user.email?.toLowerCase() === invitation.email ? (
                   <AcceptForm token={token} />
                 ) : (
-                  <Alert tone="warning">
-                    {p.wrongUser(user.email ?? "", invitation.email)}
-                  </Alert>
+                  <Alert tone="warning">{p.wrongUser(user.email ?? "", invitation.email)}</Alert>
                 )
               ) : (
                 <div className="grid gap-3">
