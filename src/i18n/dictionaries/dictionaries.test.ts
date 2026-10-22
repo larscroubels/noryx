@@ -23,9 +23,11 @@ function shape(node: Node, path = "", out = new Map<string, string>()) {
 describe("dictionaries", () => {
   const en = shape(dictionaries.en);
   const nl = shape(dictionaries.nl);
+  const fr = shape(dictionaries.fr);
 
   it("have exactly the same keys, list lengths and function arities in every language", () => {
     expect([...nl.entries()].sort()).toEqual([...en.entries()].sort());
+    expect([...fr.entries()].sort()).toEqual([...en.entries()].sort());
   });
 
   it("contain no empty strings except deliberate ones", () => {

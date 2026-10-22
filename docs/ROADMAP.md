@@ -55,14 +55,14 @@ Status as of 22 October 2026. The full product brief is in [`PRODUCT_BRIEF.md`](
 
 ## Languages and help centre ✅
 
-- The whole product is available in Dutch (default) and English with an NL | EN switch on every page; the choice is stored in a cookie, otherwise the browser language decides. Dates use nl-BE / en-GB formatting; the demo salon's data is Dutch.
+- The whole product is available in Dutch (default), French and English with an NL | FR | EN switch on every page; the choice is stored in a cookie, otherwise the browser language decides. Dates use nl-BE / fr-BE / en-GB formatting; the demo salon's data is Dutch.
 - Help centre at `/help` (and `/app/help` inside the workspace): eight courses with real screenshots per language, animated click-throughs and FAQs, plus a search.
-- **Open:** French, translated transactional emails, per-business default language for public pages.
+- **Open:** French help screenshots (French courses show the English captures until `npm run help:screenshots` is run against the local stack), translated transactional emails, per-business default language for public pages.
 
 ## Phase 8 — Launch preparation ⏳
 
 - Done so far: automated accessibility audit (axe, WCAG 2.2 AA) on 17 key pages in both languages plus the help centre, security headers, end-to-end flows in Chrome.
-- Open: nonce-based CSP, shared rate limiting, Playwright tests in CI, performance review, error monitoring, privacy policy and terms (legal review required), French translation, deployment.
+- Open: nonce-based CSP, shared rate limiting, Playwright tests in CI, performance review, error monitoring, privacy policy and terms (legal review required), native-speaker review of the French translation, deployment.
 
 ## Decisions needed from the product owner
 
@@ -70,6 +70,6 @@ Status as of 22 October 2026. The full product brief is in [`PRODUCT_BRIEF.md`](
 2. **Email provider** for transactional mail (e.g. Postmark, Resend) — also used as Supabase Auth SMTP.
 3. **Payment provider** for deposits, webshop and subscriptions (Mollie vs Stripe — both support Bancontact).
 4. **Prices** for Basic and Pro (the pricing page says "price coming soon"), and whether an expired trial should keep falling back to Basic (current behaviour) or become read-only.
-5. **French** at launch? Dutch and English are done; the dictionaries are ready for a third language.
+5. **French** is implemented; decide whether a native speaker reviews it before launch.
 6. **Domain** and whether salons get subdomains or custom domains.
 7. **Vector logo** (SVG) from the designer.

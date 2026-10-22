@@ -8,7 +8,7 @@ import { useLocale, useT } from "@/i18n/client";
 import { LOCALE_LABELS, LOCALES } from "@/i18n/config";
 import { cn } from "@/lib/cn";
 
-/** NL | EN toggle. Stores the choice in a cookie and re-renders the page. */
+/** NL | FR | EN toggle. Stores the choice in a cookie and re-renders the page. */
 export function LanguageSwitcher({ className }: { className?: string }) {
   const current = useLocale();
   const t = useT();
@@ -30,6 +30,7 @@ export function LanguageSwitcher({ className }: { className?: string }) {
           key={locale}
           type="button"
           lang={locale}
+          title={LOCALE_LABELS[locale].name}
           aria-pressed={locale === current}
           disabled={pending}
           onClick={() =>

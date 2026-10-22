@@ -3,7 +3,9 @@ import path from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { helpContent, helpHotspots } from ".";
+import type { Locale } from "@/i18n/config";
+
+import { helpContent, helpHotspots, SCREENSHOT_LOCALE } from ".";
 
 const outline = (locale: keyof typeof helpContent) =>
   helpContent[locale].courses.map((course) => ({
@@ -17,7 +19,9 @@ const outline = (locale: keyof typeof helpContent) =>
 describe("help centre content", () => {
   it("has the same courses, steps and screenshots in every language", () => {
     expect(outline("en")).toEqual(outline("nl"));
+    expect(outline("fr")).toEqual(outline("nl"));
     expect(helpContent.en.faq.length).toBe(helpContent.nl.faq.length);
+    expect(helpContent.fr.faq.length).toBe(helpContent.nl.faq.length);
   });
 
   it("uses unique course slugs", () => {
@@ -29,7 +33,7 @@ describe("help centre content", () => {
     const missing: string[] = [];
     for (const [locale, content] of Object.entries(helpContent)) {
       for (const step of content.courses.flatMap((course) => course.steps)) {
-        if (step.image && helpHotspots(locale as "nl" | "en", step.image.name).length === 0)
+        if (step.image && helpHotspots(locale as Locale, step.image.name).length === 0)
           missing.push(`${locale}/${step.image.name}`);
       }
     }
@@ -46,7 +50,7 @@ describe("help centre content", () => {
             process.cwd(),
             "public",
             "help",
-            locale,
+            SCREENSHOT_LOCALE[locale as Locale],
             `${step.image.name}.webp`,
           );
           if (!existsSync(file)) missing.push(`${locale}/${step.image.name}`);

@@ -256,8 +256,8 @@ export const marketing = {
         a: "Not yet. You record payments taken at the salon, and shop orders are paid at pickup. Online payments will use a trusted payment provider once available.",
       },
       {
-        q: "Is NORYX available in Dutch?",
-        a: "Yes. NORYX is available in Dutch and English — switch at the top of any page. French is planned.",
+        q: "Is NORYX available in Dutch and French?",
+        a: "Yes. NORYX is available in Dutch, French and English — switch at the top of any page.",
       },
     ],
   },

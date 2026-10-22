@@ -22,7 +22,8 @@ import sharp from "sharp";
 
 const project = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const BASE = "http://localhost:3000";
-const LOCALES = ["nl", "en"];
+const LOCALES = ["nl", "fr", "en"];
+const INTL = { nl: "nl-BE", fr: "fr-BE", en: "en-GB" };
 const T = {
   nl: {
     email: "E-mail",
@@ -34,6 +35,17 @@ const T = {
     business: "Naam van je zaak",
     type: "Soort zaak",
     create: "Mijn zaak aanmaken",
+  },
+  fr: {
+    email: "E-mail",
+    password: "Mot de passe",
+    signIn: "Se connecter",
+    continue: "Continuer",
+    payment: "Paiement",
+    hours: "Heures de travail",
+    business: "Nom de l'établissement",
+    type: "Type d'établissement",
+    create: "Créer mon établissement",
   },
   en: {
     email: "Email",
@@ -55,7 +67,7 @@ async function context(locale, kind) {
   if (sessions[key]) return sessions[key];
   const mobile = kind === "mobile";
   const ctx = await browser.newContext({
-    locale: locale === "nl" ? "nl-BE" : "en-GB",
+    locale: INTL[locale],
     viewport: mobile ? { width: 390, height: 844 } : { width: 1440, height: 900 },
     deviceScaleFactor: mobile ? 2 : 1,
   });

@@ -18,7 +18,7 @@ export const nl: HelpContent = {
             "Je krijgt een e-mail om je adres te bevestigen. Klik op de knop in die e-mail en je komt meteen in de installatie terecht.",
           ],
           image: { name: "signup", alt: "Het registratieformulier van NORYX" },
-          tip: "Bovenaan elke pagina kies je met **NL | EN** in welke taal je NORYX gebruikt. Je keuze wordt onthouden.",
+          tip: "Bovenaan elke pagina kies je met **NL | FR | EN** in welke taal je NORYX gebruikt. Je keuze wordt onthouden.",
         },
         {
           title: "Vertel ons over je zaak",
@@ -490,7 +490,7 @@ export const nl: HelpContent = {
         },
         {
           q: "Hoe wijzig ik de taal?",
-          a: "Klik bovenaan op **NL** of **EN**. Je keuze wordt een jaar lang onthouden op dat toestel.",
+          a: "Klik bovenaan op **NL**, **FR** of **EN**. Je keuze wordt een jaar lang onthouden op dat toestel.",
         },
       ],
     },
