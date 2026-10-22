@@ -261,6 +261,10 @@ export const marketing: typeof en = {
       },
     ],
   },
+  concept: {
+    banner: "Demo: een homepage met 3D-scrolleffecten. De live homepage is ongewijzigd.",
+    current: "Bekijk de huidige homepage",
+  },
   finalCta: {
     title: "Klaar wanneer je klanten het zijn.",
     lead: "Maak je account aan, voeg je behandelingen toe en deel vandaag nog je boekingspagina.",

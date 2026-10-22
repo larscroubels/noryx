@@ -261,6 +261,10 @@ export const marketing = {
       },
     ],
   },
+  concept: {
+    banner: "Demo: a homepage with 3D scroll effects. The live homepage is unchanged.",
+    current: "View the current homepage",
+  },
   finalCta: {
     title: "Ready when your clients are.",
     lead: "Create your account, add your services and share your booking page today.",

@@ -270,6 +270,10 @@ export const marketing: typeof en = {
       },
     ],
   },
+  concept: {
+    banner: "Démo : une page d'accueil avec des effets 3D au défilement. La page en ligne est inchangée.",
+    current: "Voir la page d'accueil actuelle",
+  },
   finalCta: {
     title: "Prêt quand vos clients le sont.",
     lead: "Créez votre compte, ajoutez vos prestations et partagez votre page de réservation dès aujourd'hui.",

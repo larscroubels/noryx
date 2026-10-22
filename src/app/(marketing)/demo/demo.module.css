@@ -1,0 +1,94 @@
+/* Demo homepage: 3D scroll and "push" effects driven by --p / --push (see scroll-scene). */
+
+.backdrop {
+  background:
+    radial-gradient(50rem 30rem at 85% 0%, rgb(255 255 255 / 0.9), transparent 60%),
+    radial-gradient(40rem 28rem at 5% 20%, var(--color-pink-100), transparent 65%),
+    linear-gradient(180deg, var(--color-rosegold-50), var(--color-pink-50) 40%, var(--color-champagne-50));
+}
+
+/* Hero: the product starts tilted back and rises toward you as you scroll. */
+.heroStage {
+  perspective: 1400px;
+}
+
+.heroTilt {
+  transform-origin: 50% 100%;
+  transform: rotateX(calc((1 - var(--p, 0)) * 26deg)) scale(calc(0.9 + var(--p, 0) * 0.1))
+    translateY(calc((1 - var(--p, 0)) * 2rem));
+  will-change: transform;
+}
+
+.heroTitle {
+  transform: translateY(calc(var(--p, 0) * -3rem));
+  opacity: calc(1 - var(--p, 0) * 0.5);
+}
+
+/* Words that slide past each other while the band scrolls through. */
+.slideLeft {
+  transform: translateX(calc((var(--p, 0.5) - 0.5) * -40%));
+}
+
+.slideRight {
+  transform: translateX(calc((var(--p, 0.5) - 0.5) * 40%));
+}
+
+/* Headings and blocks flip up into place, hinged at their bottom edge. */
+.flip {
+  perspective: 900px;
+}
+
+.flipInner {
+  transform-origin: 50% 100%;
+  transform: rotateX(calc((1 - var(--p, 1)) * -75deg)) translateY(calc((1 - var(--p, 1)) * 2.5rem));
+  opacity: var(--p, 1);
+}
+
+/* Stacked cards: each new card slides over and pushes the previous one back. */
+.stackCard {
+  position: sticky;
+  top: calc(6rem + var(--i) * 1.25rem);
+  transform-origin: 50% 0%;
+  transform: perspective(1200px) translateZ(calc(var(--push, 0) * -90px))
+    rotateX(calc(var(--push, 0) * 7deg)) scale(calc(1 - var(--push, 0) * 0.05));
+  filter: saturate(calc(1 - var(--push, 0) * 0.3)) brightness(calc(1 - var(--push, 0) * 0.05));
+}
+
+.stackShine {
+  background:
+    radial-gradient(28rem 18rem at 100% 0%, rgb(255 255 255 / 0.85), transparent 60%),
+    linear-gradient(140deg, var(--from), var(--to));
+}
+
+/* Closing card zooms toward you as it comes into view. */
+.zoom {
+  transform: perspective(1000px) translateZ(calc((1 - var(--p, 1)) * -220px));
+  opacity: calc(0.3 + var(--p, 1) * 0.7);
+}
+
+.pearl {
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 32% 28%, #fff 0 8%, transparent 22%),
+    radial-gradient(circle at 40% 40%, var(--color-champagne-50), var(--color-rosegold-200) 70%, var(--color-rosegold-400));
+  box-shadow:
+    -10px -10px 30px rgb(255 255 255 / 0.6) inset,
+    12px 16px 30px rgb(119 78 61 / 0.25) inset,
+    0 24px 40px -12px rgb(119 78 61 / 0.35);
+  transform: translateY(calc(var(--p, 0) * -12rem));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroTilt,
+  .heroTitle,
+  .slideLeft,
+  .slideRight,
+  .flipInner,
+  .stackCard,
+  .zoom,
+  .pearl {
+    transform: none;
+    filter: none;
+    opacity: 1;
+  }
+}

@@ -19,6 +19,7 @@ export const RESERVED_SLUGS = new Set([
   "contact",
   "cookies",
   "dashboard",
+  "demo",
   "design-system",
   "docs",
   "download",
