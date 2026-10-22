@@ -1,0 +1,54 @@
+import type { admin as en } from "../en/admin";
+
+export const admin: typeof en = {
+  metaTitle: "Administration de la plateforme",
+  badge: "Admin plateforme",
+  back: "Retour à l'espace",
+  title: "Aperçu de la plateforme",
+  description:
+    "Utilisation de tous les établissements NORYX. Les fiches clients ne sont jamais affichées ici.",
+  statsLabel: "Statistiques de la plateforme",
+  stats: {
+    businesses: "Établissements",
+    active: "Actifs",
+    new30: "Nouveaux (30 jours)",
+    pagesLive: "Pages de réservation en ligne",
+    members: "Membres de l'équipe",
+    appointments30: "Rendez-vous (30 jours)",
+    online30: "Réservations en ligne (30 jours)",
+    unsent30: "Notifications non envoyées (30 jours)",
+  },
+  billingTitle: "La facturation nécessite l'intégration d'un prestataire de paiement",
+  billingText:
+    "Les abonnements et les droits sont attribués ici et appliqués dans la base de données. Aucun prestataire de paiement n'est connecté : personne n'est facturé et aucune facture n'existe encore.",
+  businesses: "Établissements",
+  columns: {
+    business: "Établissement",
+    owner: "Propriétaire",
+    usage: "Utilisation",
+    status: "Statut",
+    plan: "Abonnement",
+    change: "Modifier le statut",
+  },
+  since: (date) => `depuis le ${date}`,
+  usage: (members, staff, bookings) =>
+    `${members} ${members === 1 ? "membre" : "membres"} · ${staff} collaborateurs · ${bookings} réservations/30 j`,
+  pageLive: "Page en ligne",
+  trialUntil: (date) => `essai jusqu'au ${date}`,
+  statuses: { active: "Actif", suspended: "Suspendu", closed: "Fermé" },
+  audit: "Journal d'audit",
+  noEvents: "Aucun événement pour l'instant.",
+  unknownBusiness: "Établissement inconnu",
+  form: {
+    subscriptionStatus: "Statut de l'abonnement",
+    trialing: "En période d'essai",
+    reasonAudit: "Indiquez une brève raison (conservée dans le journal d'audit).",
+  },
+  errors: {
+    required: "Accès administrateur de la plateforme requis.",
+    status: "Le statut n'a pas pu être modifié.",
+    plan: "L'abonnement n'a pas pu être modifié.",
+  },
+  statusUpdated: "Statut mis à jour et enregistré dans le journal d'audit.",
+  planUpdated: "Abonnement mis à jour et enregistré dans le journal d'audit.",
+};

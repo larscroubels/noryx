@@ -256,8 +256,8 @@ export const marketing: typeof en = {
         a: "Nog niet. Je registreert betalingen in de salon, en shopbestellingen worden betaald bij het afhalen. Online betalen komt er via een betrouwbare betaalprovider.",
       },
       {
-        q: "Is NORYX beschikbaar in het Nederlands?",
-        a: "Ja. NORYX is beschikbaar in het Nederlands en het Engels — wissel bovenaan elke pagina. Frans staat gepland.",
+        q: "Is NORYX beschikbaar in het Nederlands en het Frans?",
+        a: "Ja. NORYX is beschikbaar in het Nederlands, het Frans en het Engels — wissel bovenaan elke pagina.",
       },
     ],
   },

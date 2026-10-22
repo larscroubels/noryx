@@ -98,13 +98,13 @@ Conventions: UUID keys; `timestamptz` in UTC, displayed in the business time zon
 
 ## Languages (i18n)
 
-Dutch is the default interface language, English the second. `src/i18n/config.ts` lists the locales; the visitor's choice is stored in the `noryx_locale` cookie (set by the NL | EN switch), otherwise the `Accept-Language` header decides.
+Dutch is the default interface language; French and English are also available. `src/i18n/config.ts` lists the locales; the visitor's choice is stored in the `noryx_locale` cookie (set by the NL | FR | EN switch), otherwise the `Accept-Language` header decides.
 
-- Strings live in typed dictionaries per area in `src/i18n/dictionaries/{en,nl}/`. Each Dutch file is typed as `typeof` its English twin, so a missing key fails to compile, and `dictionaries.test.ts` also compares list lengths and function arities.
+- Strings live in typed dictionaries per area in `src/i18n/dictionaries/{en,nl,fr}/`. Each Dutch and French file is typed as `typeof` its English twin, so a missing key fails to compile, and `dictionaries.test.ts` also compares list lengths and function arities.
 - Server components and actions call `getT()` / `getI18n()` (`src/i18n/server.ts`); client components use `useT()` / `useIntlLocale()` from `I18nProvider`.
 - Validation schemas are factories that take the dictionary (`productSchema(t)`, built on `rules(t)` in `src/lib/validation/common.ts`), so error messages come back in the visitor's language. Database errors are mapped to translated messages in `databaseErrorMessage`.
-- Dates and durations use the interface locale (nl-BE / en-GB); money keeps the business locale.
-- Help-centre courses are long-form content in `src/content/help/{nl,en}.ts`; screenshots and the animated cursor targets come from `npm run help:screenshots`.
+- Dates and durations use the interface locale (nl-BE / fr-BE / en-GB); money keeps the business locale.
+- Help-centre courses are long-form content in `src/content/help/{nl,fr,en}.ts`; screenshots and the animated cursor targets come from `npm run help:screenshots`. `SCREENSHOT_LOCALE` in `src/content/help/index.ts` picks which language's captures a locale shows (French uses English until its own are captured).
 
 ## Notifications
 

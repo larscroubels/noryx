@@ -21,9 +21,12 @@ export default function GlobalError({
         }}
       >
         <div style={{ textAlign: "center", padding: 24 }}>
-          {/* Rendered outside the root layout (no dictionary available), so both languages are shown. */}
+          {/* Rendered outside the root layout (no dictionary available), so every language is shown. */}
           <h1 style={{ fontSize: 24, fontWeight: 600 }}>NORYX is tijdelijk niet beschikbaar</h1>
           <p style={{ color: "#6e6764" }}>Probeer het zo meteen opnieuw.</p>
+          <p lang="fr" style={{ color: "#6e6764", fontSize: 14 }}>
+            NORYX est temporairement indisponible. Veuillez réessayer dans un instant.
+          </p>
           <p lang="en" style={{ color: "#6e6764", fontSize: 14 }}>
             NORYX is temporarily unavailable. Please try again in a moment.
           </p>
@@ -40,7 +43,7 @@ export default function GlobalError({
               cursor: "pointer",
             }}
           >
-            Opnieuw proberen <span lang="en">· Try again</span>
+            Opnieuw proberen <span lang="fr">· Réessayer</span> <span lang="en">· Try again</span>
           </button>
         </div>
       </body>

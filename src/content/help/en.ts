@@ -18,7 +18,7 @@ export const en: HelpContent = {
             "You'll receive an email to confirm your address. Click the button in that email and you land straight in the setup.",
           ],
           image: { name: "signup", alt: "The NORYX sign-up form" },
-          tip: "Use **NL | EN** at the top of any page to choose the language you use NORYX in. Your choice is remembered.",
+          tip: "Use **NL | FR | EN** at the top of any page to choose the language you use NORYX in. Your choice is remembered.",
         },
         {
           title: "Tell us about your business",
@@ -471,7 +471,7 @@ export const en: HelpContent = {
         },
         {
           q: "How do I change the language?",
-          a: "Click **NL** or **EN** at the top. Your choice is remembered for a year on that device.",
+          a: "Click **NL**, **FR** or **EN** at the top. Your choice is remembered for a year on that device.",
         },
       ],
     },
