@@ -128,7 +128,12 @@ export const giftCards: typeof en = {
     gift_card_method_invalid: "Choisissez comment le chèque-cadeau a été payé.",
     gift_card_purchase_required:
       "Utilisez les chèques-cadeaux depuis un rendez-vous ou une commande.",
+    gift_card_purchase_closed:
+      "Ce rendez-vous ou cette commande est annulé ou déjà réglé : un chèque-cadeau ne peut pas y être utilisé.",
+    gift_card_exceeds_due: "C'est plus que le montant restant à payer.",
   },
+  alreadySold:
+    "Cette vente a déjà été enregistrée. Retrouvez le chèque dans la liste ; son code n'est affiché qu'une fois, à sa création.",
   insufficient: (balance) => `Il ne reste que ${balance} sur ce chèque-cadeau.`,
   tooMany: "Trop de tentatives. Patientez quelques minutes avant de réessayer.",
   failed: "Une erreur s'est produite. Rien n'a été modifié.",

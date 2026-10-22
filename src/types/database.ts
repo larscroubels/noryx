@@ -645,6 +645,7 @@ export type Database = {
           created_at: string;
           gift_card_id: string;
           id: number;
+          idempotency_key: string | null;
           kind: Database["public"]["Enums"]["gift_card_transaction_kind"];
           order_id: string | null;
           payment_id: string | null;
@@ -661,6 +662,7 @@ export type Database = {
           created_at?: string;
           gift_card_id: string;
           id?: never;
+          idempotency_key?: string | null;
           kind: Database["public"]["Enums"]["gift_card_transaction_kind"];
           order_id?: string | null;
           payment_id?: string | null;
@@ -676,6 +678,7 @@ export type Database = {
           created_at?: string;
           gift_card_id?: string;
           id?: never;
+          idempotency_key?: string | null;
           kind?: Database["public"]["Enums"]["gift_card_transaction_kind"];
           order_id?: string | null;
           payment_id?: string | null;
@@ -741,6 +744,7 @@ export type Database = {
           currency: string;
           expires_at: string | null;
           id: string;
+          idempotency_key: string | null;
           initial_cents: number;
           message: string | null;
           number: number;
@@ -766,6 +770,7 @@ export type Database = {
           currency: string;
           expires_at?: string | null;
           id?: string;
+          idempotency_key?: string | null;
           initial_cents: number;
           message?: string | null;
           number?: never;
@@ -790,6 +795,7 @@ export type Database = {
           currency?: string;
           expires_at?: string | null;
           id?: string;
+          idempotency_key?: string | null;
           initial_cents?: number;
           message?: string | null;
           number?: never;
@@ -1714,7 +1720,12 @@ export type Database = {
         Returns: Json;
       };
       adjust_gift_card: {
-        Args: { p_amount_cents: number; p_gift_card_id: string; p_reason: string };
+        Args: {
+          p_amount_cents: number;
+          p_gift_card_id: string;
+          p_idempotency_key?: string;
+          p_reason: string;
+        };
         Returns: undefined;
       };
       admin_list_businesses: {
@@ -1792,6 +1803,7 @@ export type Database = {
           p_business_id: string;
           p_buyer_email?: string;
           p_buyer_name: string;
+          p_idempotency_key?: string;
           p_message?: string;
           p_method: Database["public"]["Enums"]["payment_method"];
           p_recipient_name?: string;
@@ -1877,8 +1889,16 @@ export type Database = {
         Args: { p_amount: number; p_business_id: string };
         Returns: boolean;
       };
+      gift_card_due_cents: {
+        Args: { p_appointment_id: string; p_business_id: string; p_order_id: string };
+        Returns: number;
+      };
       gift_card_hash: { Args: { p_code: string }; Returns: string };
       gift_card_new_code: { Args: Record<PropertyKey, never>; Returns: string };
+      gift_card_purchase_due: {
+        Args: { p_appointment_id?: string; p_business_id: string; p_order_id?: string };
+        Returns: number;
+      };
       gift_card_require_reason: { Args: { p_reason: string }; Returns: string };
       has_business_permission: {
         Args: { p_business_id: string; p_permission: string };
@@ -1924,6 +1944,7 @@ export type Database = {
           p_appointment_id?: string;
           p_business_id: string;
           p_code: string;
+          p_idempotency_key?: string;
           p_order_id?: string;
         };
         Returns: Json;

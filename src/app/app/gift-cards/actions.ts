@@ -5,7 +5,6 @@ import { revalidatePath } from "next/cache";
 import { getT } from "@/i18n/server";
 import { failure, formToObject, success, validationFailure, type ActionState } from "@/lib/actions";
 import { authorize } from "@/lib/auth/session";
-import { getEntitlements, hasFeature } from "@/lib/billing/entitlements";
 import { formatMoney } from "@/lib/format";
 import { giftCardErrorMessage, normaliseGiftCardCode } from "@/lib/gift-cards";
 import { logger } from "@/lib/logger";
@@ -48,13 +47,16 @@ export async function sellGiftCard(
     p_buyer_email: d.buyerEmail ?? undefined,
     p_recipient_name: d.recipientName ?? undefined,
     p_message: d.message ?? undefined,
+    p_idempotency_key: d.idempotencyKey,
   });
   if (error || !data) {
     logger.error("gift_cards.sell_failed", { code: error?.code });
     return failure(giftCardErrorMessage(error, t, (c) => formatMoney(c)));
   }
-  const card = data as { gift_card_id: string; number: number; code: string };
+  const card = data as { gift_card_id: string; number: number; code: string | null };
   refresh(card.gift_card_id);
+  // A retried submission: the card exists, but its code was only shown the first time.
+  if (!card.code) return failure(t.giftCards.alreadySold);
   return {
     status: "success",
     code: card.code,
@@ -91,51 +93,6 @@ export async function activateGiftCard(
   };
 }
 
-/**
- * What is still open on the appointment or order, so a card never pays more than the
- * purchase. With the finance module, card redemptions are recorded payments already;
- * without it, they only exist on the cards. Null when the purchase can't be read.
- */
-async function amountDue(
-  supabase: Awaited<ReturnType<typeof createClient>>,
-  businessId: string,
-  target: { appointmentId?: string; orderId?: string },
-) {
-  const [{ data: purchase }, { data: cardRows }] = await Promise.all([
-    target.appointmentId
-      ? supabase
-          .from("appointments")
-          .select("price_cents")
-          .eq("id", target.appointmentId)
-          .eq("business_id", businessId)
-          .maybeSingle()
-          .then(({ data }) => ({ data: data ? data.price_cents : null }))
-      : supabase
-          .from("orders")
-          .select("total_cents")
-          .eq("id", target.orderId!)
-          .eq("business_id", businessId)
-          .maybeSingle()
-          .then(({ data }) => ({ data: data ? data.total_cents : null })),
-    supabase
-      .from("gift_card_transactions")
-      .select("amount_cents")
-      .eq(
-        target.appointmentId ? "appointment_id" : "order_id",
-        target.appointmentId ?? target.orderId!,
-      )
-      .in("kind", ["redeem", "reversal"]),
-  ]);
-  if (purchase === null) return null;
-  const onCards = -(cardRows ?? []).reduce((sum, row) => sum + row.amount_cents, 0);
-  if (!target.appointmentId) return Math.max(purchase - onCards, 0);
-  const finance = hasFeature(await getEntitlements(businessId), "finance");
-  const { data: paid } = await supabase.rpc("appointment_paid_cents", {
-    p_appointment_id: target.appointmentId,
-  });
-  return Math.max(purchase - (finance ? (paid ?? 0) : onCards), 0);
-}
-
 /** Redeems against an appointment or a shop order. Rate-limited per user against code guessing. */
 export async function redeemGiftCard(_prev: ActionState, formData: FormData): Promise<ActionState> {
   const [workspace, t] = await Promise.all([
@@ -151,16 +108,15 @@ export async function redeemGiftCard(_prev: ActionState, formData: FormData): Pr
   const money = (cents: number) =>
     formatMoney(cents, workspace.business.currency, workspace.business.locale);
 
+  // The database refuses more than is still due on the purchase, under a lock.
   const supabase = await createClient();
-  const due = await amountDue(supabase, workspace.business.id, d);
-  if (due !== null && d.amount > due) return failure(t.giftCards.redeem.tooMuch(money(due)));
-
   const { data, error } = await supabase.rpc("redeem_gift_card", {
     p_business_id: workspace.business.id,
     p_code: normaliseGiftCardCode(d.code),
     p_amount_cents: d.amount,
     p_appointment_id: d.appointmentId,
     p_order_id: d.orderId,
+    p_idempotency_key: d.idempotencyKey,
   });
   if (error || !data) {
     if (!error?.message?.startsWith("gift_card_"))
@@ -229,6 +185,7 @@ export async function adjustGiftCard(_prev: ActionState, formData: FormData) {
       p_gift_card_id: parsed.data.giftCardId,
       p_amount_cents: parsed.data.amount,
       p_reason: parsed.data.reason,
+      p_idempotency_key: parsed.data.idempotencyKey,
     });
     return { giftCardId: parsed.data.giftCardId, error };
   });

@@ -123,7 +123,12 @@ export const giftCards = {
     gift_cards_unavailable: "This salon doesn't sell gift cards online right now.",
     gift_card_method_invalid: "Choose how the gift card was paid.",
     gift_card_purchase_required: "Redeem gift cards from an appointment or an order.",
+    gift_card_purchase_closed:
+      "This appointment or order is cancelled or already settled, so a gift card can't be used for it.",
+    gift_card_exceeds_due: "That is more than what is still to pay.",
   } as Record<string, string>,
+  alreadySold:
+    "This sale was already recorded. Find the card in the list; its code is shown only once, when it is created.",
   insufficient: (balance: string) => `Only ${balance} is left on this gift card.`,
   tooMany: "Too many attempts. Wait a few minutes and try again.",
   failed: "Something went wrong. Nothing was changed.",

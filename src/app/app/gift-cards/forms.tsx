@@ -26,6 +26,15 @@ import { activateGiftCard, redeemGiftCard, sellGiftCard, type GiftCardCodeState 
 
 const euro = <span className="text-sm">€</span>;
 
+/**
+ * One key per form instance: a retried submit (double click, network retry) reuses it,
+ * so the database acts once. The form remounts after success and gets a fresh key.
+ */
+function IdempotencyKey() {
+  const [key] = useState(() => crypto.randomUUID());
+  return <input type="hidden" name="idempotencyKey" value={key} />;
+}
+
 function MethodSelect({ state }: { state: ActionState }) {
   const t = useT();
   return (
@@ -103,6 +112,7 @@ export function SellGiftCardForm() {
       {sold && <CodeReveal code={sold.code} number={sold.number} giftCardId={sold.giftCardId} />}
       {/* A new sale starts from an empty form; the code stays visible until the next one. */}
       <form key={sold?.giftCardId ?? "new"} action={action} className="grid gap-4" noValidate>
+        <IdempotencyKey />
         {state.status === "error" && <FormAlert state={state} />}
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label={g.amount} error={fieldError(state, "amount")} required>
@@ -195,6 +205,7 @@ export function RedeemGiftCardForm({
       <form key={state.done ?? 0} action={action} className="grid gap-4" noValidate>
         {appointmentId && <input type="hidden" name="appointmentId" value={appointmentId} />}
         {orderId && <input type="hidden" name="orderId" value={orderId} />}
+        <IdempotencyKey />
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label={r.code} error={fieldError(state, "code")} required>
             <Input
@@ -267,6 +278,7 @@ export function GiftCardActionDialog({
           {Object.entries(hiddenFields).map(([name, value]) => (
             <input key={name} type="hidden" name={name} value={value} />
           ))}
+          {withAmount && <IdempotencyKey />}
           {state.status === "error" && <FormAlert state={state} />}
           {withAmount && (
             <Field

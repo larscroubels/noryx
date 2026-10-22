@@ -126,7 +126,12 @@ export const giftCards: typeof en = {
     gift_cards_unavailable: "Deze salon verkoopt momenteel geen cadeaubonnen online.",
     gift_card_method_invalid: "Kies hoe de cadeaubon betaald is.",
     gift_card_purchase_required: "Wissel cadeaubonnen in vanuit een afspraak of bestelling.",
+    gift_card_purchase_closed:
+      "Deze afspraak of bestelling is geannuleerd of al afgerekend, dus een cadeaubon kan er niet voor gebruikt worden.",
+    gift_card_exceeds_due: "Dat is meer dan wat nog te betalen is.",
   },
+  alreadySold:
+    "Deze verkoop is al geregistreerd. Zoek de bon in de lijst; de code wordt maar één keer getoond, bij het aanmaken.",
   insufficient: (balance) => `Er staat nog maar ${balance} op deze cadeaubon.`,
   tooMany: "Te veel pogingen. Wacht een paar minuten en probeer opnieuw.",
   failed: "Er ging iets mis. Er is niets gewijzigd.",

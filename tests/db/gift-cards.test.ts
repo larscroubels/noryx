@@ -16,7 +16,6 @@ let staff: string;
 let outsider: string;
 let businessId: string;
 let otherBusinessId: string;
-let orderId: string;
 
 const user = (userId: string) => ({ role: "authenticated" as const, userId });
 const server = { role: "service_role" as const };
@@ -41,12 +40,29 @@ const sellAtDesk = (amount = 5000, by = owner, business = businessId) =>
     [business, amount],
   );
 
-const redeem = (code: string, amount: number, by = owner) =>
-  call<{ balance_cents: number; payment_id: string | null; transaction_id: number }>(
-    user(by),
-    "select public.redeem_gift_card($1, $2, $3, null, $4) as result",
-    [businessId, code, amount, orderId],
-  );
+/** A fresh, unpaid shop order, so the "still due" cap doesn't interfere unless a test wants it. */
+const newOrder = async (totalCents = 100000) =>
+  (
+    await db.query<{ id: string }>(
+      "insert into public.orders (business_id, customer_name, total_cents, currency) values ($1, 'Client', $2, 'EUR') returning id",
+      [businessId, totalCents],
+    )
+  ).rows[0]!.id;
+
+type Redemption = {
+  balance_cents: number;
+  payment_id: string | null;
+  transaction_id: number;
+  duplicate?: boolean;
+};
+const redeem = async (code: string, amount: number, by = owner, order?: string, key?: string) =>
+  call<Redemption>(user(by), "select public.redeem_gift_card($1, $2, $3, null, $4, $5) as result", [
+    businessId,
+    code,
+    amount,
+    order ?? (await newOrder()),
+    key ?? null,
+  ]);
 
 const card = async (id: string) =>
   (
@@ -70,12 +86,6 @@ beforeAll(async () => {
     "update public.businesses set gift_cards_enabled = true, gift_card_amounts = '{2500,5000}' where id = $1",
     [businessId],
   );
-  orderId = (
-    await db.query<{ id: string }>(
-      "insert into public.orders (business_id, customer_name, total_cents, currency) values ($1, 'Client', 9000, 'EUR') returning id",
-      [businessId],
-    )
-  ).rows[0]!.id;
 });
 
 describe("selling and activating gift cards", () => {
@@ -188,7 +198,11 @@ describe("redeeming gift cards", () => {
 
   it("serialises redemptions so two of them can never overspend", async () => {
     const { code } = await sellAtDesk(3000);
-    const results = await Promise.allSettled([redeem(code, 2000), redeem(code, 2000)]);
+    const order = await newOrder();
+    const results = await Promise.allSettled([
+      redeem(code, 2000, owner, order),
+      redeem(code, 2000, owner, order),
+    ]);
     expect(results.filter((r) => r.status === "fulfilled")).toHaveLength(1);
     const { rows } = await db.query<{ balance_cents: number }>(
       "select balance_cents from public.gift_cards where code_hash = public.gift_card_hash($1)",
@@ -249,18 +263,23 @@ describe("redeeming gift cards", () => {
   });
 
   it("only records revenue on plans with the finance module", async () => {
+    // Shop orders need Pro, so the order exists before the salon moves to Basic.
+    const order = await newOrder();
     await db.query(
       "update public.business_subscriptions set plan_id = 'basic', status = 'active' where business_id = $1",
       [businessId],
     );
-    const { code } = await sellAtDesk(2500);
-    const result = await redeem(code, 1000);
-    expect(result.payment_id).toBeNull();
-    expect(result.balance_cents).toBe(1500);
-    await db.query(
-      "update public.business_subscriptions set plan_id = 'pro', status = 'trialing' where business_id = $1",
-      [businessId],
-    );
+    try {
+      const { code } = await sellAtDesk(2500);
+      const result = await redeem(code, 1000, owner, order);
+      expect(result.payment_id).toBeNull();
+      expect(result.balance_cents).toBe(1500);
+    } finally {
+      await db.query(
+        "update public.business_subscriptions set plan_id = 'pro', status = 'trialing' where business_id = $1",
+        [businessId],
+      );
+    }
   });
 });
 
@@ -354,5 +373,113 @@ describe("holder view", () => {
         code,
       ]),
     ).rejects.toThrow(/permission denied/);
+  });
+});
+
+describe("fixes after review", () => {
+  it("lets the salon cancel an online order that was never paid", async () => {
+    const order = await call<{ gift_card_id: string }>(
+      server,
+      "select public.create_online_gift_card($1, 2500, 'Buyer', null) as result",
+      [businessId],
+    );
+    await call(user(owner), "select public.cancel_gift_card($1, 'Never paid') as result", [
+      order.gift_card_id,
+    ]);
+    expect(await card(order.gift_card_id)).toMatchObject({ status: "cancelled", code_hash: null });
+  });
+
+  it("never redeems more than is still due, whoever redeems and whatever they can read", async () => {
+    // A manager without gift card access can't read the ledger, but the cap lives in the database.
+    await db.query(
+      "update public.business_members set revoked_permissions = '{gift_cards.manage}' where user_id = $1",
+      [manager],
+    );
+    const order = await newOrder(9000);
+    const first = await sellAtDesk(9000);
+    const second = await sellAtDesk(9000);
+    await redeem(first.code, 9000, manager, order);
+    await expect(redeem(second.code, 100, manager, order)).rejects.toThrow(/gift_card_exceeds_due/);
+    const due = await call<number>(
+      user(manager),
+      "select public.gift_card_purchase_due($1, null, $2) as result",
+      [businessId, order],
+    );
+    expect(due).toBe(0);
+    await db.query(
+      "update public.business_members set revoked_permissions = '{}' where user_id = $1",
+      [manager],
+    );
+  });
+
+  it("refuses redemptions against settled or cancelled orders", async () => {
+    const { code } = await sellAtDesk(2500);
+    const paid = await newOrder(2000);
+    await db.query("update public.orders set payment_status = 'paid' where id = $1", [paid]);
+    await expect(redeem(code, 500, owner, paid)).rejects.toThrow(/gift_card_purchase_closed/);
+  });
+
+  it("only refunds a redemption's payment through a reversal", async () => {
+    const { code } = await sellAtDesk(3000);
+    const spent = await redeem(code, 1000);
+    await expect(
+      as(db, user(owner), (tx) =>
+        tx.query(
+          "update public.payments set status = 'refunded', refunded_at = now(), refunded_by = $2 where id = $1",
+          [spent.payment_id, owner],
+        ),
+      ),
+    ).rejects.toThrow(/payment_linked_to_gift_card/);
+    await call(
+      user(owner),
+      "select public.reverse_gift_card_redemption($1, 'Wrong client') as result",
+      [spent.transaction_id],
+    );
+    const payment = await db.query<{ status: string }>(
+      "select status from public.payments where id = $1",
+      [spent.payment_id],
+    );
+    expect(payment.rows[0]!.status).toBe("refunded");
+  });
+
+  it("does nothing twice when a sale, redemption or correction is retried", async () => {
+    const saleKey = "11111111-1111-4111-8111-000000000001";
+    const sale = () =>
+      call<{ gift_card_id: string; code: string | null; duplicate?: boolean }>(
+        user(owner),
+        "select public.create_desk_gift_card($1, 2500, 'card', 'Buyer', null, null, null, $2) as result",
+        [businessId, saleKey],
+      );
+    const firstSale = await sale();
+    const retriedSale = await sale();
+    expect(retriedSale).toMatchObject({
+      gift_card_id: firstSale.gift_card_id,
+      code: null,
+      duplicate: true,
+    });
+
+    const order = await newOrder();
+    const redeemKey = "11111111-1111-4111-8111-000000000002";
+    await redeem(firstSale.code!, 1000, owner, order, redeemKey);
+    const retried = await redeem(firstSale.code!, 1000, owner, order, redeemKey);
+    expect(retried).toMatchObject({ balance_cents: 1500, duplicate: true });
+
+    const adjustKey = "11111111-1111-4111-8111-000000000003";
+    for (let i = 0; i < 2; i++)
+      await call(user(owner), "select public.adjust_gift_card($1, 500, 'Goodwill', $2) as result", [
+        firstSale.gift_card_id,
+        adjustKey,
+      ]);
+    expect((await card(firstSale.gift_card_id)).balance_cents).toBe(2000);
+  });
+
+  it("keeps every card's balance equal to the sum of its ledger", async () => {
+    const mismatches = await db.query(
+      `select g.number from public.gift_cards g
+       left join public.gift_card_transactions t on t.gift_card_id = g.id
+       group by g.id
+       having g.balance_cents <> coalesce(sum(t.amount_cents), 0)`,
+    );
+    expect(mismatches.rows).toEqual([]);
   });
 });

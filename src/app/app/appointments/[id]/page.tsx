@@ -110,28 +110,36 @@ export default async function AppointmentPage({
     can(workspace, "appointments.manage_all") ||
     can(workspace, "finance.manage");
   const canSeeGiftCards = can(workspace, "gift_cards.manage") || can(workspace, "finance.view");
-  const [{ data: paidCents }, { data: payments }, { data: giftCardUse }] = await Promise.all([
-    supabase.rpc("appointment_paid_cents", { p_appointment_id: id }),
-    canSeeFinance
-      ? supabase
-          .from("payments")
-          .select("id, amount_cents, method, status, paid_at")
-          .eq("appointment_id", id)
-          .order("paid_at")
-      : Promise.resolve({ data: null }),
-    canSeeGiftCards
-      ? supabase
-          .from("gift_card_transactions")
-          .select("id, kind, amount_cents, gift_card_id, created_at, gift_card:gift_cards(number)")
-          .eq("appointment_id", id)
-          .in("kind", ["redeem", "reversal"])
-          .order("id")
-      : Promise.resolve({ data: null }),
-  ]);
+  const [{ data: paidCents }, { data: payments }, { data: giftCardUse }, { data: dueCents }] =
+    await Promise.all([
+      supabase.rpc("appointment_paid_cents", { p_appointment_id: id }),
+      canSeeFinance
+        ? supabase
+            .from("payments")
+            .select("id, amount_cents, method, status, paid_at")
+            .eq("appointment_id", id)
+            .order("paid_at")
+        : Promise.resolve({ data: null }),
+      canSeeGiftCards
+        ? supabase
+            .from("gift_card_transactions")
+            .select(
+              "id, kind, amount_cents, gift_card_id, created_at, gift_card:gift_cards(number)",
+            )
+            .eq("appointment_id", id)
+            .in("kind", ["redeem", "reversal"])
+            .order("id")
+        : Promise.resolve({ data: null }),
+      // Same figure the database uses to cap redemptions, whatever this user may read.
+      canRedeemGiftCard
+        ? supabase.rpc("gift_card_purchase_due", {
+            p_business_id: business.id,
+            p_appointment_id: id,
+          })
+        : Promise.resolve({ data: null }),
+    ]);
   const paid = paidCents ?? 0;
-  // With finance, gift card redemptions are already payments; on Basic they live on the card only.
-  const redeemedOnCards = -(giftCardUse ?? []).reduce((sum, row) => sum + row.amount_cents, 0);
-  const due = Math.max(appointment.price_cents - (paymentsEnabled ? paid : redeemedOnCards), 0);
+  const due = dueCents ?? Math.max(appointment.price_cents - paid, 0);
   const local = utcToZoned(new Date(appointment.starts_at), tz);
   const customerName = appointment.customer
     ? `${appointment.customer.first_name} ${appointment.customer.last_name ?? ""}`.trim()

@@ -80,6 +80,15 @@ export default async function FinancePage({ searchParams }: PageProps<"/app/fina
       .lt("starts_at", end)
       .limit(10000),
   ]);
+  // Payments recorded by a gift card redemption are refunded by reversing it on the card.
+  const voucherIds = (payments ?? []).filter((p) => p.method === "voucher").map((p) => p.id);
+  const { data: cardLinked } = voucherIds.length
+    ? await supabase
+        .from("gift_card_transactions")
+        .select("payment_id")
+        .in("payment_id", voucherIds)
+    : { data: [] };
+  const linkedToCard = new Set((cardLinked ?? []).map((row) => row.payment_id));
 
   const summary = summarizeFinance(
     (payments ?? []).map((p) => ({
@@ -223,20 +232,22 @@ export default async function FinancePage({ searchParams }: PageProps<"/app/fina
                     >
                       {money(payment.amount_cents)}
                     </span>
-                    {canManage && payment.status === "recorded" && (
-                      <ConfirmAction
-                        trigger={<Undo2 aria-label={f.refund} />}
-                        triggerVariant="ghost"
-                        title={f.refundTitle}
-                        description={f.refundText}
-                        confirmLabel={f.refundConfirm}
-                        action={refundPayment}
-                        hiddenFields={{
-                          id: payment.id,
-                          appointmentId: payment.appointment_id ?? "",
-                        }}
-                      />
-                    )}
+                    {canManage &&
+                      payment.status === "recorded" &&
+                      !linkedToCard.has(payment.id) && (
+                        <ConfirmAction
+                          trigger={<Undo2 aria-label={f.refund} />}
+                          triggerVariant="ghost"
+                          title={f.refundTitle}
+                          description={f.refundText}
+                          confirmLabel={f.refundConfirm}
+                          action={refundPayment}
+                          hiddenFields={{
+                            id: payment.id,
+                            appointmentId: payment.appointment_id ?? "",
+                          }}
+                        />
+                      )}
                   </li>
                 ))}
               </ul>

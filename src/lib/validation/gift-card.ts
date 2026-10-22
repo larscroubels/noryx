@@ -60,6 +60,7 @@ export function giftCardDeskSaleSchema(t: Dictionary) {
     buyerEmail: r.optionalEmail,
     recipientName: r.optionalText(160),
     message: r.optionalText(300),
+    idempotencyKey: z.uuid().optional(),
   });
 }
 
@@ -71,6 +72,7 @@ export function giftCardRedeemSchema(t: Dictionary) {
       amount: r.money(t.giftCards.redeem.amount).pipe(z.number().min(1, t.validation.money)),
       appointmentId: r.uuid.optional(),
       orderId: r.uuid.optional(),
+      idempotencyKey: z.uuid().optional(),
     })
     .refine((value) => Boolean(value.appointmentId) !== Boolean(value.orderId), {
       message: t.giftCards.errors.gift_card_purchase_required,
@@ -113,6 +115,7 @@ export function giftCardAdjustSchema(t: Dictionary) {
         return negative ? -cents : cents;
       }),
     reason: reason(t),
+    idempotencyKey: z.uuid().optional(),
   });
 }
 

@@ -52,8 +52,11 @@ export default async function OrderPage({ params }: PageProps<"/app/orders/[id]"
     .eq("order_id", order.id)
     .in("kind", ["redeem", "reversal"])
     .order("id");
-  const redeemed = -(giftCardUse ?? []).reduce((sum, row) => sum + row.amount_cents, 0);
-  const due = Math.max(order.total_cents - redeemed, 0);
+  const { data: dueCents } = await supabase.rpc("gift_card_purchase_due", {
+    p_business_id: business.id,
+    p_order_id: order.id,
+  });
+  const due = dueCents ?? order.total_cents;
   const next = NEXT_ORDER_STATUS[order.status];
   const open = order.status !== "cancelled" && order.status !== "completed";
 
