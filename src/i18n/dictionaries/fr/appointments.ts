@@ -20,6 +20,10 @@ export const appointments: typeof en = {
     allStaff: "Tous les collaborateurs",
     viewLabel: "Vue de l'agenda",
     views: { day: "Jour", week: "Semaine", month: "Mois" },
+    weekNumber: (week) => `Semaine ${week}`,
+    selectedDay: "Jour sélectionné",
+    fullscreen: "Plein écran",
+    exitFullscreen: "Quitter le plein écran",
   },
   new: {
     title: "Nouveau rendez-vous",

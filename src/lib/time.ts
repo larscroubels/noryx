@@ -113,6 +113,21 @@ export function startOfWeek(date: string) {
   return addDays(date, 1 - isoWeekday(date));
 }
 
+/** Whole days from one local date to another (negative when `to` is earlier). */
+export function daysBetween(from: string, to: string) {
+  const utc = (date: string) => {
+    const { year, month, day } = parseDate(date);
+    return Date.UTC(year, month - 1, day);
+  };
+  return Math.round((utc(to) - utc(from)) / 86_400_000);
+}
+
+/** ISO 8601 week number (weeks start on Monday; week 1 holds the first Thursday). */
+export function isoWeekNumber(date: string) {
+  const thursday = addDays(date, 4 - isoWeekday(date));
+  return Math.floor(daysBetween(`${thursday.slice(0, 4)}-01-01`, thursday) / 7) + 1;
+}
+
 /** UTC instants bounding a local calendar day (handles 23/25-hour DST days). */
 export function dayBoundsUtc(date: string, timeZone: string) {
   return {

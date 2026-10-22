@@ -19,6 +19,10 @@ export const appointments: typeof en = {
     allStaff: "Alle medewerkers",
     viewLabel: "Agendaweergave",
     views: { day: "Dag", week: "Week", month: "Maand" },
+    weekNumber: (week) => `Week ${week}`,
+    selectedDay: "Geselecteerde dag",
+    fullscreen: "Volledig scherm",
+    exitFullscreen: "Volledig scherm sluiten",
   },
   new: {
     title: "Nieuwe afspraak",

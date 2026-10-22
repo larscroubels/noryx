@@ -17,6 +17,10 @@ export const appointments = {
     allStaff: "All professionals",
     viewLabel: "Calendar view",
     views: { day: "Day", week: "Week", month: "Month" },
+    weekNumber: (week: number) => `Week ${week}`,
+    selectedDay: "Selected day",
+    fullscreen: "Full screen",
+    exitFullscreen: "Exit full screen",
   },
   new: {
     title: "New appointment",

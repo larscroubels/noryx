@@ -10,7 +10,9 @@ import {
 import {
   addDays,
   dayBoundsUtc,
+  daysBetween,
   isoWeekday,
+  isoWeekNumber,
   minutesToTime,
   timeToMinutes,
   utcToZoned,
@@ -18,6 +20,21 @@ import {
 } from "./time";
 
 const normalise = (value: string) => value.replace(/\s/g, " ");
+
+describe("calendar dates", () => {
+  it("counts days between local dates across month and DST boundaries", () => {
+    expect(daysBetween("2026-10-22", "2026-10-23")).toBe(1);
+    expect(daysBetween("2026-10-23", "2026-10-22")).toBe(-1);
+    expect(daysBetween("2026-10-24", "2026-10-26")).toBe(2);
+  });
+
+  it("uses ISO week numbers, including weeks that span a new year", () => {
+    expect(isoWeekNumber("2026-10-22")).toBe(43);
+    expect(isoWeekNumber("2026-01-01")).toBe(1);
+    expect(isoWeekNumber("2027-01-01")).toBe(53);
+    expect(isoWeekNumber("2024-12-30")).toBe(1);
+  });
+});
 
 describe("money", () => {
   it("formats cents as EUR with Belgian conventions", () => {

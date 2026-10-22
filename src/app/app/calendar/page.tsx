@@ -26,12 +26,16 @@ import { createClient } from "@/lib/supabase/server";
 import {
   addDays,
   dayBoundsUtc,
+  daysBetween,
   isoWeekday,
+  isoWeekNumber,
   parseDate,
   startOfWeek,
   todayInZone,
   utcToZoned,
 } from "@/lib/time";
+
+import { CalendarFrame } from "./calendar-frame";
 
 export async function generateMetadata(): Promise<Metadata> {
   return { title: (await getT()).appointments.calendar.title };
@@ -170,12 +174,33 @@ export default async function CalendarPage({ searchParams }: PageProps<"/app/cal
     return `/app/calendar?${search.toString()}`;
   };
 
+  // The heading always describes the selected date; "today/tomorrow/yesterday" is added
+  // in the day view so it stays clear where the arrows have taken you.
+  const offset = daysBetween(today, date);
+  const sameYear = date.slice(0, 4) === today.slice(0, 4);
+  const longDay = day(date, {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    ...(sameYear ? {} : { year: "numeric" }),
+  });
+  const shortDay = (value: string, withYear = false) =>
+    day(value, { day: "numeric", month: "short", ...(withYear ? { year: "numeric" } : {}) });
+  const lastOfMonth = addDays(addDays(monthStart(date), 32).slice(0, 8) + "01", -1);
   const title =
     view === "day"
-      ? day(date)
+      ? Math.abs(offset) <= 1
+        ? `${new Intl.RelativeTimeFormat(intl, { numeric: "auto" }).format(offset, "day")}, ${longDay}`
+        : longDay
       : view === "week"
-        ? `${day(startOfWeek(date), { day: "numeric", month: "short" })} – ${day(addDays(startOfWeek(date), 6), { day: "numeric", month: "short", year: "numeric" })}`
+        ? `${shortDay(startOfWeek(date))} – ${shortDay(addDays(startOfWeek(date), 6), true)}`
         : day(monthStart(date), { month: "long", year: "numeric" });
+  const subtitle =
+    view === "week"
+      ? c.weekNumber(isoWeekNumber(date))
+      : view === "month"
+        ? `${shortDay(monthStart(date))} – ${shortDay(lastOfMonth)}`
+        : null;
 
   const position = (startIso: string, endIso: string) => {
     const start = utcToZoned(new Date(startIso), tz).minuteOfDay;
@@ -394,9 +419,15 @@ export default async function CalendarPage({ searchParams }: PageProps<"/app/cal
             label: (
               <Link
                 href={href({ date: value, view: "day" })}
-                className={cn("hover:underline", value === today && "text-pink-700")}
+                aria-current={value === date ? "date" : undefined}
+                className={cn(
+                  "-mx-1.5 rounded-md px-1.5 py-0.5 hover:underline",
+                  value === today && "text-pink-700",
+                  value === date && "bg-pink-50 ring-1 ring-pink-700",
+                )}
               >
                 {t.common.weekdaysShort[isoWeekday(value) - 1]} {parseDate(value).day}
+                {value === date && <span className="sr-only"> ({c.selectedDay})</span>}
               </Link>
             ),
             items: [
@@ -436,11 +467,14 @@ export default async function CalendarPage({ searchParams }: PageProps<"/app/cal
             <Link
               key={value}
               href={href({ date: value, view: "day" })}
+              aria-current={value === date ? "date" : undefined}
               className={cn(
                 "min-h-16 border-b border-l border-border p-1.5 hover:bg-surface-subtle sm:min-h-24 sm:p-2",
                 value.slice(0, 7) !== month && "bg-surface-subtle/60 text-fg-subtle",
+                value === date && "ring-2 ring-pink-700 ring-inset",
               )}
             >
+              {value === date && <span className="sr-only">{c.selectedDay}: </span>}
               <span
                 className={cn(
                   "inline-flex size-7 items-center justify-center rounded-full text-sm font-semibold",
@@ -480,73 +514,82 @@ export default async function CalendarPage({ searchParams }: PageProps<"/app/cal
         }
       />
 
-      {!pendingOnly && (
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-1">
-            <Button asChild variant="secondary" size="icon-sm">
-              <Link href={href({ date: prevDate })} aria-label={t.common.previous}>
-                <ChevronLeft aria-hidden="true" />
-              </Link>
-            </Button>
-            <Button asChild variant="secondary" size="sm">
-              <Link href={href({ date: today })}>{t.common.today}</Link>
-            </Button>
-            <Button asChild variant="secondary" size="icon-sm">
-              <Link href={href({ date: nextDate })} aria-label={t.common.next}>
-                <ChevronRight aria-hidden="true" />
-              </Link>
-            </Button>
-          </div>
-          <h2 className="text-base font-semibold sm:text-lg">{title}</h2>
-          <div className="ml-auto flex flex-wrap items-center gap-3">
-            {seesAll && visibleStaff.length > 1 && (
-              <form method="get" action="/app/calendar" className="flex items-center gap-2">
-                <input type="hidden" name="date" value={date} />
-                {view !== "day" && <input type="hidden" name="view" value={view} />}
-                <label htmlFor="staff-filter" className="sr-only">
-                  {t.common.fields.professional}
-                </label>
-                <Select
-                  id="staff-filter"
-                  name="staff"
-                  defaultValue={staffFilter ?? ""}
-                  className="h-8 w-44 text-sm"
-                >
-                  <option value="">{c.allStaff}</option>
-                  {visibleStaff.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.display_name}
-                    </option>
-                  ))}
-                </Select>
-                <Button type="submit" variant="secondary" size="sm">
-                  {t.common.apply}
+      {pendingOnly ? (
+        <Card className="overflow-hidden">{body}</Card>
+      ) : (
+        <CalendarFrame
+          toolbar={
+            <>
+              <div className="flex items-center gap-1">
+                <Button asChild variant="secondary" size="icon-sm">
+                  <Link href={href({ date: prevDate })} aria-label={t.common.previous}>
+                    <ChevronLeft aria-hidden="true" />
+                  </Link>
                 </Button>
-              </form>
-            )}
-            <nav
-              aria-label={c.viewLabel}
-              className="inline-flex rounded-md border border-border-strong p-0.5"
-            >
-              {(["day", "week", "month"] as const).map((v) => (
-                <Link
-                  key={v}
-                  href={href({ view: v })}
-                  aria-current={v === view ? "page" : undefined}
-                  className={cn(
-                    "rounded px-3 py-1 text-sm font-semibold",
-                    v === view ? "bg-pink-700 text-white" : "text-fg-muted hover:text-fg",
-                  )}
+                <Button asChild variant="secondary" size="sm">
+                  <Link href={href({ date: today })}>{t.common.today}</Link>
+                </Button>
+                <Button asChild variant="secondary" size="icon-sm">
+                  <Link href={href({ date: nextDate })} aria-label={t.common.next}>
+                    <ChevronRight aria-hidden="true" />
+                  </Link>
+                </Button>
+              </div>
+              <div aria-live="polite">
+                <h2 className="text-base font-semibold sm:text-lg">{title}</h2>
+                {subtitle && <p className="text-sm text-fg-muted">{subtitle}</p>}
+              </div>
+              <div className="ml-auto flex flex-wrap items-center gap-3">
+                {seesAll && visibleStaff.length > 1 && (
+                  <form method="get" action="/app/calendar" className="flex items-center gap-2">
+                    <input type="hidden" name="date" value={date} />
+                    {view !== "day" && <input type="hidden" name="view" value={view} />}
+                    <label htmlFor="staff-filter" className="sr-only">
+                      {t.common.fields.professional}
+                    </label>
+                    <Select
+                      id="staff-filter"
+                      name="staff"
+                      defaultValue={staffFilter ?? ""}
+                      className="h-8 w-44 text-sm"
+                    >
+                      <option value="">{c.allStaff}</option>
+                      {visibleStaff.map((s) => (
+                        <option key={s.id} value={s.id}>
+                          {s.display_name}
+                        </option>
+                      ))}
+                    </Select>
+                    <Button type="submit" variant="secondary" size="sm">
+                      {t.common.apply}
+                    </Button>
+                  </form>
+                )}
+                <nav
+                  aria-label={c.viewLabel}
+                  className="inline-flex rounded-md border border-border-strong p-0.5"
                 >
-                  {c.views[v]}
-                </Link>
-              ))}
-            </nav>
-          </div>
-        </div>
+                  {(["day", "week", "month"] as const).map((v) => (
+                    <Link
+                      key={v}
+                      href={href({ view: v })}
+                      aria-current={v === view ? "page" : undefined}
+                      className={cn(
+                        "rounded px-3 py-1 text-sm font-semibold",
+                        v === view ? "bg-pink-700 text-white" : "text-fg-muted hover:text-fg",
+                      )}
+                    >
+                      {c.views[v]}
+                    </Link>
+                  ))}
+                </nav>
+              </div>
+            </>
+          }
+        >
+          <Card className="overflow-hidden">{body}</Card>
+        </CalendarFrame>
       )}
-
-      <Card className="overflow-hidden">{body}</Card>
     </div>
   );
 }
