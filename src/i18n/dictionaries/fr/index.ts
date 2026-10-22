@@ -2,6 +2,7 @@ import { account } from "./account";
 import { admin } from "./admin";
 import { app } from "./app";
 import { appointments } from "./appointments";
+import { appShowcase } from "./app-showcase";
 import { auth } from "./auth";
 import { booking } from "./booking";
 import { common } from "./common";
@@ -42,4 +43,5 @@ export const fr = {
   help,
   pricing,
   giftCards,
+  appShowcase,
 };

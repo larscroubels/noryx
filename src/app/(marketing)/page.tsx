@@ -20,6 +20,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Logo } from "@/components/brand/logo";
+import { AppShowcase } from "@/components/marketing/app-showcase/app-showcase";
 import { HeroDemo } from "@/components/marketing/hero-demo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -199,6 +200,9 @@ export default async function LandingPage() {
           </ul>
         </div>
       </section>
+
+      {/* The planned client app */}
+      <AppShowcase labels={t.appShowcase} />
 
       {/* Roadmap */}
       <section className="border-t border-border bg-surface-subtle py-20 sm:py-24">

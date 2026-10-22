@@ -14,6 +14,7 @@ export default async function MarketingLayout({ children }: { children: React.Re
     { href: "/#features", label: t.marketing.nav.features, wide: true },
     { href: "/#booking", label: t.marketing.nav.booking },
     { href: "/#for-you", label: t.marketing.nav.forYou, wide: true },
+    { href: "/#app", label: t.appShowcase.nav, wide: true },
     { href: "/pricing", label: t.marketing.nav.pricing },
     { href: "/faq", label: t.marketing.nav.faq },
     { href: "/help", label: t.marketing.nav.help },

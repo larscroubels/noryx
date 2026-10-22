@@ -1,0 +1,584 @@
+/*
+ * NORYX app showcase. Every animation ends in a meaningful state (fill: both). Under
+ * reduced motion the global rule shortens durations and the rule at the end of this
+ * file removes the delays, so the finished screens show at once.
+ */
+
+/* ── Phone ─────────────────────────────────────────────────────────────── */
+/*
+ * The phone is laid out at one design width (19rem) and scaled as a whole on small or
+ * short screens, so its screens never reflow, clip or wrap differently per device.
+ */
+.stage {
+  position: relative;
+  margin-inline: auto;
+  width: 19rem;
+}
+
+@media (max-width: 23.5rem) {
+  .stage {
+    zoom: 0.88;
+  }
+}
+
+@media (max-width: 21.5rem) {
+  .stage {
+    zoom: 0.78;
+  }
+}
+
+/* Landscape phones: small enough to see the whole device. */
+@media (orientation: landscape) and (max-height: 32rem) {
+  .stage {
+    zoom: 0.5;
+  }
+}
+
+.glow {
+  position: absolute;
+  inset: -2.5rem -3rem;
+  border-radius: 4rem;
+  background:
+    radial-gradient(closest-side, var(--color-pink-100), transparent),
+    radial-gradient(60% 50% at 80% 90%, var(--color-champagne-100), transparent);
+  filter: blur(24px);
+  opacity: 0.8;
+}
+
+.phone {
+  position: relative;
+  border-radius: 3rem;
+  background: var(--color-neutral-950);
+  padding: 0.6rem;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.06) inset,
+    var(--shadow-xl);
+}
+
+.screen {
+  position: relative;
+  aspect-ratio: 9 / 19.2;
+  overflow: hidden;
+  border-radius: 2.45rem;
+  background: var(--color-canvas, #fbf8f5);
+  color: var(--color-fg);
+}
+
+.statusBar {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  height: 2.6rem;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 1.6rem 1.4rem;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.island {
+  position: absolute;
+  top: 0.55rem;
+  left: 50%;
+  height: 1.45rem;
+  width: 5.6rem;
+  translate: -50% 0;
+  border-radius: 999px;
+  background: var(--color-neutral-950);
+}
+
+.battery {
+  height: 0.6rem;
+  width: 1.3rem;
+  border-radius: 3px;
+  box-shadow: 0 0 0 1.5px currentColor inset;
+  background: linear-gradient(90deg, currentColor 70%, transparent 70%) 2px 2px / calc(100% - 4px)
+    calc(100% - 4px) no-repeat;
+}
+
+.view {
+  position: absolute;
+  inset: 2.6rem 0 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  translate: 0 0.75rem;
+  transition:
+    opacity 380ms var(--ease-standard),
+    translate 380ms var(--ease-standard);
+  pointer-events: none;
+}
+
+.view[data-active] {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* ── Screen 1: account ─────────────────────────────────────────────────── */
+.field {
+  display: grid;
+  gap: 0.15rem;
+  border-radius: 0.85rem;
+  background: var(--color-surface);
+  padding: 0.55rem 0.8rem;
+  box-shadow: 0 0 0 1px var(--color-border) inset;
+}
+
+.view[data-active] .fieldTyping {
+  animation: type 900ms steps(16, end) 300ms both;
+}
+
+.view[data-active] .fieldTypingLate {
+  animation-delay: 1300ms;
+}
+
+.button {
+  display: flex;
+  height: 2.6rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--color-pink-700);
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.view[data-active] .pressLater {
+  animation: press 420ms ease-out 2600ms both;
+}
+
+/* ── Screen 2: categories ──────────────────────────────────────────────── */
+.tile {
+  position: relative;
+  display: grid;
+  justify-items: start;
+  gap: 0.55rem;
+  border-radius: 1rem;
+  background: var(--color-surface);
+  padding: 0.85rem 0.8rem;
+  color: var(--color-fg-muted);
+  box-shadow: 0 0 0 1px var(--color-border) inset;
+}
+
+.view[data-active] .tileChosen {
+  animation: choose 360ms var(--ease-standard) both;
+}
+
+.tileChosen {
+  background: var(--color-pink-50);
+  color: var(--color-pink-800, #8f2c46);
+  box-shadow: 0 0 0 1.5px var(--color-pink-700) inset;
+}
+
+.tick {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  display: flex;
+  height: 1.15rem;
+  width: 1.15rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--color-pink-700);
+  color: white;
+}
+
+/* ── Screen 3: one code per professional ───────────────────────────────── */
+.codeRow {
+  --start: calc(var(--row) * 1150ms + 300ms);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 1rem;
+  background: var(--color-surface);
+  padding: 0.7rem 0.75rem;
+  box-shadow: 0 0 0 1px var(--color-border) inset;
+}
+
+.codeIcon {
+  display: flex;
+  height: 2.3rem;
+  width: 2.3rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  background: var(--color-champagne-50);
+  color: var(--color-rosegold-700);
+}
+
+.codeValue {
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.typed {
+  display: inline-block;
+}
+
+.linkedName {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-success-700, #1f7a4b);
+}
+
+.connectedBadge,
+.connectedBadgeStatic {
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 1.35rem;
+  width: 1.35rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--color-success-50, #eef7f1);
+  color: var(--color-success-700, #1f7a4b);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.view[data-active] .codeRow .typed {
+  animation: type 700ms steps(9, end) var(--start) both;
+}
+
+.view[data-active] .codeRow .connectedBadge,
+.view[data-active] .codeRow .linkedName {
+  animation: pop 320ms var(--ease-standard) calc(var(--start) + 800ms) both;
+}
+
+.view[data-active] .codeRow {
+  animation: row-focus 900ms ease-out var(--start) both;
+}
+
+/* ── Screen 4: calendar ────────────────────────────────────────────────── */
+.day,
+.slot {
+  display: grid;
+  justify-items: center;
+  border-radius: 0.8rem;
+  background: var(--color-surface);
+  padding-block: 0.45rem;
+  box-shadow: 0 0 0 1px var(--color-border) inset;
+}
+
+.slot {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.dayActive,
+.slotPicked {
+  background: var(--color-pink-700);
+  color: white;
+  box-shadow: none;
+}
+
+.view[data-active] .slotPicked {
+  animation: choose 360ms var(--ease-standard) 1700ms both;
+}
+
+/* ── Screen 5: switching professionals ─────────────────────────────────── */
+.settingRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 1rem;
+  background: var(--color-surface);
+  padding: 0.75rem;
+  box-shadow: 0 0 0 1px var(--color-border) inset;
+}
+
+.labelStack {
+  display: grid;
+  justify-items: end;
+}
+
+.replaceLabel,
+.disconnectedLabel {
+  grid-area: 1 / 1;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.replaceLabel {
+  color: var(--color-pink-700);
+}
+
+.disconnectedLabel {
+  color: var(--color-fg-muted);
+  opacity: 0;
+}
+
+.view[data-active] .swapOut {
+  animation: swap-out 600ms var(--ease-standard) 1400ms both;
+}
+
+.view[data-active] .swapOut .replaceLabel {
+  animation: fade-away 200ms linear 1400ms both;
+}
+
+.view[data-active] .swapOut .disconnectedLabel {
+  animation: fade-up 200ms linear 1500ms both;
+}
+
+.swapIn {
+  box-shadow: 0 0 0 1.5px var(--color-success-600, #2f8a5b) inset;
+}
+
+.view[data-active] .swapIn {
+  animation: swap-in 520ms var(--ease-standard) 2000ms both;
+}
+
+/* ── Screen 6: history ─────────────────────────────────────────────────── */
+.historyRow {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  border-radius: 1rem;
+  background: var(--color-surface);
+  padding: 0.7rem 0.8rem;
+  box-shadow: 0 0 0 1px var(--color-border) inset;
+}
+
+.view[data-active] .historyRow {
+  animation: rise 420ms var(--ease-standard) both;
+}
+
+.statusPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-success-700, #1f7a4b);
+}
+
+/* ── Bottom bar ────────────────────────────────────────────────────────── */
+.tabBar {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--color-border);
+  background: rgb(255 255 255 / 0.94);
+  padding: 0.55rem 0.5rem 1.35rem;
+  opacity: 0;
+  translate: 0 100%;
+  transition:
+    opacity 380ms var(--ease-standard),
+    translate 380ms var(--ease-standard);
+}
+
+.tabBarShown {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.tab {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 0.15rem;
+  color: var(--color-fg-subtle);
+  font-size: 10px;
+  font-weight: 600;
+  transition: color 200ms var(--ease-standard);
+}
+
+.tabActive {
+  color: var(--color-pink-700);
+}
+
+.tabActive::after {
+  content: "";
+  position: absolute;
+  top: -0.6rem;
+  height: 2px;
+  width: 1.4rem;
+  border-radius: 999px;
+  background: var(--color-pink-700);
+}
+
+.tap {
+  position: absolute;
+  top: -0.2rem;
+  height: 2.4rem;
+  width: 2.4rem;
+  border-radius: 999px;
+  background: var(--color-pink-200);
+  opacity: 0;
+  animation: tap 900ms ease-out 250ms both;
+}
+
+/* ── Floating cards ────────────────────────────────────────────────────── */
+.floatCard {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.9rem;
+  background: var(--color-surface);
+  padding: 0.6rem 0.85rem;
+  box-shadow: var(--shadow-lg);
+  outline: 1px solid rgb(58 40 34 / 0.06);
+  opacity: 0;
+  scale: 0.94;
+  transition:
+    opacity 320ms var(--ease-standard),
+    scale 320ms var(--ease-standard);
+}
+
+.floatCard[data-show] {
+  opacity: 1;
+  scale: 1;
+}
+
+.floatLeft {
+  top: 34%;
+  left: -2.75rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+}
+
+@media (max-width: 30rem) {
+  .floatCard {
+    display: none;
+  }
+}
+
+/* ── Step progress ─────────────────────────────────────────────────────── */
+.progress {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 2px;
+  transform-origin: left;
+  background: var(--color-pink-400);
+  animation: progress linear both;
+}
+
+/* ── Connection diagram ────────────────────────────────────────────────── */
+.line {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1200ms var(--ease-standard) 300ms;
+}
+
+:global([data-reveal="pending"]) .line {
+  stroke-dashoffset: 100;
+}
+
+/* ── Keyframes ─────────────────────────────────────────────────────────── */
+@keyframes type {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes press {
+  50% {
+    scale: 0.95;
+    filter: brightness(0.92);
+  }
+}
+
+@keyframes choose {
+  from {
+    scale: 0.94;
+    background: var(--color-surface);
+    box-shadow: 0 0 0 1px var(--color-border) inset;
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    scale: 0.8;
+  }
+}
+
+@keyframes row-focus {
+  0% {
+    box-shadow: 0 0 0 1.5px var(--color-pink-400) inset;
+  }
+  100% {
+    box-shadow: 0 0 0 1px var(--color-border) inset;
+  }
+}
+
+@keyframes swap-out {
+  to {
+    opacity: 0.45;
+    filter: grayscale(1);
+  }
+}
+
+@keyframes swap-in {
+  from {
+    opacity: 0;
+    translate: 0 -0.5rem;
+  }
+}
+
+@keyframes fade-away {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-up {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 0.5rem;
+  }
+}
+
+@keyframes tap {
+  0% {
+    opacity: 0.7;
+    scale: 0.4;
+  }
+  100% {
+    opacity: 0;
+    scale: 1.4;
+  }
+}
+
+@keyframes progress {
+  from {
+    scale: 0 1;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .view *,
+  .tap {
+    animation-delay: 0s !important;
+  }
+}
