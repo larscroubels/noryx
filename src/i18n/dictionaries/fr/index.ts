@@ -8,6 +8,7 @@ import { common } from "./common";
 import { customers } from "./customers";
 import { errors } from "./errors";
 import { finance } from "./finance";
+import { giftCards } from "./gift-cards";
 import { help } from "./help";
 import { marketing } from "./marketing";
 import { onboarding } from "./onboarding";
@@ -40,4 +41,5 @@ export const fr = {
   account,
   help,
   pricing,
+  giftCards,
 };

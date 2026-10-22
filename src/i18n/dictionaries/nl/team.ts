@@ -61,6 +61,7 @@ export const team: typeof en = {
     "orders.manage": "Webshopbestellingen bekijken en verwerken",
     "finance.view": "Omzet, uitgaven en financiële overzichten bekijken",
     "finance.manage": "Uitgaven en financiële transacties registreren",
+    "gift_cards.manage": "Cadeaubonnen verkopen, activeren, blokkeren en corrigeren",
     "reports.view": "Rapporten van de zaak bekijken",
     "billing.manage": "Het NORYX-abonnement en de factuurgegevens beheren",
     "audit.view": "De auditlog van de zaak bekijken",

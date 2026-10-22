@@ -58,6 +58,7 @@ export const team = {
     "orders.manage": "View and process webshop orders",
     "finance.view": "View revenue, expenses and financial summaries",
     "finance.manage": "Record expenses and financial transactions",
+    "gift_cards.manage": "Sell, activate, block and correct gift cards",
     "reports.view": "View business reports",
     "billing.manage": "Manage the NORYX subscription and billing details",
     "audit.view": "View the business audit log",

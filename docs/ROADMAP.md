@@ -47,6 +47,11 @@ Status as of 22 October 2026. The full product brief is in [`PRODUCT_BRIEF.md`](
 - Recorded payments (incl. refunds), expenses, summaries per period, service, professional and payment method; booked value as separate estimate; CSV exports.
 - **Open:** revenue per location, product sales report, charts over time. Not accounting or VAT-filing software.
 
+## Gift cards ✅ (first version)
+
+- Clients order a gift card on the salon's booking page (`/<slug>/gift-card`) and pay at the salon; the salon activates it once paid, or sells and activates one at the desk. The code is shown once. Holders check balance and history with the code; staff redeem it (partially, combined with other methods, several cards per purchase) from an appointment or shop order. Ledger with reversals, corrections, blocking and cancellation, all audited. Settings: online sales on/off, fixed and custom amounts, optional validity in months, the salon's own conditions.
+- **Open:** online payment (needs the payment provider), email delivery of codes (needs the email provider), printable/PDF card, re-issuing a lost code, erasing a buyer's personal data on request, a gift card report in finance.
+
 ## Phase 7 — SaaS administration ✅ (first version)
 
 - Platform admin area with statistics, business list, status and plan management, audit log; least-privilege access.
@@ -57,7 +62,8 @@ Status as of 22 October 2026. The full product brief is in [`PRODUCT_BRIEF.md`](
 
 - The whole product is available in Dutch (default), French and English with an NL | FR | EN switch on every page; the choice is stored in a cookie, otherwise the browser language decides. Dates use nl-BE / fr-BE / en-GB formatting; the demo salon's data is Dutch.
 - Help centre at `/help` (and `/app/help` inside the workspace): eight courses with real screenshots per language, animated click-throughs and FAQs, plus a search.
-- **Open:** French help screenshots (French courses show the English captures until `npm run help:screenshots` is run against the local stack), translated transactional emails, per-business default language for public pages.
+- Each salon chooses its language (Settings › Business profile): the workspace uses it, public salon pages open in it and clients can switch.
+- **Open:** French help screenshots (French courses show the English captures until `npm run help:screenshots` is run against the local stack), translated transactional emails.
 
 ## Phase 8 — Launch preparation ⏳
 
@@ -73,3 +79,4 @@ Status as of 22 October 2026. The full product brief is in [`PRODUCT_BRIEF.md`](
 5. **French** is implemented; decide whether a native speaker reviews it before launch.
 6. **Domain** and whether salons get subdomains or custom domains.
 7. **Vector logo** (SVG) from the designer.
+8. **Gift cards**: confirm with the accountant that revenue on redemption (not on sale) is right, including VAT; which expiry and refund rules salons must follow (NORYX lets each salon set them and enforces none); whether unused balances of expired or cancelled cards need a report.

@@ -73,6 +73,30 @@ export const getPublicBusiness = cache(async (slug: string): Promise<PublicBusin
   return data as unknown as PublicBusiness;
 });
 
+/** Shape of public.get_public_gift_card_offer(). */
+export type GiftCardOffer = {
+  business_id: string;
+  name: string;
+  currency: string;
+  locale: string;
+  amounts: number[];
+  allow_custom: boolean;
+  min_cents: number;
+  max_cents: number;
+  validity_months: number | null;
+  terms: string | null;
+  phone: string | null;
+};
+
+/** What a salon sells as gift cards online, or null when it doesn't. */
+export const getGiftCardOffer = cache(async (slug: string): Promise<GiftCardOffer | null> => {
+  if (!/^[a-z0-9-]{3,48}$/.test(slug)) return null;
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("get_public_gift_card_offer", { p_slug: slug });
+  if (error || !data) return null;
+  return data as unknown as GiftCardOffer;
+});
+
 export const toWeekly = (
   hours: { weekday: number; start_minute: number; end_minute: number }[],
 ): WeeklyRange[] =>

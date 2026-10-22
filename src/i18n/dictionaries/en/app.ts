@@ -11,6 +11,7 @@ export const app = {
     products: "Products",
     orders: "Orders",
     finance: "Finance",
+    giftCards: "Gift cards",
     team: "Team",
     settings: "Settings",
     help: "Help",

@@ -12,6 +12,7 @@ export const settings: typeof en = {
     hours: "Heures d'ouverture",
     booking: "Réservation en ligne",
     shop: "Boutique en ligne",
+    giftCards: "Chèques-cadeaux",
     plan: "Abonnement",
   },
   profile: {

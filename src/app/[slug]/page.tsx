@@ -1,4 +1,4 @@
-import { AtSign, Clock, Globe, Mail, MapPin, Phone } from "lucide-react";
+import { AtSign, Clock, Gift, Globe, Mail, MapPin, Phone } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -9,7 +9,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { getI18n, getT } from "@/i18n/server";
-import { getPublicBusiness, getPublicProducts } from "@/lib/booking/public";
+import { getGiftCardOffer, getPublicBusiness, getPublicProducts } from "@/lib/booking/public";
 import { publicEnv } from "@/lib/env";
 import { publicAssetUrl } from "@/lib/uploads";
 import { formatDuration, formatMoney } from "@/lib/format";
@@ -27,9 +27,10 @@ export async function generateMetadata({ params }: PageProps<"/[slug]">): Promis
 
 export default async function PublicBusinessPage({ params }: PageProps<"/[slug]">) {
   const { slug } = await params;
-  const [business, products, { t, intl }] = await Promise.all([
+  const [business, products, giftCardOffer, { t, intl }] = await Promise.all([
     getPublicBusiness(slug),
     getPublicProducts(slug),
+    getGiftCardOffer(slug),
     getI18n(),
   ]);
   if (!business) notFound();
@@ -237,6 +238,25 @@ export default async function PublicBusinessPage({ params }: PageProps<"/[slug]"
                   </li>
                 ))}
               </ul>
+            </section>
+          )}
+
+          {giftCardOffer && (
+            <section aria-labelledby="gift-heading">
+              <Card className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex gap-4">
+                  <Gift className="mt-1 size-6 shrink-0 text-pink-700" aria-hidden="true" />
+                  <div>
+                    <h2 id="gift-heading" className="font-display text-display-sm font-semibold">
+                      {t.giftCards.public.sectionTitle}
+                    </h2>
+                    <p className="mt-1 text-fg-muted">{t.giftCards.public.sectionText}</p>
+                  </div>
+                </div>
+                <Button asChild variant="secondary" className="shrink-0">
+                  <Link href={`/${business.slug}/gift-card`}>{t.giftCards.public.link}</Link>
+                </Button>
+              </Card>
             </section>
           )}
 

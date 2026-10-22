@@ -21,6 +21,7 @@ import {
   BusinessProfileForm,
   LocationForm,
   OpeningHoursForm,
+  GiftCardSettingsForm,
   ShopSettingsForm,
 } from "./forms";
 
@@ -28,7 +29,16 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: (await getT()).settings.metaTitle };
 }
 
-const SECTIONS = ["profile", "branding", "location", "hours", "booking", "shop", "plan"] as const;
+const SECTIONS = [
+  "profile",
+  "branding",
+  "location",
+  "hours",
+  "booking",
+  "shop",
+  "giftCards",
+  "plan",
+] as const;
 
 export default async function SettingsPage() {
   const { business } = await requirePermission("settings.manage");
@@ -168,6 +178,17 @@ export default async function SettingsPage() {
                 productCount={onlineProducts ?? 0}
                 entitled={entitlements.features.has("shop")}
               />
+            </CardContent>
+          </Card>
+          <Card id="giftCards" className="scroll-mt-24">
+            <CardHeader>
+              <div>
+                <CardTitle>{st.sections.giftCards}</CardTitle>
+                <CardDescription>{t.giftCards.settings.description}</CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <GiftCardSettingsForm business={business} />
             </CardContent>
           </Card>
           <Card id="plan" className="scroll-mt-24">

@@ -22,6 +22,7 @@ import { formatDateTime, formatMoney } from "@/lib/format";
 import { NEXT_ORDER_STATUS, ORDER_STATUS_TONE, PAYMENT_STATUS_TONE } from "@/lib/orders";
 import { createClient } from "@/lib/supabase/server";
 
+import { RedeemGiftCardForm } from "../../gift-cards/forms";
 import { advanceOrder, cancelOrder, setOrderPayment } from "../actions";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -45,6 +46,14 @@ export default async function OrderPage({ params }: PageProps<"/app/orders/[id]"
     .maybeSingle();
   if (!order) notFound();
   const money = (cents: number) => formatMoney(cents, order.currency, business.locale);
+  const { data: giftCardUse } = await supabase
+    .from("gift_card_transactions")
+    .select("id, kind, amount_cents, gift_card_id, gift_card:gift_cards(number)")
+    .eq("order_id", order.id)
+    .in("kind", ["redeem", "reversal"])
+    .order("id");
+  const redeemed = -(giftCardUse ?? []).reduce((sum, row) => sum + row.amount_cents, 0);
+  const due = Math.max(order.total_cents - redeemed, 0);
   const next = NEXT_ORDER_STATUS[order.status];
   const open = order.status !== "cancelled" && order.status !== "completed";
 
@@ -198,6 +207,41 @@ export default async function OrderPage({ params }: PageProps<"/app/orders/[id]"
               </form>
             </CardContent>
           </Card>
+          {order.status !== "cancelled" && order.payment_status === "unpaid" && (
+            <Card>
+              <CardHeader>
+                <div>
+                  <CardTitle>{t.giftCards.redeem.title}</CardTitle>
+                  <p className="mt-1 text-sm text-fg-muted">{t.giftCards.redeem.text}</p>
+                </div>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                {giftCardUse && giftCardUse.length > 0 && (
+                  <ul className="divide-y divide-border rounded-lg border border-border text-sm">
+                    {giftCardUse.map((row) => (
+                      <li
+                        key={row.id}
+                        className="flex items-center justify-between gap-2 px-3 py-2"
+                      >
+                        <Link
+                          href={`/app/gift-cards/${row.gift_card_id}`}
+                          className="hover:text-pink-700"
+                        >
+                          {t.giftCards.number(row.gift_card?.number ?? 0)} ·{" "}
+                          {t.giftCards.detail.kinds[row.kind]}
+                        </Link>
+                        <span className="font-semibold tabular-nums">
+                          {money(Math.abs(row.amount_cents))}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <p className="text-sm font-semibold">{t.giftCards.redeem.remaining(money(due))}</p>
+                <RedeemGiftCardForm orderId={order.id} defaultCents={due} />
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </div>

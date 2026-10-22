@@ -392,6 +392,13 @@ export type Database = {
           currency: string;
           description: string | null;
           email: string | null;
+          gift_card_allow_custom: boolean;
+          gift_card_amounts: number[];
+          gift_card_max_cents: number;
+          gift_card_min_cents: number;
+          gift_card_terms: string | null;
+          gift_card_validity_months: number | null;
+          gift_cards_enabled: boolean;
           id: string;
           instagram_handle: string | null;
           locale: string;
@@ -425,6 +432,13 @@ export type Database = {
           currency?: string;
           description?: string | null;
           email?: string | null;
+          gift_card_allow_custom?: boolean;
+          gift_card_amounts?: number[];
+          gift_card_max_cents?: number;
+          gift_card_min_cents?: number;
+          gift_card_terms?: string | null;
+          gift_card_validity_months?: number | null;
+          gift_cards_enabled?: boolean;
           id?: string;
           instagram_handle?: string | null;
           locale?: string;
@@ -457,6 +471,13 @@ export type Database = {
           currency?: string;
           description?: string | null;
           email?: string | null;
+          gift_card_allow_custom?: boolean;
+          gift_card_amounts?: number[];
+          gift_card_max_cents?: number;
+          gift_card_min_cents?: number;
+          gift_card_terms?: string | null;
+          gift_card_validity_months?: number | null;
+          gift_cards_enabled?: boolean;
           id?: string;
           instagram_handle?: string | null;
           locale?: string;
@@ -607,6 +628,182 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "expenses_business_id_fkey";
+            columns: ["business_id"];
+            isOneToOne: false;
+            referencedRelation: "businesses";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      gift_card_transactions: {
+        Row: {
+          actor_user_id: string | null;
+          amount_cents: number;
+          appointment_id: string | null;
+          balance_after_cents: number;
+          business_id: string;
+          created_at: string;
+          gift_card_id: string;
+          id: number;
+          kind: Database["public"]["Enums"]["gift_card_transaction_kind"];
+          order_id: string | null;
+          payment_id: string | null;
+          reason: string | null;
+          reverses_id: number | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          actor_user_id?: string | null;
+          amount_cents: number;
+          appointment_id?: string | null;
+          balance_after_cents: number;
+          business_id: string;
+          created_at?: string;
+          gift_card_id: string;
+          id?: never;
+          kind: Database["public"]["Enums"]["gift_card_transaction_kind"];
+          order_id?: string | null;
+          payment_id?: string | null;
+          reason?: string | null;
+          reverses_id?: number | null;
+        };
+        Update: {
+          actor_user_id?: string | null;
+          amount_cents?: number;
+          appointment_id?: string | null;
+          balance_after_cents?: number;
+          business_id?: string;
+          created_at?: string;
+          gift_card_id?: string;
+          id?: never;
+          kind?: Database["public"]["Enums"]["gift_card_transaction_kind"];
+          order_id?: string | null;
+          payment_id?: string | null;
+          reason?: string | null;
+          reverses_id?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "gift_card_transactions_business_id_appointment_id_fkey";
+            columns: ["business_id", "appointment_id"];
+            isOneToOne: false;
+            referencedRelation: "appointments";
+            referencedColumns: ["business_id", "id"];
+          },
+          {
+            foreignKeyName: "gift_card_transactions_business_id_fkey";
+            columns: ["business_id"];
+            isOneToOne: false;
+            referencedRelation: "businesses";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "gift_card_transactions_business_id_gift_card_id_fkey";
+            columns: ["business_id", "gift_card_id"];
+            isOneToOne: false;
+            referencedRelation: "gift_cards";
+            referencedColumns: ["business_id", "id"];
+          },
+          {
+            foreignKeyName: "gift_card_transactions_business_id_order_id_fkey";
+            columns: ["business_id", "order_id"];
+            isOneToOne: false;
+            referencedRelation: "orders";
+            referencedColumns: ["business_id", "id"];
+          },
+          {
+            foreignKeyName: "gift_card_transactions_payment_id_fkey";
+            columns: ["payment_id"];
+            isOneToOne: false;
+            referencedRelation: "payments";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "gift_card_transactions_reverses_id_fkey";
+            columns: ["reverses_id"];
+            isOneToOne: true;
+            referencedRelation: "gift_card_transactions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      gift_cards: {
+        Row: {
+          activated_by: string | null;
+          balance_cents: number;
+          business_id: string;
+          buyer_email: string | null;
+          buyer_name: string;
+          buyer_phone: string | null;
+          code_hash: string | null;
+          code_last4: string | null;
+          created_at: string;
+          currency: string;
+          expires_at: string | null;
+          id: string;
+          initial_cents: number;
+          message: string | null;
+          number: number;
+          paid_at: string | null;
+          recipient_name: string | null;
+          sale_method: Database["public"]["Enums"]["payment_method"] | null;
+          source: string;
+          status: Database["public"]["Enums"]["gift_card_status"];
+          status_reason: string | null;
+          updated_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          activated_by?: string | null;
+          balance_cents?: number;
+          business_id: string;
+          buyer_email?: string | null;
+          buyer_name: string;
+          buyer_phone?: string | null;
+          code_hash?: string | null;
+          code_last4?: string | null;
+          created_at?: string;
+          currency: string;
+          expires_at?: string | null;
+          id?: string;
+          initial_cents: number;
+          message?: string | null;
+          number?: never;
+          paid_at?: string | null;
+          recipient_name?: string | null;
+          sale_method?: Database["public"]["Enums"]["payment_method"] | null;
+          source: string;
+          status?: Database["public"]["Enums"]["gift_card_status"];
+          status_reason?: string | null;
+          updated_at?: string;
+        };
+        Update: {
+          activated_by?: string | null;
+          balance_cents?: number;
+          business_id?: string;
+          buyer_email?: string | null;
+          buyer_name?: string;
+          buyer_phone?: string | null;
+          code_hash?: string | null;
+          code_last4?: string | null;
+          created_at?: string;
+          currency?: string;
+          expires_at?: string | null;
+          id?: string;
+          initial_cents?: number;
+          message?: string | null;
+          number?: never;
+          paid_at?: string | null;
+          recipient_name?: string | null;
+          sale_method?: Database["public"]["Enums"]["payment_method"] | null;
+          source?: string;
+          status?: Database["public"]["Enums"]["gift_card_status"];
+          status_reason?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "gift_cards_business_id_fkey";
             columns: ["business_id"];
             isOneToOne: false;
             referencedRelation: "businesses";
@@ -1512,6 +1709,14 @@ export type Database = {
     };
     Functions: {
       accept_invitation: { Args: { p_token: string }; Returns: string };
+      activate_gift_card: {
+        Args: { p_gift_card_id: string; p_method: Database["public"]["Enums"]["payment_method"] };
+        Returns: Json;
+      };
+      adjust_gift_card: {
+        Args: { p_amount_cents: number; p_gift_card_id: string; p_reason: string };
+        Returns: undefined;
+      };
       admin_list_businesses: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -1567,6 +1772,7 @@ export type Database = {
         Returns: boolean;
       };
       cancel_booking_by_token: { Args: { p_reason?: string; p_token: string }; Returns: undefined };
+      cancel_gift_card: { Args: { p_gift_card_id: string; p_reason: string }; Returns: undefined };
       cancel_order: { Args: { p_order_id: string }; Returns: undefined };
       create_business: {
         Args: {
@@ -1579,6 +1785,18 @@ export type Database = {
           p_timezone?: string;
         };
         Returns: string;
+      };
+      create_desk_gift_card: {
+        Args: {
+          p_amount_cents: number;
+          p_business_id: string;
+          p_buyer_email?: string;
+          p_buyer_name: string;
+          p_message?: string;
+          p_method: Database["public"]["Enums"]["payment_method"];
+          p_recipient_name?: string;
+        };
+        Returns: Json;
       };
       create_invitation: {
         Args: {
@@ -1605,6 +1823,18 @@ export type Database = {
         };
         Returns: Json;
       };
+      create_online_gift_card: {
+        Args: {
+          p_amount_cents: number;
+          p_business_id: string;
+          p_buyer_email: string;
+          p_buyer_name: string;
+          p_buyer_phone?: string;
+          p_message?: string;
+          p_recipient_name?: string;
+        };
+        Returns: Json;
+      };
       create_online_order: {
         Args: {
           p_business_id: string;
@@ -1619,6 +1849,7 @@ export type Database = {
       };
       current_plan: { Args: { p_business_id: string }; Returns: string };
       get_booking_by_token: { Args: { p_token: string }; Returns: Json };
+      get_gift_card_by_code: { Args: { p_code: string; p_slug: string }; Returns: Json };
       get_invitation: { Args: { p_token: string }; Returns: Json };
       get_public_business: { Args: { p_slug: string }; Returns: Json };
       get_public_business_data: { Args: { p_slug: string }; Returns: Json };
@@ -1630,7 +1861,25 @@ export type Database = {
           starts_at: string;
         }[];
       };
+      get_public_gift_card_offer: { Args: { p_slug: string }; Returns: Json };
       get_public_products: { Args: { p_slug: string }; Returns: Json };
+      gift_card_activate_locked: {
+        Args: {
+          p_card: Omit<
+            Database["public"]["Tables"]["gift_cards"]["Row"],
+            Database["public"]["Tables"]["gift_cards"]["ComputedFields"]
+          >;
+          p_method: Database["public"]["Enums"]["payment_method"];
+        };
+        Returns: string;
+      };
+      gift_card_amount_allowed: {
+        Args: { p_amount: number; p_business_id: string };
+        Returns: boolean;
+      };
+      gift_card_hash: { Args: { p_code: string }; Returns: string };
+      gift_card_new_code: { Args: Record<PropertyKey, never>; Returns: string };
+      gift_card_require_reason: { Args: { p_reason: string }; Returns: string };
       has_business_permission: {
         Args: { p_business_id: string; p_permission: string };
         Returns: boolean;
@@ -1669,8 +1918,26 @@ export type Database = {
         Args: { p_business_id: string };
         Returns: Database["public"]["Enums"]["member_role"];
       };
+      redeem_gift_card: {
+        Args: {
+          p_amount_cents: number;
+          p_appointment_id?: string;
+          p_business_id: string;
+          p_code: string;
+          p_order_id?: string;
+        };
+        Returns: Json;
+      };
       remove_member: { Args: { p_member_id: string }; Returns: undefined };
+      reverse_gift_card_redemption: {
+        Args: { p_reason: string; p_transaction_id: number };
+        Returns: undefined;
+      };
       revoke_invitation: { Args: { p_invitation_id: string }; Returns: undefined };
+      set_gift_card_blocked: {
+        Args: { p_blocked: boolean; p_gift_card_id: string; p_reason: string };
+        Returns: undefined;
+      };
       set_location_hours: { Args: { p_hours: Json; p_location_id: string }; Returns: undefined };
       set_staff_working_hours: { Args: { p_hours: Json; p_staff_id: string }; Returns: undefined };
       shares_business_with: { Args: { p_user_id: string }; Returns: boolean };
@@ -1707,6 +1974,8 @@ export type Database = {
         | "software"
         | "training"
         | "other";
+      gift_card_status: "pending" | "active" | "blocked" | "cancelled";
+      gift_card_transaction_kind: "issue" | "redeem" | "reversal" | "adjustment" | "cancellation";
       inventory_reason:
         | "initial"
         | "restock"
@@ -1861,6 +2130,8 @@ export const Constants = {
         "training",
         "other",
       ],
+      gift_card_status: ["pending", "active", "blocked", "cancelled"],
+      gift_card_transaction_kind: ["issue", "redeem", "reversal", "adjustment", "cancellation"],
       inventory_reason: [
         "initial",
         "restock",

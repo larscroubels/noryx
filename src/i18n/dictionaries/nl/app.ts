@@ -13,6 +13,7 @@ export const app: typeof en = {
     products: "Producten",
     orders: "Bestellingen",
     finance: "Financiën",
+    giftCards: "Cadeaubonnen",
     team: "Team",
     settings: "Instellingen",
     help: "Hulp",

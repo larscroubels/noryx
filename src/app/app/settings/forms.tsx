@@ -11,6 +11,7 @@ import { Input, Select, Textarea } from "@/components/ui/input";
 import { useT } from "@/i18n/client";
 import { LOCALE_LABELS, localeFromIntl } from "@/i18n/config";
 import { IDLE } from "@/lib/actions";
+import { centsToInput } from "@/lib/format";
 import { BUSINESS_LOCALES, BUSINESS_TYPES } from "@/lib/validation/business";
 import type { HoursRange } from "@/lib/validation/hours";
 import type { Tables } from "@/types/database";
@@ -18,6 +19,7 @@ import type { Tables } from "@/types/database";
 import {
   saveBookingPolicy,
   saveBusinessProfile,
+  saveGiftCardSettings,
   saveLocation,
   saveOpeningHours,
   saveShopSettings,
@@ -396,6 +398,85 @@ export function ShopSettingsForm({
       />
       <div className="flex justify-end">
         <SubmitButton disabled={!entitled}>{st.shop.submit}</SubmitButton>
+      </div>
+    </form>
+  );
+}
+
+export function GiftCardSettingsForm({ business }: { business: Business }) {
+  const [state, action] = useActionState(saveGiftCardSettings, IDLE);
+  const t = useT();
+  const s = t.giftCards.settings;
+  const euros = (cents: number) => centsToInput(cents).replace(/\.00$/, "");
+  return (
+    <form action={action} className="grid gap-5" noValidate>
+      <FormAlert state={state} />
+      <ChoiceRow
+        htmlFor="giftCardsEnabled"
+        control={
+          <Switch
+            id="giftCardsEnabled"
+            name="enabled"
+            value="on"
+            defaultChecked={business.gift_cards_enabled}
+          />
+        }
+        label={s.enabled}
+        description={s.enabledHint}
+      />
+      <Field label={s.amounts} hint={s.amountsHint} error={fieldError(state, "amounts")} required>
+        <Input name="amounts" defaultValue={business.gift_card_amounts.map(euros).join(", ")} />
+      </Field>
+      <ChoiceRow
+        htmlFor="giftCardAllowCustom"
+        control={
+          <Switch
+            id="giftCardAllowCustom"
+            name="allowCustom"
+            value="on"
+            defaultChecked={business.gift_card_allow_custom}
+          />
+        }
+        label={s.allowCustom}
+      />
+      <div className="grid gap-5 sm:grid-cols-3">
+        <Field label={s.min} error={fieldError(state, "min")} required>
+          <Input
+            name="min"
+            defaultValue={euros(business.gift_card_min_cents)}
+            leading={<span className="text-sm">€</span>}
+            inputMode="decimal"
+          />
+        </Field>
+        <Field label={s.max} error={fieldError(state, "max")} required>
+          <Input
+            name="max"
+            defaultValue={euros(business.gift_card_max_cents)}
+            leading={<span className="text-sm">€</span>}
+            inputMode="decimal"
+          />
+        </Field>
+        <Field label={s.validity} optional error={fieldError(state, "validityMonths")}>
+          <Input
+            name="validityMonths"
+            type="number"
+            min={1}
+            max={120}
+            defaultValue={business.gift_card_validity_months ?? ""}
+          />
+        </Field>
+      </div>
+      <p className="-mt-2 text-sm text-fg-muted">{s.validityHint}</p>
+      <Field label={s.terms} optional hint={s.termsHint} error={fieldError(state, "terms")}>
+        <Textarea
+          name="terms"
+          rows={4}
+          maxLength={1000}
+          defaultValue={business.gift_card_terms ?? ""}
+        />
+      </Field>
+      <div className="flex justify-end">
+        <SubmitButton>{s.submit}</SubmitButton>
       </div>
     </form>
   );

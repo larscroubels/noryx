@@ -10,6 +10,7 @@ export const settings = {
     hours: "Opening hours",
     booking: "Online booking",
     shop: "Webshop",
+    giftCards: "Gift cards",
     plan: "Plan",
   },
   profile: {

@@ -62,6 +62,7 @@ export const team: typeof en = {
     "orders.manage": "Voir et traiter les commandes de la boutique en ligne",
     "finance.view": "Voir le chiffre d'affaires, les dépenses et les synthèses financières",
     "finance.manage": "Enregistrer des dépenses et des transactions financières",
+    "gift_cards.manage": "Vendre, activer, bloquer et corriger des chèques-cadeaux",
     "reports.view": "Voir les rapports de l'établissement",
     "billing.manage": "Gérer l'abonnement NORYX et les données de facturation",
     "audit.view": "Voir le journal d'audit de l'établissement",

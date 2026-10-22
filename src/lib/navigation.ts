@@ -9,6 +9,7 @@ export type WorkspaceNavKey =
   | "schedule"
   | "products"
   | "orders"
+  | "giftCards"
   | "team"
   | "finance"
   | "settings"
@@ -57,6 +58,8 @@ export const WORKSPACE_NAV: NavDefinition[] = [
     anyOf: ["orders.manage"],
     feature: "shop",
   },
+  // Part of Basic and Pro; finance readers see the cards without selling them.
+  { key: "giftCards", href: "/app/gift-cards", anyOf: ["gift_cards.manage", "finance.view"] },
   {
     key: "finance",
     href: "/app/finance",

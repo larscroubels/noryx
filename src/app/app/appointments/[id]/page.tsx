@@ -3,6 +3,7 @@ import {
   CalendarClock,
   CircleCheckBig,
   CircleSlash,
+  Gift,
   Mail,
   Phone,
   UserX,
@@ -35,6 +36,7 @@ import { createClient } from "@/lib/supabase/server";
 import { minutesToTime, utcToZoned } from "@/lib/time";
 
 import { PaymentForm } from "../../finance/finance-forms";
+import { RedeemGiftCardForm } from "../../gift-cards/forms";
 import { cancelAppointment, changeStatus } from "../actions";
 import { InternalNoteForm, RescheduleForm } from "./forms";
 
@@ -103,7 +105,12 @@ export default async function AppointmentPage({
   const canRecordPayment =
     paymentsEnabled &&
     (can(workspace, "finance.manage") || can(workspace, "appointments.manage_all"));
-  const [{ data: paidCents }, { data: payments }] = await Promise.all([
+  const canRedeemGiftCard =
+    can(workspace, "gift_cards.manage") ||
+    can(workspace, "appointments.manage_all") ||
+    can(workspace, "finance.manage");
+  const canSeeGiftCards = can(workspace, "gift_cards.manage") || can(workspace, "finance.view");
+  const [{ data: paidCents }, { data: payments }, { data: giftCardUse }] = await Promise.all([
     supabase.rpc("appointment_paid_cents", { p_appointment_id: id }),
     canSeeFinance
       ? supabase
@@ -112,8 +119,19 @@ export default async function AppointmentPage({
           .eq("appointment_id", id)
           .order("paid_at")
       : Promise.resolve({ data: null }),
+    canSeeGiftCards
+      ? supabase
+          .from("gift_card_transactions")
+          .select("id, kind, amount_cents, gift_card_id, created_at, gift_card:gift_cards(number)")
+          .eq("appointment_id", id)
+          .in("kind", ["redeem", "reversal"])
+          .order("id")
+      : Promise.resolve({ data: null }),
   ]);
   const paid = paidCents ?? 0;
+  // With finance, gift card redemptions are already payments; on Basic they live on the card only.
+  const redeemedOnCards = -(giftCardUse ?? []).reduce((sum, row) => sum + row.amount_cents, 0);
+  const due = Math.max(appointment.price_cents - (paymentsEnabled ? paid : redeemedOnCards), 0);
   const local = utcToZoned(new Date(appointment.starts_at), tz);
   const customerName = appointment.customer
     ? `${appointment.customer.first_name} ${appointment.customer.last_name ?? ""}`.trim()
@@ -297,6 +315,59 @@ export default async function AppointmentPage({
                       }
                     />
                   ))}
+              </CardContent>
+            </Card>
+          )}
+
+          {canRedeemGiftCard && appointment.status !== "cancelled" && (
+            <Card>
+              <CardHeader>
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <Gift className="size-4 text-fg-muted" aria-hidden="true" />{" "}
+                    {t.giftCards.redeem.title}
+                  </CardTitle>
+                  <p className="mt-1 text-sm text-fg-muted">{t.giftCards.redeem.text}</p>
+                </div>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                {giftCardUse && giftCardUse.length > 0 && (
+                  <div className="grid gap-2">
+                    <p className="text-sm font-semibold">{t.giftCards.redeem.used}</p>
+                    <ul className="divide-y divide-border rounded-lg border border-border text-sm">
+                      {giftCardUse.map((row) => (
+                        <li
+                          key={row.id}
+                          className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5"
+                        >
+                          <Link
+                            href={`/app/gift-cards/${row.gift_card_id}`}
+                            className="hover:text-pink-700"
+                          >
+                            {t.giftCards.number(row.gift_card?.number ?? 0)} ·{" "}
+                            {t.giftCards.detail.kinds[row.kind]}
+                          </Link>
+                          <span className="font-semibold tabular-nums">
+                            {formatMoney(
+                              Math.abs(row.amount_cents),
+                              appointment.currency,
+                              business.locale,
+                            )}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                <p className="text-sm font-semibold">
+                  {t.giftCards.redeem.remaining(
+                    formatMoney(due, appointment.currency, business.locale),
+                  )}
+                </p>
+                <RedeemGiftCardForm appointmentId={appointment.id} defaultCents={due} />
+                {!paymentsEnabled && (
+                  <p className="text-xs text-fg-muted">{t.giftCards.redeem.basicNote}</p>
+                )}
               </CardContent>
             </Card>
           )}

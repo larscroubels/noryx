@@ -19,6 +19,7 @@ import {
   businessProfileSchema,
   locationSchema,
 } from "@/lib/validation/business";
+import { giftCardSettingsSchema } from "@/lib/validation/gift-card";
 import { parseWeeklyHours } from "@/lib/validation/hours";
 
 function revalidateBusiness(slug: string) {
@@ -137,6 +138,34 @@ export async function saveShopSettings(
   if (error) return failure(databaseErrorMessage(error, t));
   revalidateBusiness(workspace.business.slug);
   return success(t.settings.shop.saved);
+}
+
+export async function saveGiftCardSettings(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const [workspace, t] = await Promise.all([authorize("settings.manage"), getT()]);
+  if (!workspace) return failure(t.settings.noPermission);
+  const parsed = giftCardSettingsSchema(t).safeParse(formToObject(formData));
+  if (!parsed.success) return validationFailure(parsed.error, t);
+  const d = parsed.data;
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("businesses")
+    .update({
+      gift_cards_enabled: d.enabled,
+      gift_card_amounts: d.amounts,
+      gift_card_allow_custom: d.allowCustom,
+      gift_card_min_cents: d.min,
+      gift_card_max_cents: d.max,
+      gift_card_validity_months: d.validityMonths,
+      gift_card_terms: d.terms,
+    })
+    .eq("id", workspace.business.id);
+  if (error) return failure(databaseErrorMessage(error, t));
+  revalidateBusiness(workspace.business.slug);
+  revalidatePath(`/${workspace.business.slug}/gift-card`);
+  return success(t.giftCards.settings.saved);
 }
 
 const BRAND_IMAGE_COLUMNS = { logo: "logo_path", cover: "cover_path" } as const;

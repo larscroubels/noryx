@@ -34,6 +34,15 @@ export async function processNotificationsForAppointment(appointmentId: string) 
 
 /** Same honesty rule for order notifications (they reference the order in their payload). */
 export async function processNotificationsForOrder(orderId: string) {
+  await markSkipped("order_id", orderId);
+}
+
+/** Same rule for gift card orders (payload.gift_card_id). */
+export async function processNotificationsForGiftCard(giftCardId: string) {
+  await markSkipped("gift_card_id", giftCardId);
+}
+
+async function markSkipped(payloadKey: "order_id" | "gift_card_id", id: string) {
   const admin = createAdminClient();
   if (!admin || isEmailDeliveryConfigured()) return;
   const { error } = await admin
@@ -43,7 +52,7 @@ export async function processNotificationsForOrder(orderId: string) {
       last_error: "No email provider configured",
       processed_at: new Date().toISOString(),
     })
-    .eq("payload->>order_id", orderId)
+    .eq(`payload->>${payloadKey}`, id)
     .eq("status", "pending");
   if (error) logger.error("notifications.mark_skipped_failed", { code: error.code });
 }
