@@ -12,7 +12,8 @@ import { rateLimit } from "@/lib/rate-limit";
 
 export const maxDuration = 60;
 
-const MODEL = "claude-opus-5-5";
+/** Fast and inexpensive (about 0.2 cent per answer), chosen by the product owner; plenty for questions about the site. */
+const MODEL = "claude-haiku-5-5";
 
 /** Stable across requests (no dates or ids), so it is served from the prompt cache. */
 const INSTRUCTIONS = `You are the NORYX assistant: a chat window on the public NORYX website. NORYX is a business platform for salons, barbers and beauty professionals.
@@ -96,15 +97,13 @@ export async function POST(request: NextRequest) {
     async start(controller) {
       const send = (event: AssistantEvent) => controller.enqueue(encoder.encode(encodeEvent(event)));
       try {
-        const stream = client!.beta.messages.stream(
+        const stream = client!.messages.stream(
           {
             model: MODEL,
             // Short chat answers; the ceiling bounds what one public request can cost.
             max_tokens: 8000,
+            // Thinking stays adaptive (the default); low effort keeps it brief for simple questions.
             output_config: { effort: "low" },
-            // On a policy decline, the API retries on the recommended fallback model.
-            betas: ["server-side-fallback-2026-07-01"],
-            fallbacks: "default",
             system: [
               { type: "text", text: INSTRUCTIONS },
               { type: "text", text: buildKnowledge(locale), cache_control: { type: "ephemeral" } },
@@ -114,12 +113,11 @@ export async function POST(request: NextRequest) {
           { signal: request.signal },
         );
         for await (const event of stream) {
-          if (event.type === "content_block_start" && event.content_block.type === "fallback") {
-            send({ type: "reset" });
-          } else if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
+          if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
             send({ type: "text", text: event.delta.text });
           }
         }
+        // Haiku has no server-side fallback: a declined question gets the "no answer" text.
         const message = await stream.finalMessage();
         if (message.stop_reason === "refusal") {
           send({ type: "reset" });
