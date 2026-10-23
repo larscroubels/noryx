@@ -19,6 +19,7 @@ export const auth = {
     metaTitle: "Sign in",
     title: "Welcome back",
     lead: "Sign in to your NORYX workspace.",
+    confirmedSignIn: "Your email address is confirmed. Sign in to continue.",
     linkExpired: "That link has expired or was already used. Sign in, or request a new link.",
     forgot: "Forgot your password?",
     submit: "Sign in",
@@ -62,6 +63,7 @@ export const auth = {
       "Please confirm your email address first — check your inbox for the link we sent.",
     wrongCredentials: "That email and password combination is not correct.",
     weakPassword: "Choose a stronger password.",
+    emailNotAllowed: "We can't send a confirmation email to this address right now. Please try again later or contact the NORYX team.",
     emailRateLimit: "We just sent you an email. Please wait a minute before trying again.",
     signupFailed: "We couldn't create your account. Please try again.",
     confirmationSent: (email: string) =>

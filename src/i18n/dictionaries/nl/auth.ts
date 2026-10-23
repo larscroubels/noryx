@@ -21,6 +21,7 @@ export const auth: typeof en = {
     metaTitle: "Inloggen",
     title: "Welkom terug",
     lead: "Log in op je NORYX-werkruimte.",
+    confirmedSignIn: "Je e-mailadres is bevestigd. Log in om verder te gaan.",
     linkExpired: "Die link is verlopen of werd al gebruikt. Log in of vraag een nieuwe link aan.",
     forgot: "Wachtwoord vergeten?",
     submit: "Inloggen",
@@ -64,6 +65,7 @@ export const auth: typeof en = {
     confirmFirst: "Bevestig eerst je e-mailadres — bekijk je mailbox voor de link die we stuurden.",
     wrongCredentials: "Deze combinatie van e-mailadres en wachtwoord klopt niet.",
     weakPassword: "Kies een sterker wachtwoord.",
+    emailNotAllowed: "We kunnen op dit moment geen bevestigingsmail naar dit adres sturen. Probeer het later opnieuw of neem contact op met het NORYX-team.",
     emailRateLimit: "We stuurden je net een e-mail. Wacht even voor je het opnieuw probeert.",
     signupFailed: "We konden je account niet aanmaken. Probeer het opnieuw.",
     confirmationSent: (email) =>

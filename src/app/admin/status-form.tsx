@@ -93,7 +93,7 @@ export function DomainForm({ businessId, domain }: { businessId: string; domain:
       <input type="hidden" name="businessId" value={businessId} />
       <FormAlert state={state} />
       <div className="flex flex-wrap items-start gap-2">
-        <Field label={d.label} hideLabel hint={d.ultraOnly} error={fieldError(state, "domain")}>
+        <Field label={d.label} hideLabel hint={d.proOnly} error={fieldError(state, "domain")}>
           <Input
             name="domain"
             defaultValue={domain ?? ""}

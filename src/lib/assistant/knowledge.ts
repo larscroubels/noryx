@@ -2,16 +2,16 @@ import { helpContent } from "@/content/help";
 import { INTL_LOCALE, type Locale } from "@/i18n/config";
 import { dictionaries } from "@/i18n/dictionaries";
 import {
+  CUSTOM_SITE_FEE_CENTS,
   formatWholeEuros,
   NEWSLETTER_MONTHLY_CENTS,
-  ULTRA_SETUP_FEE_CENTS,
 } from "@/lib/billing/pricing";
 
 import type { AssistantSource } from "./events";
 
 /**
  * What the website assistant knows: the public website's own copy (home page,
- * "Who it's for", pricing, FAQ and every help-centre course) in one language.
+ * every page of the main navigation and every help-centre course) in one language.
  * Built only from the dictionaries and help content, so it always matches the
  * pages and needs no separate maintenance. Deterministic, so the prompt cache holds.
  */
@@ -32,22 +32,21 @@ export function buildKnowledge(locale: Locale): string {
   const p = t.pricing;
   const a = t.audience;
   const app = t.appShowcase;
+  const site = t.site;
   const help = helpContent[locale];
   const euros = (cents: number) => formatWholeEuros(cents, INTL_LOCALE[locale]);
   const cell = (value: boolean | string) =>
     typeof value === "string" ? value : value ? p.compare.included : p.compare.notIncluded;
 
-  const plans = (["basic", "pro", "ultra"] as const).map((key) => {
+  const plans = (["basic", "pro"] as const).map((key) => {
     const plan = p.plans[key];
     return [
       `### ${plan.name}`,
       plan.tagline,
       `${p.priceSoon}. ${p.priceNote}`,
-      "setupFee" in plan ? plan.setupFee(euros(ULTRA_SETUP_FEE_CENTS)) : "",
       "everything" in plan ? plan.everything : "",
       plan.features.map((feature) => `- ${feature}`).join("\n"),
       "soon" in plan ? `${p.soonBadge}: ${plan.soon}` : "",
-      "setupNote" in plan ? plan.setupNote : "",
     ]
       .filter(Boolean)
       .join("\n");
@@ -75,23 +74,29 @@ export function buildKnowledge(locale: Locale): string {
     `Site language: ${LANGUAGE_NAME[locale]} (${locale})`,
     `# ${m.meta.title} (/)`,
     `${m.hero.titleStart} ${m.hero.titleEmphasis} ${m.hero.titleEnd}\n${m.hero.lead}\n${m.hero.bullets.map((bullet) => `- ${bullet}`).join("\n")}\n${m.hero.badge}`,
-    `## ${m.features.title} (/#features)\n${m.features.lead}\n${list(m.features.items)}`,
-    `## ${m.booking.title} (/#booking)\n${m.booking.lead}\n${list(m.booking.points)}`,
-    `## ${m.team.title}\n${list(m.team.items)}`,
+    `## ${site.home.benefitsTitle}\n${list(site.home.benefits)}`,
+    `# ${m.nav.platform} (/booking-platform)\n${site.platform.title}\n${site.platform.lead}`,
+    `## ${site.platform.howTitle}\n${site.platform.steps.map((step, index) => `${index + 1}. ${step.title}: ${step.text}`).join("\n")}`,
+    `## ${m.booking.title}\n${m.booking.lead}\n${list(m.booking.points)}`,
+    `## ${site.platform.featuresTitle}\n${m.features.lead}\n${list(m.features.items)}`,
+    `## ${site.platform.manageTitle}\n${site.platform.manageLead}\n${list(m.team.items)}`,
     `## ${m.roadmap.title} (${m.roadmap.badge})\n${m.roadmap.lead}\n${list(m.roadmap.items)}`,
-    `## ${app.eyebrow} (/#app)\n${app.status}\n${app.lead}\n${list(app.steps)}\n${app.benefitsTitle}:\n${list(app.benefits)}\n${app.ctaText}`,
+    `# ${m.nav.apps} (/apps)\n${site.apps.title}\n${site.apps.lead}`,
+    ...[site.apps.clients, site.apps.business].map(
+      (side) => `## ${side.title} (${side.eyebrow})\n${side.lead}\n${side.points.map((point) => `- ${point}`).join("\n")}`,
+    ),
+    site.apps.webNote,
+    `## ${app.eyebrow} (/apps#app)\n${app.status}\n${app.lead}\n${list(app.steps)}\n${app.benefitsTitle}:\n${list(app.benefits)}\n${app.ctaText}`,
     `# ${a.title} (/for-you)\n${a.lead}\n${list(a.segments)}\n\n## ${a.rolesTitle}\n${list(a.roles)}`,
     `# ${p.title} (/pricing)\n${p.lead}\n\n${plans.join("\n\n")}`,
-    `## ${p.addOns.title}\n${p.addOns.lead}\n- ${p.addOns.newsletter.name} (${p.soonBadge}): ${p.addOns.newsletter.text} ${p.addOns.newsletter.price(euros(NEWSLETTER_MONTHLY_CENTS))}`,
+    `## ${p.addOns.title}\n${p.addOns.lead}\n- ${p.addOns.newsletter.name} (${p.soonBadge}): ${p.addOns.newsletter.text} ${p.addOns.newsletter.price(euros(NEWSLETTER_MONTHLY_CENTS))}. ${p.addOns.newsletter.note}\n- ${p.addOns.customSite.name}: ${p.addOns.customSite.text} ${p.addOns.customSite.price(euros(CUSTOM_SITE_FEE_CENTS))}. ${p.addOns.customSite.note}`,
     `## ${p.compare.title}\n${p.compare.rows
-      .map(
-        (row) =>
-          `- ${row.label}: Basic ${cell(row.basic)}; Pro ${cell(row.pro)}; Ultra ${cell(row.ultra)}`,
-      )
+      .map((row) => `- ${row.label}: Basic ${cell(row.basic)}; Pro ${cell(row.pro)}`)
       .join("\n")}`,
     `## ${p.trial.title}\n${p.trial.steps.map((step, index) => `${index + 1}. ${step.title}: ${step.text}`).join("\n")}\n${p.billingNote}`,
     `# ${m.faq.title} (/faq)\n${m.faq.items.map((item) => `Q: ${item.q}\nA: ${item.a}`).join("\n\n")}`,
     `# ${t.help.title} (/help)\n${t.help.lead}\n\n${help.faq.map((item) => `Q: ${item.q}\nA: ${item.a}`).join("\n\n")}`,
+    `## ${site.support.contact.title} (/help#contact)\n${site.support.contact.lead}\n${site.support.contact.privacy}`,
     courses.join("\n\n"),
   ].join("\n\n");
 

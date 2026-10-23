@@ -86,3 +86,18 @@ export function visibleNav(permissions: ReadonlySet<string>, features?: Readonly
       (!item.feature || !features || features.has(item.feature)),
   );
 }
+
+/** Main navigation of the public website: exactly these six pages, in this order. */
+export const SITE_NAV = [
+  { key: "forYou", href: "/for-you" },
+  { key: "platform", href: "/booking-platform" },
+  { key: "apps", href: "/apps" },
+  { key: "pricing", href: "/pricing" },
+  { key: "faq", href: "/faq" },
+  { key: "help", href: "/help" },
+] as const;
+
+/** Whether a website nav item belongs to the current page (help courses count as Help). */
+export function isSiteNavActive(pathname: string, href: string) {
+  return pathname === href || pathname.startsWith(`${href}/`);
+}

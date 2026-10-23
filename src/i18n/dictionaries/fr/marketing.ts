@@ -7,9 +7,9 @@ export const marketing: typeof en = {
       "NORYX réunit rendez-vous, collaborateurs, clients et réservation en ligne sur une seule plateforme élégante pour les salons, barbiers et instituts de beauté.",
   },
   nav: {
-    features: "Fonctionnalités",
-    booking: "Réservation en ligne",
     forYou: "Pour qui",
+    platform: "Plateforme de réservation",
+    apps: "L'app pour vos clients et vous",
     pricing: "Tarifs",
     faq: "FAQ",
     help: "Aide",
@@ -234,15 +234,15 @@ export const marketing: typeof en = {
     items: [
       {
         q: "Combien coûte NORYX ?",
-        a: "NORYX propose trois abonnements : Basic, Pro et Ultra. Les prix mensuels seront annoncés avant le lancement. Ultra coûte 150 € une seule fois pour votre nom de domaine et votre site, et l'option newsletter coûte 5 € par mois. Vous pouvez essayer Pro gratuitement pendant 14 jours, sans données de paiement.",
+        a: "NORYX propose deux abonnements : Basic et Pro. Les prix mensuels seront annoncés avant le lancement. Il existe deux options : votre propre nom de domaine avec une page web sur mesure, 150 € une seule fois (uniquement avec Pro), et une newsletter à 5 € par mois. Vous pouvez essayer Pro gratuitement pendant 14 jours, sans données de paiement.",
       },
       {
-        q: "Quelle est la différence entre Basic, Pro et Ultra ?",
-        a: "Basic est le système de réservation — réservation en ligne, agenda, prestations et plannings de l'équipe — pour jusqu'à 250 clients. Pro ajoute les clients illimités, les paiements et finances, le stock, une boutique en ligne, une pointeuse et votre propre identité visuelle sur votre page de réservation. Ultra y ajoute votre propre nom de domaine et un site one-page mis en place par l'équipe NORYX.",
+        q: "Quelle est la différence entre Basic et Pro ?",
+        a: "Basic est le système de réservation — réservation en ligne, agenda, prestations et plannings de l'équipe — pour jusqu'à 250 clients. Pro ajoute les clients illimités, les paiements et finances, le stock, une boutique en ligne, une pointeuse et votre propre identité visuelle sur votre page de réservation. Avec Pro, vous pouvez aussi prendre en option votre propre nom de domaine et une page web sur mesure, mise en place par l'équipe NORYX.",
       },
       {
         q: "Que se passe-t-il après l'essai de 14 jours ?",
-        a: "Vous choisissez Basic, Pro ou Ultra. Si vous ne choisissez pas, votre établissement continue avec Basic. Rien n'est facturé automatiquement : il n'est pas encore possible de payer via NORYX.",
+        a: "Vous choisissez Basic ou Pro. Si vous ne choisissez pas, votre établissement continue avec Basic. Rien n'est facturé automatiquement : il n'est pas encore possible de payer via NORYX.",
       },
       {
         q: "Puis-je envoyer une newsletter à mes clients ?",
@@ -250,7 +250,7 @@ export const marketing: typeof en = {
       },
       {
         q: "Comment fonctionne la pointeuse ?",
-        a: "Les collaborateurs pointent leur arrivée et leur départ dans leur espace. Les propriétaires et managers voient les heures de chacun par semaine, peuvent corriger les pointages et les exporter en CSV. La pointeuse fait partie de Pro et Ultra.",
+        a: "Les collaborateurs pointent leur arrivée et leur départ dans leur espace. Les propriétaires et managers voient les heures de chacun par semaine, peuvent corriger les pointages et les exporter en CSV. La pointeuse fait partie de Pro.",
       },
       {
         q: "Que se passe-t-il quand un rendez-vous est supprimé ?",

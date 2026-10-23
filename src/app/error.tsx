@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,9 @@ export default function ErrorPage({
         action={
           <div className="grid justify-items-center gap-3">
             <Button onClick={reset}>{t.retry}</Button>
+            <Link href="/help#contact" className="text-sm font-semibold text-pink-700 hover:underline">
+              {t.contact}
+            </Link>
             {error.digest && <p className="text-xs text-fg-muted">{t.reference(error.digest)}</p>}
           </div>
         }

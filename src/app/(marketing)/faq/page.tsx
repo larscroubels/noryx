@@ -3,16 +3,22 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { FaqList } from "@/components/help/faq-list";
-import { getT } from "@/i18n/server";
+import { helpContent } from "@/content/help";
+import { getI18n, getT } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
   return { title: t.marketing.faq.metaTitle, description: t.marketing.faq.lead };
 }
 
+/** Every general question in one place: about NORYX and the plans, and about using NORYX. */
 export default async function FaqPage() {
-  const t = await getT();
+  const { t, locale } = await getI18n();
   const faq = t.marketing.faq;
+  const groups = [
+    { id: "faq-product", title: t.site.faqGroups.product, items: faq.items },
+    { id: "faq-usage", title: t.site.faqGroups.usage, items: helpContent[locale].faq },
+  ];
   return (
     <div className="container-page grid gap-12 py-14 sm:py-20 lg:grid-cols-[1fr_1.6fr]">
       <header className="lg:sticky lg:top-28 lg:self-start">
@@ -34,7 +40,18 @@ export default async function FaqPage() {
           </Link>
         </div>
       </header>
-      <FaqList items={faq.items} />
+      <div className="grid gap-12">
+        {groups.map((group) => (
+          <section key={group.id} aria-labelledby={group.id}>
+            <h2 id={group.id} className="font-display text-display-sm font-semibold">
+              {group.title}
+            </h2>
+            <div className="mt-4">
+              <FaqList items={group.items} />
+            </div>
+          </section>
+        ))}
+      </div>
     </div>
   );
 }

@@ -9,7 +9,7 @@ export const assistant = {
   greeting:
     "Hi! I can answer questions about NORYX: features, plans, booking and how everything works. What would you like to know?",
   suggestions: [
-    "What's the difference between Basic, Pro and Ultra?",
+    "What's the difference between Basic and Pro?",
     "How does the free trial work?",
     "Can clients book without an account?",
   ],

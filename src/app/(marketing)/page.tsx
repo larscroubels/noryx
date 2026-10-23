@@ -1,67 +1,49 @@
 import {
   ArrowRight,
-  CalendarCheck2,
   CalendarDays,
-  ChartNoAxesColumn,
   Check,
   Clock3,
-  CreditCard,
   Globe,
-  LockKeyhole,
-  MessageSquareText,
-  Scissors,
+  LifeBuoy,
+  MessageCircleQuestion,
   ShieldCheck,
-  ShoppingBag,
   Smartphone,
-  UserRound,
+  Sparkles,
+  Tag,
   UsersRound,
 } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { Logo } from "@/components/brand/logo";
-import { AppShowcase } from "@/components/marketing/app-showcase/app-showcase";
 import { HeroDemo } from "@/components/marketing/hero-demo";
+import { CtaPanel, FeatureCard, SectionHeading } from "@/components/marketing/page-sections";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getT } from "@/i18n/server";
+import { SITE_NAV } from "@/lib/navigation";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getT();
   return { title: { absolute: t.marketing.meta.title }, description: t.marketing.meta.description };
 }
 
-const FEATURE_ICONS = [
-  <Globe key="globe" />,
-  <CalendarDays key="calendar" />,
-  <UsersRound key="users" />,
-  <Scissors key="scissors" />,
-  <UserRound key="user" />,
-  <LockKeyhole key="lock" />,
-  <ShoppingBag key="bag" />,
-  <ChartNoAxesColumn key="chart" />,
-  <Clock3 key="clock" />,
-];
-const TEAM_ICONS = [
-  <UserRound key="user" />,
-  <ShieldCheck key="shield" />,
-  <CalendarCheck2 key="calendar" />,
-  <UsersRound key="users" />,
-];
-const ROADMAP_ICONS = [
-  <CreditCard key="card" />,
-  <MessageSquareText key="message" />,
-  <UsersRound key="users" />,
-  <Globe key="globe" />,
-  <Smartphone key="phone" />,
-];
+const BENEFIT_ICONS = [<Globe key="globe" />, <CalendarDays key="calendar" />, <ShieldCheck key="shield" />, <Sparkles key="sparkles" />];
+const PAGE_ICONS = {
+  forYou: <UsersRound />,
+  platform: <CalendarDays />,
+  apps: <Smartphone />,
+  pricing: <Tag />,
+  faq: <MessageCircleQuestion />,
+  help: <LifeBuoy />,
+};
 
+/** A short introduction; every topic has its own page, linked from here and from the menu. */
 export default async function LandingPage() {
   const t = await getT();
   const m = t.marketing;
+  const home = t.site.home;
   return (
     <>
-      {/* Hero */}
       <section className="relative overflow-hidden">
         <div
           aria-hidden="true"
@@ -84,7 +66,7 @@ export default async function LandingPage() {
                 </Link>
               </Button>
               <Button asChild size="lg" variant="secondary">
-                <a href="#features">{m.hero.secondary}</a>
+                <Link href="/booking-platform">{m.hero.secondary}</Link>
               </Button>
             </div>
             <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-fg-muted">
@@ -99,182 +81,53 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {/* Features */}
-      <section
-        id="features"
-        className="scroll-mt-20 border-t border-border bg-surface-subtle py-20 sm:py-24"
-      >
+      <section aria-labelledby="benefits-title" className="border-t border-border bg-surface-subtle py-16 sm:py-20">
         <div className="container-page">
-          <div className="max-w-2xl">
-            <p className="eyebrow">{m.features.eyebrow}</p>
-            <h2 className="mt-3 font-display text-display-md font-semibold">{m.features.title}</h2>
-            <p className="mt-4 text-lg text-fg-muted">{m.features.lead}</p>
-          </div>
-          {/* Each card spans three shared rows (subgrid): titles and texts line up across a row. */}
-          <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {m.features.items.map((feature, index) => (
-              <li
-                key={feature.title}
-                className="row-span-3 grid grid-rows-subgrid gap-y-0 rounded-xl border border-neutral-200/70 bg-surface p-6 shadow-sm"
-              >
-                <span
-                  aria-hidden="true"
-                  className="flex size-11 items-center justify-center rounded-lg bg-champagne-50 text-rosegold-700 ring-1 ring-champagne-200 [&_svg]:size-5"
-                >
-                  {FEATURE_ICONS[index]}
-                </span>
-                <h3 className="mt-5 text-lg font-semibold">{feature.title}</h3>
-                <p className="mt-2 text-fg-muted">{feature.text}</p>
-              </li>
+          <SectionHeading id="benefits-title" title={home.benefitsTitle} />
+          <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {home.benefits.map((benefit, index) => (
+              <FeatureCard key={benefit.title} icon={BENEFIT_ICONS[index]} title={benefit.title} text={benefit.text} />
             ))}
           </ul>
         </div>
       </section>
 
-      {/* Booking spotlight */}
-      <section id="booking" className="scroll-mt-20 overflow-hidden py-20 sm:py-24">
-        <div className="container-page grid items-center gap-14 lg:grid-cols-2">
-          <BookingPreview labels={m.booking.preview} />
-          <div>
-            <p className="eyebrow">{m.booking.eyebrow}</p>
-            <h2 className="mt-3 font-display text-display-md font-semibold">{m.booking.title}</h2>
-            <p className="mt-4 text-lg text-fg-muted">{m.booking.lead}</p>
-            <ul className="mt-8 grid gap-4">
-              {m.booking.points.map((point) => (
-                <li key={point.title} className="flex gap-4">
+      <section aria-labelledby="explore-title" className="py-16 sm:py-20">
+        <div className="container-page">
+          <SectionHeading id="explore-title" eyebrow={home.exploreEyebrow} title={home.exploreTitle} />
+          {/* Whole cards are links; four shared rows keep icons, titles, texts and links aligned. */}
+          <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {SITE_NAV.map((item) => (
+              <li key={item.href} className="row-span-4 grid grid-rows-subgrid">
+                <Link
+                  href={item.href}
+                  className="group row-span-4 grid grid-rows-subgrid gap-y-0 rounded-xl border border-neutral-200/70 bg-surface p-6 shadow-sm transition-[box-shadow,border-color] hover:border-rosegold-300 hover:shadow-md"
+                >
                   <span
                     aria-hidden="true"
-                    className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-full bg-pink-50 text-pink-700"
+                    className="flex size-11 items-center justify-center rounded-lg bg-champagne-50 text-rosegold-700 ring-1 ring-champagne-200 [&_svg]:size-5"
                   >
-                    <Check className="size-3.5" />
+                    {PAGE_ICONS[item.key]}
                   </span>
-                  <span>
-                    <span className="block font-semibold">{point.title}</span>
-                    <span className="text-fg-muted">{point.text}</span>
+                  <h3 className="mt-5 text-lg font-semibold">{m.nav[item.key]}</h3>
+                  <p className="mt-2 text-fg-muted">{home.explore[item.key]}</p>
+                  <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-pink-700">
+                    {home.readMore}
+                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
                   </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* Team & privacy */}
-      <section className="border-t border-border bg-surface-subtle py-20 sm:py-24">
-        <div className="container-page grid gap-12 lg:grid-cols-3">
-          <div className="lg:col-span-1">
-            <p className="eyebrow">{m.team.eyebrow}</p>
-            <h2 className="mt-3 font-display text-display-md font-semibold">{m.team.title}</h2>
-          </div>
-          <div className="grid gap-5 sm:grid-cols-2 lg:col-span-2">
-            {m.team.items.map((item, index) => (
-              <div
-                key={item.title}
-                className="row-span-3 grid grid-rows-subgrid gap-y-0 rounded-xl bg-surface p-6 shadow-sm ring-1 ring-neutral-200/70"
-              >
-                <span aria-hidden="true" className="text-rosegold-700 [&_svg]:size-5">
-                  {TEAM_ICONS[index]}
-                </span>
-                <h3 className="mt-4 font-semibold">{item.title}</h3>
-                <p className="mt-2 text-fg-muted">{item.text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* The planned client app */}
-      <AppShowcase labels={t.appShowcase} />
-
-      {/* Roadmap */}
-      <section className="border-t border-border bg-surface-subtle py-20 sm:py-24">
-        <div className="container-page">
-          <div className="max-w-2xl">
-            <p className="eyebrow">{m.roadmap.eyebrow}</p>
-            <h2 className="mt-3 font-display text-display-md font-semibold">{m.roadmap.title}</h2>
-            <p className="mt-4 text-lg text-fg-muted">{m.roadmap.lead}</p>
-          </div>
-          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {m.roadmap.items.map((item, index) => (
-              <li
-                key={item.title}
-                className="row-span-4 grid grid-rows-subgrid gap-y-0 rounded-xl border border-dashed border-border-strong bg-surface/70 p-5"
-              >
-                <span aria-hidden="true" className="text-fg-subtle [&_svg]:size-5">
-                  {ROADMAP_ICONS[index]}
-                </span>
-                <h3 className="mt-3 font-semibold">{item.title}</h3>
-                <p className="mt-1 text-sm text-fg-muted">{item.text}</p>
-                <Badge tone="outline" className="mt-4 self-end justify-self-start">
-                  {m.roadmap.badge}
-                </Badge>
+                </Link>
               </li>
             ))}
           </ul>
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="pb-20 sm:pb-24">
-        <div className="container-page">
-          <div className="relative overflow-hidden rounded-2xl bg-surface-warm px-6 py-14 text-center ring-1 ring-champagne-200 sm:px-12 sm:py-16">
-            <Logo variant="symbol" height={56} alt="" className="mx-auto" />
-            <h2 className="mx-auto mt-6 max-w-2xl font-display text-display-md font-semibold">
-              {m.finalCta.title}
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-lg text-fg-muted">{m.finalCta.lead}</p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <Button asChild size="lg">
-                <Link href="/signup">{m.finalCta.primary}</Link>
-              </Button>
-              <Button asChild size="lg" variant="secondary">
-                <Link href="/login">{m.finalCta.secondary}</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CtaPanel
+        title={m.finalCta.title}
+        text={m.finalCta.lead}
+        primary={{ href: "/signup", label: m.finalCta.primary }}
+        secondary={{ href: "/login", label: m.finalCta.secondary }}
+      />
     </>
-  );
-}
-
-function BookingPreview({
-  labels,
-}: {
-  labels: { title: string; days: [string, string][]; morning: string; confirm: string };
-}) {
-  return (
-    <div aria-hidden="true" className="relative mx-auto w-full max-w-sm">
-      <div className="absolute -inset-8 rounded-[3rem] bg-gradient-to-tr from-rosegold-100/70 via-transparent to-champagne-100/80 blur-2xl" />
-      <div className="relative rounded-[2rem] bg-surface p-5 shadow-xl ring-1 ring-neutral-200/80">
-        <div className="h-1 rounded-full bg-rosegold-400" />
-        <p className="mt-5 font-display text-2xl font-semibold">{labels.title}</p>
-        <div className="mt-4 flex gap-2">
-          {labels.days.map(([day, num], i) => (
-            <div
-              key={day}
-              className={`flex w-14 flex-col items-center rounded-lg border py-2 ${i === 1 ? "border-pink-700 bg-pink-700 text-white" : "border-border"}`}
-            >
-              <span className="text-[0.65rem] font-semibold uppercase">{day}</span>
-              <span className="text-base font-semibold">{num}</span>
-            </div>
-          ))}
-        </div>
-        <p className="mt-5 text-xs font-semibold text-fg-muted">{labels.morning}</p>
-        <div className="mt-2 grid grid-cols-3 gap-2">
-          {["09:00", "09:30", "10:15", "10:45", "11:00", "11:30"].map((time, i) => (
-            <span
-              key={time}
-              className={`flex h-10 items-center justify-center rounded-lg border text-sm font-semibold ${i === 2 ? "border-pink-700 bg-pink-700 text-white" : "border-border"}`}
-            >
-              {time}
-            </span>
-          ))}
-        </div>
-        <div className="mt-5 flex h-11 items-center justify-center rounded-md bg-pink-700 text-sm font-semibold text-white">
-          {labels.confirm}
-        </div>
-      </div>
-    </div>
   );
 }

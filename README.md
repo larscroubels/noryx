@@ -87,9 +87,15 @@ tests/db/                Database tests (tenant isolation, roles, booking)
 
 ## Going to production
 
-1. Create a Supabase project in an **EU region** and apply the migrations: `supabase link --project-ref <ref> && supabase db push`. Do **not** run `seed.sql` in production.
-2. In the Supabase dashboard: set the Site URL and redirect URLs to your domain, enable email confirmation, paste the templates from `supabase/templates/`, and configure a custom SMTP provider (Supabase's built-in mailer is rate-limited and not for production).
-3. Set `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` and `SUPABASE_SECRET_KEY` in your hosting provider (e.g. Vercel). The secret key must never be exposed to the browser. Optionally set `ANTHROPIC_API_KEY` to switch on the AI assistant on the website.
-4. Create the first platform administrator manually: `insert into public.platform_admins (user_id) values ('<auth user id>');`
+The site is deployed by Vercel from GitHub; the database and accounts live in Supabase. Vercel does **not** apply database migrations: after merging a pull request that adds files to `supabase/migrations/`, apply them yourself (step 1).
+
+1. **Database.** Create a Supabase project in an **EU region** and apply the migrations from this repository: `npx supabase login`, `npx supabase link --project-ref <ref>` (asks for the database password), then `npx supabase db push`. Repeat `db push` after every merge that adds a migration. Do **not** run `seed.sql` in production.
+2. **Supabase › Authentication › URL Configuration.** Set **Site URL** to the public address (e.g. `https://noryx-ashen.vercel.app` or your own domain) and add `https://<that address>/**` to **Redirect URLs**. Add `https://*-<vercel-team>.vercel.app/**` as well if sign-up should work on preview deployments.
+3. **Supabase › Authentication › Email Templates.** Paste the three templates from `supabase/templates/` (Confirm sign up, Reset password, Change email address) with the subjects from `supabase/config.toml`. Configure a custom SMTP provider: Supabase's built-in mailer sends only a few emails per hour and is not meant for production.
+4. **Vercel › Settings › Environment Variables** (Production and Preview): `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY` (server only), optionally `NEXT_PUBLIC_SITE_URL` (your domain; without it the Vercel URL is used, never localhost) and `ANTHROPIC_API_KEY` (switches on the AI assistant). Redeploy after changing variables.
+5. **Check.** Open `https://<your site>/api/health`. `"status": "ok"` means the database is reachable, has every migration this build expects, and the site URL isn't localhost. `"database": "schema_outdated"` means step 1 still has to be done.
+6. Create the first platform administrator manually in the SQL editor: `insert into public.platform_admins (user_id) values ('<auth user id>');`. Platform admins see support requests from the contact form in `/admin`.
+
+**"Could not load your workspaces" after signing in** means the database query for the user's businesses failed. The Vercel runtime log line `workspace.memberships_failed` shows the database error code; `database.schema_outdated` means the migrations haven't been applied (step 1).
 
 See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the security model and design decisions.

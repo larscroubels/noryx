@@ -2,6 +2,7 @@ import type { PostgrestError } from "@supabase/supabase-js";
 import type { z } from "zod";
 
 import { dictionaries, type Dictionary } from "@/i18n/dictionaries";
+import { logDatabaseError } from "@/lib/supabase/errors";
 
 /** Result shape returned by every server action and consumed by useActionState. */
 export type ActionState =
@@ -63,6 +64,8 @@ export function databaseErrorMessage(
     case "22023":
       return t.errors.notAllowedValues;
     default:
+      // Not an expected business-rule error: keep the details in the server log.
+      logDatabaseError("database.unexpected_error", error);
       return fallback;
   }
 }

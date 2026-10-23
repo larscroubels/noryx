@@ -17,6 +17,7 @@ import { getI18n } from "@/i18n/server";
 import { createClient } from "@/lib/supabase/server";
 
 import { DomainForm, StatusForm, SubscriptionForm } from "./status-form";
+import { SupportRequests } from "./support-requests";
 
 const STATUS_TONE = { active: "success", suspended: "warning", closed: "neutral" } as const;
 
@@ -30,6 +31,7 @@ export default async function AdminPage() {
     { data: plans },
     { data: subscriptions },
     { data: domainRows },
+    { data: supportRows },
   ] = await Promise.all([
     supabase.rpc("admin_platform_stats"),
     supabase.rpc("admin_list_businesses"),
@@ -41,6 +43,11 @@ export default async function AdminPage() {
     supabase.from("plans").select("id, name").eq("is_active", true).order("sort_order"),
     supabase.from("business_subscriptions").select("business_id, plan_id, status, trial_ends_at"),
     supabase.from("businesses").select("id, custom_domain"),
+    supabase
+      .from("support_requests")
+      .select("id, name, email, topic, message, locale, user_id, status, created_at")
+      .order("created_at", { ascending: false })
+      .limit(100),
   ]);
   const domains = new Map((domainRows ?? []).map((row) => [row.id, row.custom_domain]));
   const s = (stats ?? {}) as Record<string, number>;
@@ -73,6 +80,8 @@ export default async function AdminPage() {
       <Alert tone="info" title={a.billingTitle}>
         {a.billingText}
       </Alert>
+
+      <SupportRequests requests={supportRows ?? []} t={t} intl={intl} />
 
       <Card className="overflow-hidden">
         <CardHeader className="pb-5">

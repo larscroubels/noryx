@@ -10,9 +10,12 @@ import { FaqList } from "./faq-list";
 export async function HelpHome({
   basePath,
   compact = false,
+  showFaq = true,
 }: {
   basePath: string;
   compact?: boolean;
+  /** The public site has its own FAQ page, so /help links there instead. */
+  showFaq?: boolean;
 }) {
   const { t, locale } = await getI18n();
   const content = helpContent[locale];
@@ -34,15 +37,17 @@ export async function HelpHome({
         </h1>
         <p className="mt-3 max-w-2xl text-fg-muted sm:text-lg">{h.lead}</p>
       </header>
-      <section aria-label={h.courses}>
+      <section id="courses" aria-label={h.courses} className="scroll-mt-24">
         <CourseGrid courses={content.courses} basePath={basePath} />
       </section>
-      <section aria-labelledby="help-faq" className="grid gap-8 lg:grid-cols-[1fr_1.6fr]">
-        <h2 id="help-faq" className="font-display text-display-sm font-semibold">
-          {h.faq}
-        </h2>
-        <FaqList items={content.faq} />
-      </section>
+      {showFaq && (
+        <section aria-labelledby="help-faq" className="grid gap-8 lg:grid-cols-[1fr_1.6fr]">
+          <h2 id="help-faq" className="font-display text-display-sm font-semibold">
+            {h.faq}
+          </h2>
+          <FaqList items={content.faq} />
+        </section>
+      )}
     </div>
   );
 }

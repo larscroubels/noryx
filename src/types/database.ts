@@ -1712,6 +1712,49 @@ export type Database = {
           },
         ];
       };
+      support_requests: {
+        Row: {
+          closed_at: string | null;
+          closed_by: string | null;
+          created_at: string;
+          email: string;
+          id: string;
+          locale: string;
+          message: string;
+          name: string;
+          status: Database["public"]["Enums"]["support_request_status"];
+          topic: Database["public"]["Enums"]["support_request_topic"];
+          user_id: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          closed_at?: string | null;
+          closed_by?: string | null;
+          created_at?: string;
+          email: string;
+          id?: string;
+          locale?: string;
+          message: string;
+          name: string;
+          status?: Database["public"]["Enums"]["support_request_status"];
+          topic: Database["public"]["Enums"]["support_request_topic"];
+          user_id?: string | null;
+        };
+        Update: {
+          closed_at?: string | null;
+          closed_by?: string | null;
+          created_at?: string;
+          email?: string;
+          id?: string;
+          locale?: string;
+          message?: string;
+          name?: string;
+          status?: Database["public"]["Enums"]["support_request_status"];
+          topic?: Database["public"]["Enums"]["support_request_topic"];
+          user_id?: string | null;
+        };
+        Relationships: [];
+      };
       time_entries: {
         Row: {
           business_id: string;
@@ -1786,6 +1829,7 @@ export type Database = {
         };
         Returns: undefined;
       };
+      admin_delete_support_request: { Args: { p_request_id: string }; Returns: undefined };
       admin_list_businesses: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -1821,6 +1865,13 @@ export type Database = {
           p_plan_id: string;
           p_reason: string;
           p_status: Database["public"]["Enums"]["subscription_status"];
+        };
+        Returns: undefined;
+      };
+      admin_set_support_request_status: {
+        Args: {
+          p_request_id: string;
+          p_status: Database["public"]["Enums"]["support_request_status"];
         };
         Returns: undefined;
       };
@@ -2079,6 +2130,7 @@ export type Database = {
         };
         Returns: string;
       };
+      schema_version: { Args: Record<PropertyKey, never>; Returns: string };
       set_gift_card_blocked: {
         Args: { p_blocked: boolean; p_gift_card_id: string; p_reason: string };
         Returns: undefined;
@@ -2086,6 +2138,16 @@ export type Database = {
       set_location_hours: { Args: { p_hours: Json; p_location_id: string }; Returns: undefined };
       set_staff_working_hours: { Args: { p_hours: Json; p_staff_id: string }; Returns: undefined };
       shares_business_with: { Args: { p_user_id: string }; Returns: boolean };
+      submit_support_request: {
+        Args: {
+          p_email: string;
+          p_locale?: string;
+          p_message: string;
+          p_name: string;
+          p_topic: Database["public"]["Enums"]["support_request_topic"];
+        };
+        Returns: string;
+      };
       update_member: {
         Args: {
           p_granted?: string[];
@@ -2139,6 +2201,8 @@ export type Database = {
       payment_method: "cash" | "card" | "bancontact" | "bank_transfer" | "voucher" | "other";
       payment_status: "recorded" | "refunded";
       subscription_status: "trialing" | "active" | "past_due" | "cancelled";
+      support_request_status: "open" | "closed";
+      support_request_topic: "question" | "account" | "billing" | "problem" | "other";
       time_off_kind: "holiday" | "sick" | "break" | "training" | "other";
     };
     CompositeTypes: {
@@ -2296,6 +2360,8 @@ export const Constants = {
       payment_method: ["cash", "card", "bancontact", "bank_transfer", "voucher", "other"],
       payment_status: ["recorded", "refunded"],
       subscription_status: ["trialing", "active", "past_due", "cancelled"],
+      support_request_status: ["open", "closed"],
+      support_request_topic: ["question", "account", "billing", "problem", "other"],
       time_off_kind: ["holiday", "sick", "break", "training", "other"],
     },
   },

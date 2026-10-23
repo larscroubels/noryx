@@ -39,6 +39,19 @@ export const resetPasswordSchema = (t: Dictionary) =>
     });
 
 /** Only allow relative in-app redirect targets (prevents open redirects). */
+/**
+ * The `next` path inside a redirect URL, as the email templates pass Supabase's
+ * {{ .RedirectTo }} (for example https://site/auth/confirm?next=/invite/abc).
+ */
+export function nextFromRedirect(redirectTo: string | null | undefined): string | null {
+  if (!redirectTo) return null;
+  try {
+    return new URL(redirectTo).searchParams.get("next");
+  } catch {
+    return null;
+  }
+}
+
 export function safeNextPath(next: unknown, fallback = "/app") {
   if (
     typeof next !== "string" ||

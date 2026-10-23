@@ -1,7 +1,7 @@
 import { getSupabaseConfig, publicEnv } from "@/lib/env";
 
 /**
- * Ultra businesses can use their own domain (hairsalonsylvie.be) for their public
+ * Pro businesses with the own-domain extra use their own domain (hairsalonsylvie.be) for their public
  * page. The proxy rewrites requests on such a domain to /<slug>/…; which domain
  * belongs to which business is decided by public.resolve_custom_domain().
  */

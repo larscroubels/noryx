@@ -63,7 +63,7 @@
                   hours.
                 </p>
                 <a
-                  href="{{ .RedirectTo }}&amp;token_hash={{ .TokenHash }}&amp;type=email"
+                  href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&amp;type=email&amp;redirect_to={{ .RedirectTo }}"
                   style="
                     display: inline-block;
                     background-color: #b83d5d;
@@ -77,7 +77,7 @@
                   >Confirm email address</a
                 >
                 <p style="margin: 24px 0 0 0; font-size: 13px; line-height: 20px; color: #6e6764">
-                  Button not working? Copy this link into your browser:<br />{{ .RedirectTo }}&amp;token_hash={{ .TokenHash }}&amp;type=email
+                  Button not working? Copy this link into your browser:<br />{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&amp;type=email&amp;redirect_to={{ .RedirectTo }}
                 </p>
               </td>
             </tr>

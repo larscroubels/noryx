@@ -16,6 +16,7 @@ import type { Dictionary } from "@/i18n/dictionaries";
 import { getLocale, getT } from "@/i18n/server";
 import { ACTIVE_BUSINESS_COOKIE, getMemberships, requireUser } from "@/lib/auth/session";
 import { logger } from "@/lib/logger";
+import { logDatabaseError } from "@/lib/supabase/errors";
 import { createClient } from "@/lib/supabase/server";
 import { createBusinessSchema, locationSchema } from "@/lib/validation/business";
 import { rules } from "@/lib/validation/common";
@@ -56,7 +57,8 @@ export async function createBusinessAction(
         slug: [t.onboarding.business.slugTaken],
       });
     if (error?.code === "54000") return failure(t.onboarding.business.maxBusinesses);
-    logger.error("onboarding.create_business_failed", { code: error?.code });
+    if (error) logDatabaseError("onboarding.create_business_failed", error);
+    else logger.error("onboarding.create_business_failed", { reason: "no business id returned" });
     return failure(databaseErrorMessage(error, t));
   }
 

@@ -25,6 +25,7 @@ export const common: typeof en = {
   openNavigation: "Navigatie openen",
   closeNavigation: "Navigatie sluiten",
   mainNavigation: "Hoofdmenu",
+  skipToContent: "Naar de inhoud",
   signIn: "Inloggen",
   signOut: "Uitloggen",
   getStarted: "Aan de slag",
@@ -49,6 +50,7 @@ export const common: typeof en = {
     title: "Er ging iets mis",
     text: "We konden deze pagina niet laden. Probeer het opnieuw — blijft het probleem, neem dan contact op met support en vermeld de referentie hieronder.",
     retry: "Opnieuw proberen",
+    contact: "Contact opnemen met het NORYX-team",
     reference: (digest) => `Referentie: ${digest}`,
   },
   weekdays: ["maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag", "zondag"],
@@ -132,11 +134,6 @@ export const common: typeof en = {
   copyLink: "Link kopiëren",
   copied: "Gekopieerd",
   plans: {
-    ultra: {
-      name: "Ultra",
-      description:
-        "Alles uit Pro plus je eigen domeinnaam en een op maat gemaakte onepage-website, opgezet door het NORYX-team.",
-    },
     basic: {
       name: "Basic",
       description:
