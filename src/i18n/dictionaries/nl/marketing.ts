@@ -7,11 +7,11 @@ export const marketing: typeof en = {
       "NORYX brengt afspraken, personeel, klanten en online boeken samen in één elegant platform voor kapsalons, barbiers en beautystudio's.",
   },
   nav: {
-    features: "Functies",
-    booking: "Online boeken",
     forYou: "Voor wie",
+    platform: "Boekingsplatform",
+    apps: "App voor klant en u",
     pricing: "Prijzen",
-    faq: "Veelgestelde vragen",
+    faq: "FAQ",
     help: "Hulp",
   },
   footer: {
@@ -225,15 +225,15 @@ export const marketing: typeof en = {
     items: [
       {
         q: "Wat kost NORYX?",
-        a: "NORYX heeft drie abonnementen: Basic, Pro en Ultra. De maandprijzen worden bekendgemaakt vóór de lancering. Ultra kost eenmalig €150 extra voor je eigen domeinnaam en website, en de nieuwsbrief kost €5 per maand extra. Je kunt Pro 14 dagen gratis proberen, zonder betaalgegevens.",
+        a: "NORYX heeft twee abonnementen: Basic en Pro. De maandprijzen worden bekendgemaakt vóór de lancering. Er zijn twee extra opties: je eigen domeinnaam met een custom webpagina, eenmalig €150 (alleen bij Pro), en een nieuwsbrief voor €5 per maand. Je kunt Pro 14 dagen gratis proberen, zonder betaalgegevens.",
       },
       {
-        q: "Wat is het verschil tussen Basic, Pro en Ultra?",
-        a: "Basic is het boekingssysteem — online boeken, agenda, behandelingen en roosters — voor tot 250 klanten. Pro voegt onbeperkt klanten, betalingen en financiën, voorraad, een webshop, een prikklok en je eigen huisstijl op je boekingspagina toe. Ultra voegt daar je eigen domeinnaam en een onepage-website op maat aan toe, opgezet door het NORYX-team.",
+        q: "Wat is het verschil tussen Basic en Pro?",
+        a: "Basic is het boekingssysteem — online boeken, agenda, behandelingen en roosters — voor tot 250 klanten. Pro voegt onbeperkt klanten, betalingen en financiën, voorraad, een webshop, een prikklok en je eigen huisstijl op je boekingspagina toe. Bij Pro kun je als extra optie ook je eigen domeinnaam en een custom webpagina nemen, opgezet door het NORYX-team.",
       },
       {
         q: "Wat gebeurt er na de proefperiode van 14 dagen?",
-        a: "Je kiest Basic, Pro of Ultra. Kies je niets, dan werkt je zaak verder met Basic. Er wordt niets automatisch aangerekend: betalen via NORYX is nog niet mogelijk.",
+        a: "Je kiest Basic of Pro. Kies je niets, dan werkt je zaak verder met Basic. Er wordt niets automatisch aangerekend: betalen via NORYX is nog niet mogelijk.",
       },
       {
         q: "Kan ik een nieuwsbrief naar mijn klanten sturen?",
@@ -241,7 +241,7 @@ export const marketing: typeof en = {
       },
       {
         q: "Hoe werkt de prikklok?",
-        a: "Medewerkers klokken in en uit in hun werkruimte. Eigenaars en managers zien ieders uren per week, kunnen registraties corrigeren en exporteren als CSV. De prikklok zit in Pro en Ultra.",
+        a: "Medewerkers klokken in en uit in hun werkruimte. Eigenaars en managers zien ieders uren per week, kunnen registraties corrigeren en exporteren als CSV. De prikklok zit in Pro.",
       },
       {
         q: "Wat gebeurt er als een afspraak verwijderd wordt?",

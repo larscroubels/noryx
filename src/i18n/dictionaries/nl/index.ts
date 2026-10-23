@@ -19,6 +19,7 @@ import { pricing } from "./pricing";
 import { retail } from "./retail";
 import { services } from "./services";
 import { settings } from "./settings";
+import { site } from "./site";
 import { staff } from "./staff";
 import { team } from "./team";
 import { timeClock } from "./time-clock";
@@ -50,4 +51,5 @@ export const nl = {
   timeClock,
   audience,
   assistant,
+  site,
 };

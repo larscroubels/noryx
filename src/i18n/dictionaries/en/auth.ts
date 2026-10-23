@@ -19,6 +19,7 @@ export const auth = {
     metaTitle: "Sign in",
     title: "Welcome back",
     lead: "Sign in to your NORYX workspace.",
+    confirmedSignIn: "Your email address is confirmed. Sign in to continue.",
     linkExpired: "That link has expired or was already used. Sign in, or request a new link.",
     forgot: "Forgot your password?",
     submit: "Sign in",

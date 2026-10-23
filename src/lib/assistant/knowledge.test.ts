@@ -28,8 +28,8 @@ describe("assistant knowledge", () => {
   });
 
   it("matches short terms as whole words only", () => {
-    const titles = searchKnowledge("nl", "Wat is het verschil tussen Basic, Pro en Ultra?").map((r) => r.title);
-    expect(titles[0]).toMatch(/Basic, Pro en Ultra/);
+    const titles = searchKnowledge("nl", "Wat is het verschil tussen Basic en Pro?").map((r) => r.title);
+    expect(titles[0]).toMatch(/Basic en Pro/);
     expect(titles.join(" ")).not.toMatch(/profiel/i);
   });
 

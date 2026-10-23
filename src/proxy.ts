@@ -13,7 +13,7 @@ export async function proxy(request: NextRequest) {
   // Always overwritten, so a visitor can't pick another route's language by sending it.
   request.headers.set(PATHNAME_HEADER, request.nextUrl.pathname);
 
-  // Ultra: a business's own domain shows its public page.
+  // The own-domain extra (Pro): a business's own domain shows its public page.
   const host = request.headers.get("host") ?? "";
   if (host && !isPlatformHost(host)) {
     const slug = await slugForHost(host);
@@ -26,8 +26,16 @@ export async function proxy(request: NextRequest) {
     }
   }
 
+  const { pathname, search, searchParams } = request.nextUrl;
+  // When a redirect URL isn't on Supabase's allow list, email links land on the Site URL
+  // itself (/?code=… or /?token_hash=…). Finish the verification instead of ignoring it.
+  if (pathname === "/" && (searchParams.has("code") || searchParams.has("token_hash"))) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/auth/confirm";
+    return NextResponse.redirect(url);
+  }
+
   const { response, userId } = await updateSession(request);
-  const { pathname, search } = request.nextUrl;
 
   const isProtected = PROTECTED_PREFIXES.some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),

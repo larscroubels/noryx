@@ -11,6 +11,7 @@ import { useT } from "@/i18n/client";
 import { createEventParser, type AssistantSource } from "@/lib/assistant/events";
 import { cn } from "@/lib/cn";
 
+import { OPEN_ASSISTANT_EVENT } from "./open-assistant-button";
 import { RichText } from "./rich-text";
 
 type Item = {
@@ -52,6 +53,12 @@ export function AssistantWidget() {
   }, [items]);
 
   useEffect(() => () => abort.current?.abort(), []);
+
+  useEffect(() => {
+    const show = () => setOpen(true);
+    window.addEventListener(OPEN_ASSISTANT_EVENT, show);
+    return () => window.removeEventListener(OPEN_ASSISTANT_EVENT, show);
+  }, []);
 
   async function ask(question: string) {
     const text = question.trim();

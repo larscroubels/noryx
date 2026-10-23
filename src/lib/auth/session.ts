@@ -5,6 +5,8 @@ import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
 
 import { isSupabaseConfigured } from "@/lib/env";
+import { logger } from "@/lib/logger";
+import { logDatabaseError } from "@/lib/supabase/errors";
 import { createClient } from "@/lib/supabase/server";
 import type { Tables } from "@/types/database";
 
@@ -25,6 +27,9 @@ export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
   if (!isSupabaseConfigured()) return null;
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getClaims();
+  // A missing session is normal for visitors; anything else (e.g. Supabase unreachable) is worth a log line.
+  if (error && error.name !== "AuthSessionMissingError")
+    logger.warn("auth.get_claims_failed", { code: error.code, status: error.status, message: error.message });
   if (error || !data?.claims?.sub) return null;
   const claims = data.claims as {
     sub: string;
@@ -65,7 +70,10 @@ export const getMemberships = cache(async (): Promise<Membership[]> => {
     .eq("user_id", user.id)
     .eq("status", "active")
     .order("created_at");
-  if (error) throw new Error("Could not load your workspaces.");
+  if (error) {
+    logDatabaseError("workspace.memberships_failed", error);
+    throw new Error("Could not load your workspaces.", { cause: error });
+  }
   return (data ?? []).flatMap((row) =>
     row.business ? [{ role: row.role, business: row.business }] : [],
   );
@@ -103,8 +111,8 @@ export const requireWorkspace = cache(async (): Promise<Workspace> => {
   const membership = memberships.find((m) => m.business.id === preferred) ?? memberships[0]!;
 
   const supabase = await createClient();
-  const [{ data: business }, { data: permissionKeys }, { data: staff }] = await Promise.all([
-    supabase.from("businesses").select("*").eq("id", membership.business.id).single(),
+  const [businessResult, permissionResult, staffResult] = await Promise.all([
+    supabase.from("businesses").select("*").eq("id", membership.business.id).maybeSingle(),
     supabase.rpc("my_business_permissions", { p_business_id: membership.business.id }),
     supabase
       .from("staff_members")
@@ -113,6 +121,16 @@ export const requireWorkspace = cache(async (): Promise<Workspace> => {
       .eq("user_id", user.id)
       .maybeSingle(),
   ]);
+  // A failed query is an error, not a missing business: redirecting to onboarding here
+  // would bounce straight back to /app.
+  const failed = businessResult.error ?? permissionResult.error ?? staffResult.error;
+  if (failed) {
+    logDatabaseError("workspace.load_failed", failed);
+    throw new Error("Could not load your workspace.", { cause: failed });
+  }
+  const business = businessResult.data;
+  const permissionKeys = permissionResult.data;
+  const staff = staffResult.data;
   if (!business) redirect("/onboarding");
 
   return {

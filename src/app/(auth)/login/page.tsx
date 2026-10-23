@@ -22,6 +22,11 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
           {t.auth.login.linkExpired}
         </Alert>
       )}
+      {params.error === "confirmed_sign_in" && (
+        <Alert tone="success" className="mt-6">
+          {t.auth.login.confirmedSignIn}
+        </Alert>
+      )}
       <LoginForm next={next} />
       <p className="mt-8 text-center text-sm text-fg-muted">
         {t.auth.login.newHere}{" "}

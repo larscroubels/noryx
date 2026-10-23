@@ -7,6 +7,7 @@ import { failure, formToObject, success, validationFailure, type ActionState } f
 import type { Dictionary } from "@/i18n/dictionaries";
 import { getT } from "@/i18n/server";
 import { isPlatformAdmin } from "@/lib/auth/session";
+import { logDatabaseError } from "@/lib/supabase/errors";
 import { createClient } from "@/lib/supabase/server";
 
 const reason = (t: Dictionary) => z.string().trim().min(3, t.admin.form.reasonAudit).max(500);
@@ -73,7 +74,7 @@ const domainSchema = (t: Dictionary) =>
     reason: reason(t),
   });
 
-/** Assigns (or clears) an Ultra business's own domain; DNS must point to NORYX. */
+/** Assigns (or clears) a Pro business's own domain (the paid extra); DNS must point to NORYX. */
 export async function setCustomDomain(
   _prev: ActionState,
   formData: FormData,
@@ -88,7 +89,36 @@ export async function setCustomDomain(
     p_domain: parsed.data.domain,
     p_reason: parsed.data.reason,
   });
-  if (error) return failure(t.admin.domain.failed, { domain: [t.admin.domain.failed] });
+  if (error) {
+    const message = error.message === "plan_feature_custom_domain" ? t.admin.domain.proOnly : t.admin.domain.failed;
+    return failure(message, { domain: [message] });
+  }
   revalidatePath("/admin");
   return success(t.admin.domain.saved);
+}
+
+const supportStatusSchema = z.object({ requestId: z.uuid(), status: z.enum(["open", "closed"]) });
+
+/** Marks a support request handled (or reopens it). The database re-checks admin rights. */
+export async function setSupportRequestStatus(formData: FormData) {
+  if (!(await isPlatformAdmin())) return;
+  const parsed = supportStatusSchema.safeParse(formToObject(formData));
+  if (!parsed.success) return;
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("admin_set_support_request_status", {
+    p_request_id: parsed.data.requestId,
+    p_status: parsed.data.status,
+  });
+  if (error) logDatabaseError("admin.support_status_failed", error);
+  revalidatePath("/admin");
+}
+
+export async function deleteSupportRequest(formData: FormData) {
+  if (!(await isPlatformAdmin())) return;
+  const parsed = z.object({ requestId: z.uuid() }).safeParse(formToObject(formData));
+  if (!parsed.success) return;
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("admin_delete_support_request", { p_request_id: parsed.data.requestId });
+  if (error) logDatabaseError("admin.support_delete_failed", error);
+  revalidatePath("/admin");
 }

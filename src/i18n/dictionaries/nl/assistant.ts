@@ -11,7 +11,7 @@ export const assistant: typeof en = {
   greeting:
     "Hallo! Ik beantwoord je vragen over NORYX: functies, abonnementen, online boeken en hoe alles werkt. Wat wil je weten?",
   suggestions: [
-    "Wat is het verschil tussen Basic, Pro en Ultra?",
+    "Wat is het verschil tussen Basic en Pro?",
     "Hoe werkt de gratis proefperiode?",
     "Kunnen klanten boeken zonder account?",
   ],

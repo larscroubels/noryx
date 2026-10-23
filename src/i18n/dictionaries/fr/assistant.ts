@@ -11,7 +11,7 @@ export const assistant: typeof en = {
   greeting:
     "Bonjour ! Je réponds à vos questions sur NORYX : fonctionnalités, abonnements, réservation et fonctionnement. Que souhaitez-vous savoir ?",
   suggestions: [
-    "Quelle est la différence entre Basic, Pro et Ultra ?",
+    "Quelle est la différence entre Basic et Pro ?",
     "Comment fonctionne l'essai gratuit ?",
     "Les clients peuvent-ils réserver sans compte ?",
   ],

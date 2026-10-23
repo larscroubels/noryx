@@ -21,6 +21,7 @@ export const auth: typeof en = {
     metaTitle: "Inloggen",
     title: "Welkom terug",
     lead: "Log in op je NORYX-werkruimte.",
+    confirmedSignIn: "Je e-mailadres is bevestigd. Log in om verder te gaan.",
     linkExpired: "Die link is verlopen of werd al gebruikt. Log in of vraag een nieuwe link aan.",
     forgot: "Wachtwoord vergeten?",
     submit: "Inloggen",

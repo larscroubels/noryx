@@ -21,6 +21,7 @@ export const auth: typeof en = {
     metaTitle: "Se connecter",
     title: "Bon retour parmi nous",
     lead: "Connectez-vous à votre espace NORYX.",
+    confirmedSignIn: "Votre adresse e-mail est confirmée. Connectez-vous pour continuer.",
     linkExpired:
       "Ce lien a expiré ou a déjà été utilisé. Connectez-vous ou demandez un nouveau lien.",
     forgot: "Mot de passe oublié ?",

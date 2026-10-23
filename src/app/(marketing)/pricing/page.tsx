@@ -1,4 +1,4 @@
-import { ArrowRight, Check, Clock3, Mail, Minus, Sparkles } from "lucide-react";
+import { ArrowRight, Check, Clock3, Globe, Mail, Minus, Sparkles } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -6,9 +6,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getI18n, getT } from "@/i18n/server";
 import {
+  CUSTOM_SITE_FEE_CENTS,
   formatWholeEuros,
   NEWSLETTER_MONTHLY_CENTS,
-  ULTRA_SETUP_FEE_CENTS,
 } from "@/lib/billing/pricing";
 import { cn } from "@/lib/cn";
 
@@ -39,7 +39,23 @@ export default async function PricingPage() {
   const plans = [
     { key: "basic" as const, highlight: false },
     { key: "pro" as const, highlight: true },
-    { key: "ultra" as const, highlight: false },
+  ];
+  const extras = [
+    {
+      key: "newsletter",
+      icon: <Mail className="size-5" />,
+      copy: p.addOns.newsletter,
+      price: p.addOns.newsletter.price(euros(NEWSLETTER_MONTHLY_CENTS)),
+      // Priced, but not built yet.
+      soon: true,
+    },
+    {
+      key: "customSite",
+      icon: <Globe className="size-5" />,
+      copy: p.addOns.customSite,
+      price: p.addOns.customSite.price(euros(CUSTOM_SITE_FEE_CENTS)),
+      soon: false,
+    },
   ];
 
   return (
@@ -55,7 +71,7 @@ export default async function PricingPage() {
       </section>
 
       {/* Cards share their rows (subgrid), so names, prices, lists and buttons line up across plans. */}
-      <section className="container-page -mt-6 grid gap-6 md:grid-cols-2 lg:mx-auto lg:max-w-6xl lg:grid-cols-3">
+      <section className="container-page -mt-6 grid gap-6 md:mx-auto md:max-w-5xl md:grid-cols-2">
         {plans.map(({ key, highlight }, index) => {
           const plan = p.plans[key];
           return (
@@ -82,11 +98,6 @@ export default async function PricingPage() {
               <div className="mt-6">
                 <p className="text-2xl font-semibold">{p.priceSoon}</p>
                 <p className="text-sm text-fg-muted">{p.priceNote}</p>
-                {"setupFee" in plan && (
-                  <p className="mt-2 text-sm font-semibold text-pink-700">
-                    {plan.setupFee(euros(ULTRA_SETUP_FEE_CENTS))}
-                  </p>
-                )}
               </div>
               <p className="mt-7 text-sm font-semibold">{"everything" in plan ? plan.everything : ""}</p>
               <ul className="mt-3 grid content-start gap-3 text-sm">
@@ -105,7 +116,6 @@ export default async function PricingPage() {
                     <Badge tone="neutral">{p.soonBadge}</Badge>
                   </p>
                 )}
-                {"setupNote" in plan && <p>{plan.setupNote}</p>}
               </div>
               <Button
                 asChild
@@ -122,32 +132,38 @@ export default async function PricingPage() {
         })}
       </section>
 
-      <section aria-labelledby="extras-title" className="container-page mt-16 lg:mx-auto lg:max-w-6xl">
+      <section aria-labelledby="extras-title" className="container-page mt-16 md:mx-auto md:max-w-5xl">
         <h2 id="extras-title" className="font-display text-display-sm font-semibold">
           {p.addOns.title}
         </h2>
         <p className="mt-1 text-fg-muted">{p.addOns.lead}</p>
-        <div className="mt-6 flex flex-col gap-4 rounded-2xl bg-surface p-6 ring-1 ring-border sm:flex-row sm:items-center sm:p-7">
-          <span
-            aria-hidden="true"
-            className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-pink-50 text-pink-700 ring-1 ring-pink-100"
-          >
-            <Mail className="size-5" />
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className="flex flex-wrap items-center gap-2 font-semibold">
-              {p.addOns.newsletter.name}
-              <Badge tone="neutral">{p.soonBadge}</Badge>
-            </p>
-            <p className="mt-1 text-sm text-fg-muted">{p.addOns.newsletter.text}</p>
-          </div>
-          <p className="text-lg font-semibold whitespace-nowrap">
-            {p.addOns.newsletter.price(euros(NEWSLETTER_MONTHLY_CENTS))}
-          </p>
-        </div>
+        <ul className="mt-6 grid gap-4 md:grid-cols-2">
+          {extras.map((extra) => (
+            <li
+              key={extra.key}
+              className="row-span-4 grid grid-rows-subgrid gap-y-0 rounded-2xl bg-surface p-6 ring-1 ring-border sm:p-7"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <span
+                  aria-hidden="true"
+                  className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-pink-50 text-pink-700 ring-1 ring-pink-100"
+                >
+                  {extra.icon}
+                </span>
+                <p className="text-lg font-semibold whitespace-nowrap">{extra.price}</p>
+              </div>
+              <p className="mt-4 flex flex-wrap items-center gap-2 font-semibold">
+                {extra.copy.name}
+                {extra.soon && <Badge tone="neutral">{p.soonBadge}</Badge>}
+              </p>
+              <p className="mt-1 text-sm text-fg-muted">{extra.copy.text}</p>
+              <p className="mt-4 self-end text-sm font-semibold">{extra.copy.note}</p>
+            </li>
+          ))}
+        </ul>
       </section>
 
-      <section aria-labelledby="trial-title" className="container-page mt-20 lg:mx-auto lg:max-w-6xl">
+      <section aria-labelledby="trial-title" className="container-page mt-20 md:mx-auto md:max-w-5xl">
         <h2 id="trial-title" className="font-display text-display-sm font-semibold">
           {p.trial.title}
         </h2>
@@ -171,7 +187,7 @@ export default async function PricingPage() {
         <p className="mt-5 text-sm text-fg-muted">{p.billingNote}</p>
       </section>
 
-      <section aria-labelledby="compare-title" className="container-page mt-20 lg:mx-auto lg:max-w-6xl">
+      <section aria-labelledby="compare-title" className="container-page mt-20 md:mx-auto md:max-w-5xl">
         <h2 id="compare-title" className="font-display text-display-sm font-semibold">
           {p.compare.title}
         </h2>

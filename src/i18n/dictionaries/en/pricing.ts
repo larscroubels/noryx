@@ -1,9 +1,9 @@
 export const pricing = {
   metaTitle: "Pricing",
   metaDescription:
-    "NORYX Basic, Pro and Ultra. Try Pro free for 14 days — no payment details needed.",
+    "NORYX Basic and Pro, with optional extras. Try Pro free for 14 days — no payment details needed.",
   eyebrow: "Pricing",
-  title: "Three plans. Start with 14 days of Pro, free.",
+  title: "Two plans. Start with 14 days of Pro, free.",
   lead: "Try every Pro feature for two weeks. No payment details needed — afterwards you choose the plan that suits your salon.",
   priceSoon: "Price coming soon",
   priceNote: "Prices are announced before launch.",
@@ -36,26 +36,22 @@ export const pricing = {
       ],
       soon: "Online payments and deposits",
     },
-    ultra: {
-      name: "Ultra",
-      tagline: "Your salon on its own domain, with a website made for you.",
-      everything: "Everything in Pro, plus:",
-      features: [
-        "Your own domain name: hairsalonsylvie.be instead of noryx.be/hairsalonsylvie",
-        "A one-page website set up by the NORYX team, with all your options built in: booking, webshop and gift cards",
-      ],
-      setupFee: (amount: string) => `+ ${amount} one-time for your domain and website`,
-      setupNote: "Start with the Pro trial; the NORYX team then sets up your domain and website.",
-    },
   },
   soonBadge: "In development",
   addOns: {
-    title: "Extras",
-    lead: "Add these to any plan.",
+    title: "Extra options",
+    lead: "Add these to your plan.",
     newsletter: {
       name: "Newsletter for your salon",
       text: "Send your own newsletter to clients who agreed to receive marketing messages.",
       price: (amount: string) => `+ ${amount} per month`,
+      note: "With every plan.",
+    },
+    customSite: {
+      name: "Own domain and custom webpage",
+      text: "Your salon on its own domain name (hairsalonsylvie.be instead of noryx.be/hairsalonsylvie), with a one-page website set up by the NORYX team: booking, webshop and gift cards built in.",
+      price: (amount: string) => `+ ${amount} one-time`,
+      note: "Only with Pro. The NORYX team sets up your domain and webpage.",
     },
   },
   compare: {
@@ -64,24 +60,22 @@ export const pricing = {
     included: "Included",
     notIncluded: "Not included",
     rows: [
-      { label: "Online booking page", basic: true, pro: true, ultra: true },
-      { label: "Calendar, services and team schedules", basic: true, pro: true, ultra: true },
-      { label: "Team logins with roles", basic: true, pro: true, ultra: true },
-      { label: "Gift cards", basic: true, pro: true, ultra: true },
-      { label: "Customers", basic: "Up to 250", pro: "Unlimited", ultra: "Unlimited" },
-      { label: "Payments & finance", basic: false, pro: true, ultra: true },
-      { label: "Products & stock", basic: false, pro: true, ultra: true },
-      { label: "Webshop (click & collect)", basic: false, pro: true, ultra: true },
-      { label: "Time clock", basic: false, pro: true, ultra: true },
-      { label: "Your own booking-page branding", basic: false, pro: true, ultra: true },
-      { label: "Custom permissions per team member", basic: false, pro: true, ultra: true },
-      { label: "Your own domain name", basic: false, pro: false, ultra: true },
-      { label: "One-page website made for you", basic: false, pro: false, ultra: true },
+      { label: "Online booking page", basic: true, pro: true },
+      { label: "Calendar, services and team schedules", basic: true, pro: true },
+      { label: "Team logins with roles", basic: true, pro: true },
+      { label: "Gift cards", basic: true, pro: true },
+      { label: "Customers", basic: "Up to 250", pro: "Unlimited" },
+      { label: "Payments & finance", basic: false, pro: true },
+      { label: "Products & stock", basic: false, pro: true },
+      { label: "Webshop (click & collect)", basic: false, pro: true },
+      { label: "Time clock", basic: false, pro: true },
+      { label: "Your own booking-page branding", basic: false, pro: true },
+      { label: "Custom permissions per team member", basic: false, pro: true },
+      { label: "Own domain and custom webpage", basic: false, pro: "Extra option" },
     ] as {
       label: string;
       basic: boolean | string;
       pro: boolean | string;
-      ultra: boolean | string;
     }[],
   },
   trial: {
@@ -91,7 +85,7 @@ export const pricing = {
       { title: "Use Pro for 14 days", text: "Every Pro feature is unlocked during your trial." },
       {
         title: "Choose your plan",
-        text: "Pick Basic, Pro or Ultra. If you don't choose, your business continues on Basic.",
+        text: "Pick Basic or Pro. If you don't choose, your business continues on Basic.",
       },
     ],
   },

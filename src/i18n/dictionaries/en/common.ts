@@ -23,6 +23,7 @@ export const common = {
   openNavigation: "Open navigation",
   closeNavigation: "Close navigation",
   mainNavigation: "Main",
+  skipToContent: "Skip to content",
   signIn: "Sign in",
   signOut: "Sign out",
   getStarted: "Get started",
@@ -47,6 +48,7 @@ export const common = {
     title: "Something went wrong",
     text: "We couldn't load this page. Please try again — if the problem continues, contact support and mention the reference below.",
     retry: "Try again",
+    contact: "Contact the NORYX team",
     reference: (digest: string) => `Reference: ${digest}`,
   },
   weekdays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
@@ -130,11 +132,6 @@ export const common = {
   copyLink: "Copy link",
   copied: "Copied",
   plans: {
-    ultra: {
-      name: "Ultra",
-      description:
-        "Everything in Pro plus your own domain name and a custom one-page website set up by the NORYX team.",
-    },
     basic: {
       name: "Basic",
       description:

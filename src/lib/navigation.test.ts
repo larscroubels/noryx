@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 
+import { dictionaries } from "@/i18n/dictionaries";
+
 import { effectivePermissions } from "./auth/permissions";
-import { visibleNav } from "./navigation";
+import { isSiteNavActive, SITE_NAV, visibleNav } from "./navigation";
 
 const keys = (role: "owner" | "manager" | "staff") =>
   visibleNav(effectivePermissions({ role })).map((item) => item.key);
@@ -62,5 +64,26 @@ describe("role-aware navigation", () => {
     expect(keys).toContain("calendar");
     // Gift cards are part of Basic too.
     expect(keys).toContain("giftCards");
+  });
+});
+
+describe("website navigation", () => {
+  it("has exactly the six agreed items, in Dutch word for word", () => {
+    const nav = dictionaries.nl.marketing.nav;
+    expect(SITE_NAV.map((item) => nav[item.key])).toEqual([
+      "Voor wie",
+      "Boekingsplatform",
+      "App voor klant en u",
+      "Prijzen",
+      "FAQ",
+      "Hulp",
+    ]);
+    expect(new Set(SITE_NAV.map((item) => item.href)).size).toBe(6);
+  });
+
+  it("marks the current page, including help courses", () => {
+    expect(isSiteNavActive("/help/agenda", "/help")).toBe(true);
+    expect(isSiteNavActive("/helpdesk", "/help")).toBe(false);
+    expect(isSiteNavActive("/", "/for-you")).toBe(false);
   });
 });

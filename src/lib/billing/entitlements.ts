@@ -26,7 +26,7 @@ export const FEATURES = [
 
 export type Feature = (typeof FEATURES)[number];
 
-export const PLAN_IDS = ["basic", "pro", "ultra"] as const;
+export const PLAN_IDS = ["basic", "pro"] as const;
 export type PlanId = (typeof PLAN_IDS)[number];
 
 export type SubscriptionStatus = "trialing" | "active" | "past_due" | "cancelled";

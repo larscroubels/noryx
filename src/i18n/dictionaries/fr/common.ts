@@ -25,6 +25,7 @@ export const common: typeof en = {
   openNavigation: "Ouvrir la navigation",
   closeNavigation: "Fermer la navigation",
   mainNavigation: "Menu principal",
+  skipToContent: "Aller au contenu",
   signIn: "Se connecter",
   signOut: "Se déconnecter",
   getStarted: "Commencer",
@@ -49,6 +50,7 @@ export const common: typeof en = {
     title: "Une erreur s'est produite",
     text: "Nous n'avons pas pu charger cette page. Réessayez — si le problème persiste, contactez le support en mentionnant la référence ci-dessous.",
     retry: "Réessayer",
+    contact: "Contacter l'équipe NORYX",
     reference: (digest) => `Référence : ${digest}`,
   },
   weekdays: ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"],
@@ -132,11 +134,6 @@ export const common: typeof en = {
   copyLink: "Copier le lien",
   copied: "Copié",
   plans: {
-    ultra: {
-      name: "Ultra",
-      description:
-        "Tout Pro, plus votre propre nom de domaine et un site one-page sur mesure mis en place par l'équipe NORYX.",
-    },
     basic: {
       name: "Basic",
       description:

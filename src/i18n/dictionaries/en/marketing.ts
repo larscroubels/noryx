@@ -4,10 +4,11 @@ export const marketing = {
     description:
       "NORYX brings appointments, staff, customers and online booking together in one elegant platform for salons, barbers and beauty studios.",
   },
+  /** The six main navigation items, in this order (wording set by the product owner). */
   nav: {
-    features: "Features",
-    booking: "Online booking",
     forYou: "Who it's for",
+    platform: "Booking platform",
+    apps: "App for clients and you",
     pricing: "Pricing",
     faq: "FAQ",
     help: "Help",
@@ -225,15 +226,15 @@ export const marketing = {
     items: [
       {
         q: "What does NORYX cost?",
-        a: "NORYX has three plans: Basic, Pro and Ultra. Monthly prices will be announced before launch. Ultra has a one-time fee of €150 for your own domain name and website, and the newsletter extra costs €5 per month. You can try Pro free for 14 days without payment details.",
+        a: "NORYX has two plans: Basic and Pro. Monthly prices will be announced before launch. There are two extra options: your own domain name with a custom webpage, for a one-time €150 (only with Pro), and a newsletter for €5 per month. You can try Pro free for 14 days without payment details.",
       },
       {
-        q: "What's the difference between Basic, Pro and Ultra?",
-        a: "Basic is the booking system — online booking, calendar, services and team schedules — for up to 250 customers. Pro adds unlimited customers, payments and finance, stock, a webshop, a time clock and your own branding on your booking page. Ultra adds your own domain name and a one-page website set up by the NORYX team.",
+        q: "What's the difference between Basic and Pro?",
+        a: "Basic is the booking system — online booking, calendar, services and team schedules — for up to 250 customers. Pro adds unlimited customers, payments and finance, stock, a webshop, a time clock and your own branding on your booking page. With Pro you can also add your own domain name and a custom webpage set up by the NORYX team, as an extra option.",
       },
       {
         q: "What happens after the 14-day trial?",
-        a: "You choose Basic, Pro or Ultra. If you don't choose, your business continues on Basic. Nothing is charged automatically: paying through NORYX isn't possible yet.",
+        a: "You choose Basic or Pro. If you don't choose, your business continues on Basic. Nothing is charged automatically: paying through NORYX isn't possible yet.",
       },
       {
         q: "Can I send a newsletter to my clients?",
@@ -241,7 +242,7 @@ export const marketing = {
       },
       {
         q: "How does the time clock work?",
-        a: "Professionals clock in and out in their workspace. Owners and managers see everyone's hours per week, can correct registrations and export them as CSV. The time clock is part of Pro and Ultra.",
+        a: "Professionals clock in and out in their workspace. Owners and managers see everyone's hours per week, can correct registrations and export them as CSV. The time clock is part of Pro.",
       },
       {
         q: "What happens when an appointment is deleted?",

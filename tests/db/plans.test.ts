@@ -153,37 +153,37 @@ describe("Basic and Pro plans", () => {
     expect((await publicPage()).rows[0]).toEqual({ logo: "x/logo.png", colour: "#B83D5D" });
   });
 
-  it("offers Ultra with everything in Pro plus a custom domain", async () => {
-    const { rows } = await db.query<{ extra: string[]; missing: string[] }>(
-      `select array(select unnest(u.features) except select unnest(p.features)) as extra,
-              array(select unnest(p.features) except select unnest(u.features)) as missing
-       from public.plans u, public.plans p where u.id = 'ultra' and p.id = 'pro'`,
+  it("has two plans, with the own-domain website as an extra on Pro", async () => {
+    const { rows } = await db.query<{ id: string; domain: boolean }>(
+      "select id, 'custom_domain' = any (features) as domain from public.plans order by sort_order",
     );
-    expect(rows[0]).toEqual({ extra: ["custom_domain"], missing: [] });
+    expect(rows).toEqual([
+      { id: "basic", domain: false },
+      { id: "pro", domain: true },
+    ]);
   });
 
-  it("maps a custom domain to the business page only on Ultra", async () => {
+  it("maps a custom domain to the business page only on Pro, assigned by a platform admin", async () => {
     const resolve = (host: string) =>
       as(db, { role: "anon" }, (tx) =>
         tx.query<{ slug: string | null }>("select public.resolve_custom_domain($1) as slug", [host]),
       );
-    await expect(
-      as(db, user(owner), (tx) =>
-        tx.query("select public.admin_set_custom_domain($1, 'studioplans.be', 'Own domain')", [businessId]),
-      ),
-    ).rejects.toThrow(/Platform administrator/);
-    await as(
-      db,
-      user(admin),
-      (tx) =>
-        tx.query("select public.admin_set_custom_domain($1, 'https://www.StudioPlans.be', 'Own domain')", [
-          businessId,
-        ]),
-      { commit: true },
-    );
-    expect((await resolve("studioplans.be")).rows[0]!.slug).toBeNull();
-    await setPlan(admin, "ultra");
+    const assign = (by: string, domain: string) =>
+      as(db, user(by), (tx) => tx.query("select public.admin_set_custom_domain($1, $2, 'Own domain')", [businessId, domain]), {
+        commit: true,
+      });
+    await expect(assign(owner, "studioplans.be")).rejects.toThrow(/Platform administrator/);
+    await setPlan(admin, "basic");
+    await expect(assign(admin, "studioplans.be")).rejects.toThrow(/plan_feature_custom_domain/);
+
+    await setPlan(admin, "pro");
+    await assign(admin, "https://www.StudioPlans.be");
     expect((await resolve("www.studioplans.be:443")).rows[0]!.slug).toBe("studio-plans");
     expect((await resolve("other.be")).rows[0]!.slug).toBeNull();
+
+    // Back on Basic, the domain stops working but can still be removed.
+    await setPlan(admin, "basic");
+    expect((await resolve("studioplans.be")).rows[0]!.slug).toBeNull();
+    await assign(admin, "");
   });
 });
