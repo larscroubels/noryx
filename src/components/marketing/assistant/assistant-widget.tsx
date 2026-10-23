@@ -28,7 +28,8 @@ const HISTORY = 12;
 
 /** Chat window in the bottom-right corner of the public website. */
 export function AssistantWidget() {
-  const a = useT().assistant;
+  const t = useT();
+  const a = t.assistant;
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<Item[]>([]);
   const [input, setInput] = useState("");
@@ -238,7 +239,12 @@ export function AssistantWidget() {
             <ArrowUp aria-hidden="true" />
           </Button>
         </div>
-        <p className="mt-2 text-xs text-fg-muted">{a.disclaimer}</p>
+        <p className="mt-2 text-xs text-fg-muted">
+          {a.disclaimer}{" "}
+          <Link href="/privacy#data" className="underline underline-offset-2 hover:text-fg">
+            {t.site.legal.privacy}
+          </Link>
+        </p>
       </form>
     </section>
   );

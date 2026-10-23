@@ -22,8 +22,7 @@ export const assistant: typeof en = {
     "L'assistant IA n'est pas encore activé. Ces réponses de notre FAQ et du centre d'aide peuvent vous aider :",
   noMatch: "Je n'ai pas trouvé de réponse. Consultez la FAQ ou le centre d'aide.",
   readMore: "En savoir plus",
-  disclaimer:
-    "Les réponses de l'IA peuvent contenir des erreurs. Vérifiez les détails importants dans le centre d'aide.",
+  disclaimer: "Les réponses de l'IA peuvent contenir des erreurs. Vos questions sont traitées par Anthropic : ne partagez pas de données personnelles.",
   you: "Vous",
   bot: "Assistant",
 };

@@ -672,9 +672,14 @@ export function BookingFlow({
                 control={<Checkbox id="acceptPolicy" name="acceptPolicy" value="on" />}
                 label={f.agree}
                 description={
-                  business.policy.cancellation_notice_hours > 0
-                    ? f.termsWithNotice(business.policy.cancellation_notice_hours, business.name)
-                    : f.terms(business.name)
+                  <>
+                    {business.policy.cancellation_notice_hours > 0
+                      ? f.termsWithNotice(business.policy.cancellation_notice_hours, business.name)
+                      : f.terms(business.name)}{" "}
+                    <Link href="/privacy#salon-clients" target="_blank" className="underline underline-offset-2 hover:text-fg">
+                      {t.site.legal.privacy}
+                    </Link>
+                  </>
                 }
               />
               {!result?.ok && result?.fieldErrors?.acceptPolicy?.[0] && (

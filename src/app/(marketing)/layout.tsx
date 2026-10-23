@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { Logo } from "@/components/brand/logo";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
+import { CookieSettingsButton } from "@/components/legal/cookie-notice";
 import { AssistantWidget } from "@/components/marketing/assistant/assistant-widget";
 import { SiteMenu } from "@/components/marketing/site-menu";
 import { SiteNav } from "@/components/marketing/site-nav";
@@ -9,6 +10,13 @@ import { Button } from "@/components/ui/button";
 import { getT } from "@/i18n/server";
 import { getSessionUser } from "@/lib/auth/session";
 import { SITE_NAV } from "@/lib/navigation";
+
+const LEGAL_LINKS = [
+  ["/privacy", "privacy"],
+  ["/cookies", "cookies"],
+  ["/terms", "terms"],
+  ["/legal", "notice"],
+] as const;
 
 export default async function MarketingLayout({ children }: { children: React.ReactNode }) {
   const [user, t] = await Promise.all([getSessionUser(), getT()]);
@@ -105,8 +113,22 @@ export default async function MarketingLayout({ children }: { children: React.Re
             </ul>
           </div>
         </div>
-        <div className="container-page border-t border-border py-6 text-sm text-fg-muted">
-          © {new Date().getFullYear()} NORYX. {t.common.allRightsReserved}
+        <div className="container-page flex flex-col gap-3 border-t border-border py-6 text-sm text-fg-muted md:flex-row md:items-center md:justify-between">
+          <p>
+            © {new Date().getFullYear()} NORYX. {t.common.allRightsReserved}
+          </p>
+          <ul className="flex flex-wrap gap-x-5 gap-y-2">
+            {LEGAL_LINKS.map(([href, key]) => (
+              <li key={href}>
+                <Link href={href} className="hover:text-fg">
+                  {t.site.legal[key]}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <CookieSettingsButton label={t.site.cookieNotice.settings} />
+            </li>
+          </ul>
         </div>
       </footer>
       <AssistantWidget />

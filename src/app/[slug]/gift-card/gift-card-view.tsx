@@ -230,6 +230,11 @@ export function GiftCardOrderForm({
           htmlFor="acceptTerms"
           control={<Checkbox id="acceptTerms" name="acceptTerms" value="on" />}
           label={g.accept}
+          description={
+            <Link href="/privacy#salon-clients" target="_blank" className="underline underline-offset-2 hover:text-fg">
+              {t.site.legal.privacy}
+            </Link>
+          }
         />
         {errors?.acceptTerms?.[0] && <FieldError>{errors.acceptTerms[0]}</FieldError>}
 

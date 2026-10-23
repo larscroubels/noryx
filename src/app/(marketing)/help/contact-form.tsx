@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 
 import { fieldError, FormAlert, SubmitButton } from "@/components/forms/form-controls";
@@ -13,7 +14,8 @@ import { submitSupportRequest } from "./actions";
 
 export function ContactForm({ defaultName, defaultEmail }: { defaultName?: string; defaultEmail?: string }) {
   const [state, action] = useActionState(submitSupportRequest, IDLE);
-  const c = useT().site.support.contact;
+  const t = useT();
+  const c = t.site.support.contact;
   if (state.status === "success") return <FormAlert state={state} />;
   return (
     <form action={action} className="grid gap-5" noValidate>
@@ -45,7 +47,12 @@ export function ContactForm({ defaultName, defaultEmail }: { defaultName?: strin
           <input name="company" tabIndex={-1} autoComplete="off" />
         </label>
       </div>
-      <p className="text-sm text-fg-muted">{c.privacy}</p>
+      <p className="text-sm text-fg-muted">
+        {c.privacy}{" "}
+        <Link href="/privacy#data" className="font-semibold text-pink-700 underline underline-offset-2">
+          {t.site.legal.privacy}
+        </Link>
+      </p>
       <SubmitButton size="lg" className="justify-self-start">
         {c.submit}
       </SubmitButton>

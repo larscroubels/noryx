@@ -1,11 +1,14 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { cookies } from "next/headers";
 
+import { CookieNotice } from "@/components/legal/cookie-notice";
 import { Toaster } from "@/components/ui/toast";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { I18nProvider } from "@/i18n/client";
 import { getI18n } from "@/i18n/server";
 import { publicEnv } from "@/lib/env";
+import { COOKIE_CONSENT_COOKIE, parseCookieConsent } from "@/lib/legal";
 
 import "./globals.css";
 
@@ -38,13 +41,15 @@ export const viewport: Viewport = {
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  const { locale } = await getI18n();
+  const [{ locale }, cookieStore] = await Promise.all([getI18n(), cookies()]);
+  const consent = parseCookieConsent(cookieStore.get(COOKIE_CONSENT_COOKIE)?.value);
   return (
     <html lang={locale} className={`${manrope.variable} ${cormorant.variable} h-full`}>
       <body className="min-h-full">
         <I18nProvider locale={locale}>
           <TooltipProvider delayDuration={300}>
             {children}
+            <CookieNotice initiallyOpen={consent === null} />
             <Toaster />
           </TooltipProvider>
         </I18nProvider>

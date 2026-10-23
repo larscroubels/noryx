@@ -32,7 +32,7 @@ export const auth: typeof en = {
     metaTitle: "Account aanmaken",
     title: "Maak je NORYX-account aan",
     lead: "Probeer NORYX Pro 14 dagen gratis. Geen betaalgegevens nodig.",
-    terms: "Ik ga akkoord met de gebruiksvoorwaarden en het privacybeleid",
+    terms: { start: "Ik ga akkoord met de ", terms: "algemene voorwaarden", middle: " en de ", privacy: "privacyverklaring" },
     termsHint: "We gebruiken je gegevens alleen om je NORYX-account te beheren.",
     submit: "Account aanmaken",
     haveAccount: "Heb je al een account?",

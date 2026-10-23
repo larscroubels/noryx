@@ -20,7 +20,7 @@ export const assistant = {
     "The AI assistant isn't switched on yet. These answers from our FAQ and help centre may help:",
   noMatch: "I couldn't find an answer to that. Have a look at the FAQ or the help centre.",
   readMore: "Read more",
-  disclaimer: "AI answers can contain mistakes. Check important details in the help centre.",
+  disclaimer: "AI answers can contain mistakes. Your questions are processed by Anthropic, so don't share personal data.",
   you: "You",
   bot: "Assistant",
 };
