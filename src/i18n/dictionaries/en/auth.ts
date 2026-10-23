@@ -63,6 +63,7 @@ export const auth = {
       "Please confirm your email address first — check your inbox for the link we sent.",
     wrongCredentials: "That email and password combination is not correct.",
     weakPassword: "Choose a stronger password.",
+    emailNotAllowed: "We can't send a confirmation email to this address right now. Please try again later or contact the NORYX team.",
     emailRateLimit: "We just sent you an email. Please wait a minute before trying again.",
     signupFailed: "We couldn't create your account. Please try again.",
     confirmationSent: (email: string) =>

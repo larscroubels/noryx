@@ -67,6 +67,7 @@ export const auth: typeof en = {
       "Confirmez d'abord votre adresse e-mail — consultez votre boîte de réception pour trouver le lien envoyé.",
     wrongCredentials: "Cette combinaison d'e-mail et de mot de passe est incorrecte.",
     weakPassword: "Choisissez un mot de passe plus robuste.",
+    emailNotAllowed: "Nous ne pouvons pas envoyer d'e-mail de confirmation à cette adresse pour le moment. Réessayez plus tard ou contactez l'équipe NORYX.",
     emailRateLimit:
       "Nous venons de vous envoyer un e-mail. Patientez une minute avant de réessayer.",
     signupFailed: "Nous n'avons pas pu créer votre compte. Veuillez réessayer.",

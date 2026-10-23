@@ -26,6 +26,17 @@ async function limited(scope: string, limit: number) {
   return !rateLimit(await clientKey(scope), { limit, windowMs: 15 * 60_000 }).allowed;
 }
 
+/** Supabase's built-in mailer only emails members of the project's team, at most a few an hour. */
+function logMailerRefusal(event: string, code: string | undefined) {
+  if (code !== "email_address_not_authorized") return false;
+  logger.error(event, {
+    code,
+    advice:
+      "Supabase is using its default email service, which only sends to members of the Supabase team. Configure custom SMTP in Supabase › Authentication › Emails › SMTP Settings.",
+  });
+  return true;
+}
+
 export async function signIn(_prev: ActionState, formData: FormData): Promise<ActionState> {
   const t = await getT();
   if (await limited("sign-in", 10)) return failure(t.errors.tooManyAttempts);
@@ -62,7 +73,8 @@ export async function signUp(_prev: ActionState, formData: FormData): Promise<Ac
     if (error.code === "weak_password")
       return failure(t.auth.messages.weakPassword, { password: [t.auth.messages.weakPassword] });
     if (error.code === "over_email_send_rate_limit") return failure(t.auth.messages.emailRateLimit);
-    logger.warn("auth.sign_up_failed", { code: error.code });
+    if (logMailerRefusal("auth.sign_up_email_refused", error.code)) return failure(t.auth.messages.emailNotAllowed);
+    logger.warn("auth.sign_up_failed", { code: error.code, status: error.status });
     return failure(t.auth.messages.signupFailed);
   }
 
@@ -84,7 +96,8 @@ export async function requestPasswordReset(
   const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
     redirectTo: `${publicEnv.siteUrl}/auth/confirm?next=/reset-password`,
   });
-  if (error) logger.warn("auth.password_reset_failed", { code: error.code });
+  if (error && !logMailerRefusal("auth.password_reset_email_refused", error.code))
+    logger.warn("auth.password_reset_failed", { code: error.code });
   // Same answer whether or not the account exists, to avoid revealing registered emails.
   return success(t.auth.messages.resetSent);
 }
