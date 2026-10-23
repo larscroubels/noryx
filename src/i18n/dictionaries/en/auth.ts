@@ -30,7 +30,7 @@ export const auth = {
     metaTitle: "Create your account",
     title: "Create your NORYX account",
     lead: "Try NORYX Pro free for 14 days. No payment details needed.",
-    terms: "I agree to the terms of service and privacy policy",
+    terms: { start: "I agree to the ", terms: "terms and conditions", middle: " and the ", privacy: "privacy policy" },
     termsHint: "We only use your details to run your NORYX account.",
     submit: "Create account",
     haveAccount: "Already have an account?",

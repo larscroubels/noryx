@@ -127,6 +127,8 @@ Booking, cancellation and order events write rows to `notifications` (outbox). `
 
 ## Privacy (GDPR preparation)
 
+Legal pages (`/privacy`, `/cookies`, `/terms`, `/legal`) are built from `src/content/legal/` with the operator details from `src/lib/legal.ts`; a test keeps the three languages structurally identical and the cookie table in line with the cookies the app sets. Cookies: Supabase auth (`sb-…-auth-token`, code verifier), `noryx_business` (session) and `noryx_locale` (1 year); no analytics or third-party scripts, fonts are self-hosted.
+
 Customer export (JSON) and erasure (anonymisation that keeps bookkeeping records) per customer, CSV export of the customer list, separate permission for private notes, marketing consent stored explicitly, logs redact personal fields (`src/lib/logger.ts`), EU hosting recommended. These features support GDPR obligations; they do not by themselves make a business compliant.
 
 ## Trade-offs and known limitations

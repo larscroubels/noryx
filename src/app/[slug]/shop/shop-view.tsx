@@ -238,7 +238,14 @@ export function ShopView({
                 htmlFor="acceptTerms"
                 control={<Checkbox id="acceptTerms" name="acceptTerms" value="on" />}
                 label={s.accept}
-                description={s.acceptHint(businessName)}
+                description={
+                  <>
+                    {s.acceptHint(businessName)}{" "}
+                    <Link href="/privacy#salon-clients" target="_blank" className="underline underline-offset-2 hover:text-fg">
+                      {t.site.legal.privacy}
+                    </Link>
+                  </>
+                }
               />
               {!result?.ok && result?.fieldErrors?.acceptTerms?.[0] && (
                 <FieldError>{result.fieldErrors.acceptTerms[0]}</FieldError>

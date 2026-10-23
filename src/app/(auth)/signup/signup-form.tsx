@@ -64,7 +64,18 @@ export function SignUpForm({ next }: { next: string }) {
               aria-invalid={termsError ? true : undefined}
             />
           }
-          label={t.auth.signup.terms}
+          label={
+            <>
+              {t.auth.signup.terms.start}
+              <Link href="/terms" target="_blank" className="text-pink-700 underline underline-offset-2">
+                {t.auth.signup.terms.terms}
+              </Link>
+              {t.auth.signup.terms.middle}
+              <Link href="/privacy" target="_blank" className="text-pink-700 underline underline-offset-2">
+                {t.auth.signup.terms.privacy}
+              </Link>
+            </>
+          }
           description={t.auth.signup.termsHint}
         />
         {termsError && <FieldError>{termsError}</FieldError>}

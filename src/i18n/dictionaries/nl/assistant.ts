@@ -22,7 +22,7 @@ export const assistant: typeof en = {
     "De AI-assistent staat nog niet aan. Deze antwoorden uit onze veelgestelde vragen en het hulpcentrum kunnen helpen:",
   noMatch: "Daar vond ik geen antwoord op. Bekijk de veelgestelde vragen of het hulpcentrum.",
   readMore: "Lees meer",
-  disclaimer: "AI-antwoorden kunnen fouten bevatten. Controleer belangrijke details in het hulpcentrum.",
+  disclaimer: "AI-antwoorden kunnen fouten bevatten. Je vragen worden verwerkt door Anthropic, dus deel geen persoonsgegevens.",
   you: "Jij",
   bot: "Assistent",
 };

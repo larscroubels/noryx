@@ -145,6 +145,13 @@ export const site: typeof en = {
       rateLimited: "Vous avez envoyé plusieurs messages en peu de temps. Patientez un instant et réessayez.",
     },
   },
+  legal: {
+    eyebrow: "Juridique",
+    privacy: "Déclaration de confidentialité",
+    cookies: "Politique en matière de cookies",
+    terms: "Conditions générales",
+    notice: "Informations légales",
+  },
   faqGroups: { product: "NORYX et nos formules", usage: "Utiliser NORYX" },
   cta: { start: "Commencer l'essai gratuit", pricing: "Comparer les formules", signIn: "Se connecter" },
 };

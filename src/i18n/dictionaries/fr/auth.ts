@@ -33,7 +33,7 @@ export const auth: typeof en = {
     metaTitle: "Créer votre compte",
     title: "Créez votre compte NORYX",
     lead: "Essayez NORYX Pro gratuitement pendant 14 jours. Aucune donnée de paiement requise.",
-    terms: "J'accepte les conditions d'utilisation et la politique de confidentialité",
+    terms: { start: "J'accepte les ", terms: "conditions générales", middle: " et la ", privacy: "déclaration de confidentialité" },
     termsHint: "Nous utilisons vos données uniquement pour gérer votre compte NORYX.",
     submit: "Créer le compte",
     haveAccount: "Vous avez déjà un compte ?",

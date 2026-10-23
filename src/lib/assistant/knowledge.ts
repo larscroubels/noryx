@@ -1,4 +1,5 @@
 import { helpContent } from "@/content/help";
+import { legalContent } from "@/content/legal";
 import { INTL_LOCALE, type Locale } from "@/i18n/config";
 import { dictionaries } from "@/i18n/dictionaries";
 import {
@@ -34,6 +35,19 @@ export function buildKnowledge(locale: Locale): string {
   const app = t.appShowcase;
   const site = t.site;
   const help = helpContent[locale];
+  const legal = legalContent(locale);
+  const legalPage = (path: string, doc: typeof legal.privacy) =>
+    [
+      `# ${doc.title} (${path})\n${doc.lead}`,
+      ...doc.sections.map((section) =>
+        [
+          `## ${section.title}`,
+          ...section.paragraphs,
+          ...(section.list ?? []).map((item) => `- ${item}`),
+          ...(section.table?.rows ?? []).map((row) => `- ${row.join(" | ")}`),
+        ].join("\n"),
+      ),
+    ].join("\n\n");
   const euros = (cents: number) => formatWholeEuros(cents, INTL_LOCALE[locale]);
   const cell = (value: boolean | string) =>
     typeof value === "string" ? value : value ? p.compare.included : p.compare.notIncluded;
@@ -98,6 +112,8 @@ export function buildKnowledge(locale: Locale): string {
     `# ${t.help.title} (/help)\n${t.help.lead}\n\n${help.faq.map((item) => `Q: ${item.q}\nA: ${item.a}`).join("\n\n")}`,
     `## ${site.support.contact.title} (/help#contact)\n${site.support.contact.lead}\n${site.support.contact.privacy}`,
     courses.join("\n\n"),
+    legalPage("/privacy", legal.privacy),
+    legalPage("/cookies", legal.cookies),
   ].join("\n\n");
 
   cache.set(locale, text);

@@ -145,6 +145,13 @@ export const site: typeof en = {
       rateLimited: "Je hebt kort na elkaar meerdere berichten gestuurd. Wacht even en probeer het opnieuw.",
     },
   },
+  legal: {
+    eyebrow: "Juridisch",
+    privacy: "Privacyverklaring",
+    cookies: "Cookieverklaring",
+    terms: "Algemene voorwaarden",
+    notice: "Juridische informatie",
+  },
   faqGroups: { product: "NORYX en onze abonnementen", usage: "NORYX gebruiken" },
   cta: { start: "Start je gratis proefperiode", pricing: "Abonnementen vergelijken", signIn: "Inloggen" },
 };

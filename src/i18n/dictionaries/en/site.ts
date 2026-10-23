@@ -141,6 +141,13 @@ export const site = {
       rateLimited: "You've sent several messages in a short time. Please wait a while and try again.",
     },
   },
+  legal: {
+    eyebrow: "Legal",
+    privacy: "Privacy policy",
+    cookies: "Cookie policy",
+    terms: "Terms and conditions",
+    notice: "Legal information",
+  },
   faqGroups: { product: "NORYX and our plans", usage: "Using NORYX" },
   cta: { start: "Start your free trial", pricing: "Compare plans", signIn: "Sign in" },
 };
