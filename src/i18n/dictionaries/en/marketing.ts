@@ -118,6 +118,10 @@ export const marketing = {
         title: "Payments & expenses at a glance",
         text: "Record how clients paid, log your costs and see revenue per service, professional and payment method — with CSV exports.",
       },
+      {
+        title: "A time clock for your team",
+        text: "Professionals clock in and out from their own workspace, and you see everyone's hours per week — with corrections and CSV export.",
+      },
     ],
   },
   booking: {
@@ -221,15 +225,27 @@ export const marketing = {
     items: [
       {
         q: "What does NORYX cost?",
-        a: "NORYX has two plans: Basic and Pro. Prices will be announced before launch. You can try Pro free for 14 days without payment details.",
+        a: "NORYX has three plans: Basic, Pro and Ultra. Monthly prices will be announced before launch. Ultra has a one-time fee of €150 for your own domain name and website, and the newsletter extra costs €5 per month. You can try Pro free for 14 days without payment details.",
       },
       {
-        q: "What's the difference between Basic and Pro?",
-        a: "Basic is the booking system — online booking, calendar, services and team schedules — for up to 250 customers. Pro adds unlimited customers, payments and finance, stock, a webshop and your own branding on your booking page.",
+        q: "What's the difference between Basic, Pro and Ultra?",
+        a: "Basic is the booking system — online booking, calendar, services and team schedules — for up to 250 customers. Pro adds unlimited customers, payments and finance, stock, a webshop, a time clock and your own branding on your booking page. Ultra adds your own domain name and a one-page website set up by the NORYX team.",
       },
       {
         q: "What happens after the 14-day trial?",
-        a: "You choose Basic or Pro. If you don't choose, your business continues on Basic. Nothing is charged automatically: paying through NORYX isn't possible yet.",
+        a: "You choose Basic, Pro or Ultra. If you don't choose, your business continues on Basic. Nothing is charged automatically: paying through NORYX isn't possible yet.",
+      },
+      {
+        q: "Can I send a newsletter to my clients?",
+        a: "The newsletter extra is in development. It will cost €5 per month on top of any plan and only reaches clients who agreed to receive marketing messages.",
+      },
+      {
+        q: "How does the time clock work?",
+        a: "Professionals clock in and out in their workspace. Owners and managers see everyone's hours per week, can correct registrations and export them as CSV. The time clock is part of Pro and Ultra.",
+      },
+      {
+        q: "What happens when an appointment is deleted?",
+        a: "Deleting removes the appointment everywhere: from the calendar, the client's history and the client's private booking link. Clients can delete their own booking through that link until your cancellation deadline. Recorded payments stay in your finances.",
       },
       {
         q: "Can clients book without creating an account?",

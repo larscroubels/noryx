@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { Logo } from "@/components/brand/logo";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
+import { AssistantWidget } from "@/components/marketing/assistant/assistant-widget";
 import { SiteMenu } from "@/components/marketing/site-menu";
 import { Button } from "@/components/ui/button";
 import { getT } from "@/i18n/server";
@@ -13,7 +14,7 @@ export default async function MarketingLayout({ children }: { children: React.Re
     // Section links on the home page; shown in the header from the xl breakpoint.
     { href: "/#features", label: t.marketing.nav.features, wide: true },
     { href: "/#booking", label: t.marketing.nav.booking },
-    { href: "/#for-you", label: t.marketing.nav.forYou, wide: true },
+    { href: "/for-you", label: t.marketing.nav.forYou },
     { href: "/#app", label: t.appShowcase.nav, wide: true },
     { href: "/pricing", label: t.marketing.nav.pricing },
     { href: "/faq", label: t.marketing.nav.faq },
@@ -112,6 +113,7 @@ export default async function MarketingLayout({ children }: { children: React.Re
           © {new Date().getFullYear()} NORYX. {t.common.allRightsReserved}
         </div>
       </footer>
+      <AssistantWidget />
     </div>
   );
 }

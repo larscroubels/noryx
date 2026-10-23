@@ -132,6 +132,11 @@ export const common: typeof en = {
   copyLink: "Copier le lien",
   copied: "Copié",
   plans: {
+    ultra: {
+      name: "Ultra",
+      description:
+        "Tout Pro, plus votre propre nom de domaine et un site one-page sur mesure mis en place par l'équipe NORYX.",
+    },
     basic: {
       name: "Basic",
       description:
@@ -145,6 +150,8 @@ export const common: typeof en = {
   },
   noPlan: "Aucun abonnement",
   features: {
+    time_clock: "Pointeuse pour votre équipe",
+    custom_domain: "Votre nom de domaine et site one-page",
     online_booking: "Système de réservation en ligne",
     finance: "Paiements & finances",
     inventory: "Produits & stock",

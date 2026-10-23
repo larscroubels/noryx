@@ -1,6 +1,7 @@
 import type { errors as en } from "../en/errors";
 
 export const errors: typeof en = {
+  planFeatureTimeClock: "De prikklok zit in Pro.",
   generic: "Er ging iets mis. Probeer het opnieuw.",
   noPermission: "Je hebt geen toestemming om dit te doen.",
   alreadyExists: "Dit bestaat al. Kies een andere waarde.",

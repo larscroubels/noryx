@@ -96,19 +96,18 @@ export const booking = {
     } as Record<string, string>,
   },
   manage: {
+    deleteInfo: (hours: number) =>
+      `You can cancel online up to ${hours} hours before your appointment. Your booking is then deleted everywhere, including at the salon. To move it, cancel and book a new time.`,
+    deleteSubmit: "Cancel and delete my booking",
+    deleted: "Your booking has been cancelled and deleted everywhere.",
     title: "Your booking",
     notFound: "Booking not found",
     notFoundText: "Check that you opened the full link from your confirmation.",
-    cancelInfo: (hours: number) =>
-      `You can cancel online up to ${hours} hours before your appointment. To move it, cancel and book a new time.`,
     cancelled: "This booking is cancelled.",
     closed: "Online cancellation is closed for this appointment.",
     callPhone: (phone: string) => `Please call ${phone}.`,
     contactSalon: "Please contact the salon.",
     bookAnother: "Book another appointment",
-    reasonHint: "Shared with the salon.",
-    submit: "Cancel my booking",
-    done: "Your booking has been cancelled.",
     tooMany: "Too many attempts. Please wait a few minutes.",
     failed: "We couldn't cancel your booking. Please contact the salon.",
     rpc: {

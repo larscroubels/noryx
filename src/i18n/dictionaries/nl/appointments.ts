@@ -42,6 +42,12 @@ export const appointments: typeof en = {
     submit: "Afspraak aanmaken",
   },
   detail: {
+    deleteForGood: "Verwijderen",
+    deleteTitle: "Deze afspraak definitief verwijderen?",
+    deleteText:
+      "De afspraak verdwijnt overal: uit de agenda, uit de geschiedenis van de klant en uit de boekingslink van de klant. Geregistreerde betalingen blijven in je financiën, zonder afspraak. Dit kan niet ongedaan gemaakt worden.",
+    deleteConfirm: "Definitief verwijderen",
+    deleted: "De afspraak is overal verwijderd.",
     metaTitle: "Afspraak",
     back: "Terug naar de agenda",
     created: "Afspraak aangemaakt.",
@@ -83,6 +89,7 @@ export const appointments: typeof en = {
     saveNote: "Notitie opslaan",
   },
   errors: {
+    delete: "Je hebt geen toestemming om deze afspraak te verwijderen.",
     overlap:
       "Deze medewerker is op dat moment al geboekt. Kies een ander tijdstip of een andere medewerker.",
     create: "Je hebt geen toestemming om afspraken aan te maken.",

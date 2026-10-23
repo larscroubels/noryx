@@ -17,20 +17,21 @@ Future iOS/Android apps can use the same Supabase backend: all authorisation liv
 ## Routes
 
 ```
-/                         marketing site (src/app/(marketing))
+/                         marketing site (src/app/(marketing)); /for-you, /pricing, /faq
 /login /signup …          authentication (src/app/(auth)), /auth/confirm verifies email links
 /onboarding               guided setup, saved step by step
 /app/**                   salon workspace — one tree for owners, managers and staff;
-                          navigation and pages adapt to permissions (src/lib/navigation.ts)
+                          navigation and pages adapt to permissions (src/lib/navigation.ts); /app/time time clock
 /admin                    platform administration (platform admins only)
 /<slug>                   public business page; /<slug>/book booking flow; /<slug>/shop click-and-collect;
                           /<slug>/booking/<token> private self-service link for a client's booking
 /invite/<token>           accept a team invitation
 /help, /app/help          help centre with courses (same content, public and inside the workspace)
 /design-system            living design-system reference (noindex)
+/api/assistant            website assistant (POST, streams NDJSON)
 ```
 
-Business slugs share the top-level namespace with app routes, so every current and planned route name is reserved in `src/lib/slug.ts`. Custom domains can later be mapped to `/<slug>` in `src/proxy.ts`.
+Business slugs share the top-level namespace with app routes, so every current and planned route name is reserved in `src/lib/slug.ts`. On Ultra, a salon's own domain is mapped to `/<slug>` in `src/proxy.ts` (see Custom domains below).
 
 ## Security model (defence in depth)
 
@@ -89,7 +90,7 @@ Conventions: UUID keys; `timestamptz` in UTC, displayed in the business time zon
 - **Team**: invitations carry a 192-bit token stored only as a SHA-256 hash, expire after 7 days and can only be accepted by the invited email address. Member changes go through SECURITY DEFINER functions that block self-escalation, owner changes by non-owners and granting permissions the granter lacks.
 - **Retail**: stock changes only through `inventory_movements`; a CHECK constraint makes negative stock impossible. `create_online_order()` (service role only) locks product rows, computes totals from current prices and reserves stock atomically; `cancel_order()` restocks in the same transaction. Orders are unpaid until the salon marks them paid at pickup.
 - **Finance**: payments are records of what was paid at the salon (NORYX processes no payments). Front-desk staff can record payments without seeing figures; totals need `finance.view`. Recorded revenue, expenses and booked-value estimates are always shown separately. Not accounting or VAT software.
-- **Plans & entitlements**: two plans. **Basic** is the booking system with at most 250 customers. **Pro** adds unlimited customers, `finance`, `inventory`, `shop`, `branding` and `team_permissions`. New businesses get a 14-day Pro trial (`business_subscriptions.trial_ends_at`); `business_effective_plan()` makes an expired trial fall back to Basic. `business_has_feature()` / `business_plan_limit()` are the single source of truth, mirrored by `src/lib/billing/entitlements.ts`.
+- **Plans & entitlements**: three plans. **Basic** is the booking system with at most 250 customers. **Pro** adds unlimited customers, `finance`, `inventory`, `shop`, `branding`, `team_permissions` and `time_clock`. **Ultra** is Pro plus `custom_domain` (a one-time €150 for the domain and a one-page website set up by the NORYX team; amounts in `src/lib/billing/pricing.ts`). New businesses get a 14-day Pro trial (`business_subscriptions.trial_ends_at`); `business_effective_plan()` makes an expired trial fall back to Basic. `business_has_feature()` / `business_plan_limit()` are the single source of truth, mirrored by `src/lib/billing/entitlements.ts`.
   - **Enforcement**: database triggers enforce the customer limit and every Pro feature (payments, expenses, products, manual stock changes, orders, branding changes, per-member permissions).
   - **Public pages**: they hide branding and the shop without the feature.
   - **Billing**: prices are not set and no billing provider is connected, so platform admins assign plans with an audit trail.
@@ -98,7 +99,11 @@ Conventions: UUID keys; `timestamptz` in UTC, displayed in the business time zon
   - **Codes**: 16 Crockford base-32 characters (80 random bits from `gen_random_bytes`), returned once at activation; only the SHA-256 hash and last four characters are stored. Input is normalised (case, dashes, O→0, I/L→1). Lookups are scoped to the salon; an unknown code and another salon's code get the same answer. The public balance check (`get_gift_card_by_code`, service role) and staff redemptions are rate-limited, in memory per server instance and keyed on the first `x-forwarded-for` address. That limits casual guessing only; the 80-bit codes are the real protection.
   - **Money**: redeeming (`redeem_gift_card`) debits the card for an appointment or order; on plans with `finance` it also records a payment with method `voucher` (revenue is recognised on redemption, not on sale, as confirmed by the product owner). `redeem_gift_card` locks the appointment or order and refuses more than is still due (`gift_card_due_cents`: price minus non-card payments minus earlier card redemptions), and refuses cancelled appointments and cancelled or settled orders. A payment created by a redemption can only be refunded by reversing the redemption (trigger `payments_protect_gift_card`). Desk sales, redemptions and corrections take an idempotency key per form, so a retried request acts once (migration `20261023100000_gift_card_fixes.sql`). Reversals restore the balance once and mark the linked payment refunded; blocking, cancelling (writes off the rest) and corrections need `gift_cards.manage` and a reason, and are written to the audit log.
   - **Not decided by NORYX**: expiry (`gift_card_validity_months`, NULL by default), the salon's own conditions text, and refunds to buyers (outside NORYX).
-- **Client self-service**: each online booking gets a private management link (token hashed in `appointments.manage_token_hash`); cancellation through it is refused by the database after the salon's cancellation deadline.
+- **Client self-service**: each online booking gets a private management link (token hashed in `appointments.manage_token_hash`). Through it the client deletes the booking (`delete_booking_by_token`), which the database refuses after the salon's cancellation deadline.
+- **Deleting appointments** (migration `20261023122000_appointment_deletion.sql`): `delete_appointment()` (salon: `appointments.manage_all`, or `manage_own` for the professional's own) and `delete_booking_by_token()` (client) remove the appointment, its history and its outbox rows. Recorded payments stay for the bookkeeping, unlinked (`appointment_id` set to NULL). The audit log keeps only that an appointment was deleted and by whom (`business` or `client`). A client deletion leaves the salon one outbox notice with just the time and service.
+- **Time clock** (Pro/Ultra; migration `20261023121000_time_clock.sql`): `time_entries` with an exclusion constraint against overlapping entries and at most one open entry per professional. Professionals clock in and out only for their own linked staff profile (`clock_in()` / `clock_out()`, needs `schedule.manage_own`); they see only their own entries. Members with `staff.manage` see everyone's, correct or delete entries (`save_time_entry()` / `delete_time_entry()`, audited) and export a week as CSV (`/app/time/export`). Clients have SELECT only.
+- **Custom domains** (Ultra; migration `20261023120000_ultra_plan_custom_domains.sql`): platform admins assign `businesses.custom_domain` (`admin_set_custom_domain`, audited). For any host that isn't the platform's own, `src/proxy.ts` asks `resolve_custom_domain()` (cached 60 s) for the slug and rewrites `/`, `/book`, `/shop`, `/gift-card` and `/booking/…` to that salon's pages; it only answers for active Ultra salons with booking enabled. DNS, TLS and the hosting provider's domain settings are manual steps.
+- **Website assistant** (`/api/assistant`, widget in the marketing layout): answers from the website's own content only. `src/lib/assistant/knowledge.ts` builds that content per language from the dictionaries and help courses, so it never drifts from the pages. With `ANTHROPIC_API_KEY` set it streams an answer from Claude (`claude-opus-5-5`, low effort, prompt-cached knowledge block, server-side refusal fallback). Without a key it says so honestly and shows the best-matching FAQ and help answers (keyword search). Requests are same-origin only, limited to 20 per visitor per 10 minutes and 600 per hour overall (in memory), and capped at 20 messages of 2,000 characters. Nothing is stored.
 - **Uploads**: logo and cover images are validated by size (≤ 2 MB) and file signature (PNG/JPEG/WebP) on the server, then stored in the business's own Storage folder; Storage policies enforce the folder boundary.
 
 ## Languages (i18n)

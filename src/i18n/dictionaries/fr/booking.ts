@@ -101,19 +101,18 @@ export const booking: typeof en = {
     },
   },
   manage: {
+    deleteInfo: (hours) =>
+      `Vous pouvez annuler en ligne jusqu'à ${hours} heures avant votre rendez-vous. Votre réservation est alors supprimée partout, y compris au salon. Pour la déplacer, annulez puis réservez un nouveau créneau.`,
+    deleteSubmit: "Annuler et supprimer ma réservation",
+    deleted: "Votre réservation a été annulée et supprimée partout.",
     title: "Votre réservation",
     notFound: "Réservation introuvable",
     notFoundText: "Vérifiez que vous avez ouvert le lien complet de votre confirmation.",
-    cancelInfo: (hours) =>
-      `Vous pouvez annuler en ligne jusqu'à ${hours} heures avant votre rendez-vous. Pour le déplacer, annulez-le et réservez un nouveau créneau.`,
     cancelled: "Cette réservation est annulée.",
     closed: "L'annulation en ligne n'est plus possible pour ce rendez-vous.",
     callPhone: (phone) => `Veuillez appeler le ${phone}.`,
     contactSalon: "Veuillez contacter le salon.",
     bookAnother: "Prendre un autre rendez-vous",
-    reasonHint: "Partagé avec le salon.",
-    submit: "Annuler ma réservation",
-    done: "Votre réservation a été annulée.",
     tooMany: "Trop de tentatives. Patientez quelques minutes.",
     failed: "Nous n'avons pas pu annuler votre réservation. Veuillez contacter le salon.",
     rpc: {

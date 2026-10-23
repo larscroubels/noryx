@@ -39,6 +39,12 @@ export const appointments = {
     submit: "Create appointment",
   },
   detail: {
+    deleteForGood: "Delete",
+    deleteTitle: "Delete this appointment for good?",
+    deleteText:
+      "The appointment disappears everywhere: from the calendar, the client's history and the client's booking link. Recorded payments stay in your finances without the appointment. This can't be undone.",
+    deleteConfirm: "Delete for good",
+    deleted: "The appointment was deleted everywhere.",
     metaTitle: "Appointment",
     back: "Back to calendar",
     created: "Appointment created.",
@@ -78,6 +84,7 @@ export const appointments = {
     saveNote: "Save note",
   },
   errors: {
+    delete: "You don't have permission to delete this appointment.",
     overlap:
       "This professional is already booked at that time. Choose another time or professional.",
     create: "You don't have permission to create appointments.",

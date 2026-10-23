@@ -14,6 +14,7 @@ describe("role-aware navigation", () => {
       "customers",
       "services",
       "staff",
+      "time",
       "products",
       "orders",
       "giftCards",
@@ -31,6 +32,7 @@ describe("role-aware navigation", () => {
       "customers",
       "services",
       "staff",
+      "time",
       "products",
       "orders",
       "giftCards",
@@ -45,6 +47,7 @@ describe("role-aware navigation", () => {
       "customers",
       "services",
       "schedule",
+      "time",
       "help",
     ]);
   });
@@ -55,6 +58,7 @@ describe("role-aware navigation", () => {
     expect(keys).not.toContain("finance");
     expect(keys).not.toContain("orders");
     expect(keys).not.toContain("products");
+    expect(keys).not.toContain("time");
     expect(keys).toContain("calendar");
     // Gift cards are part of Basic too.
     expect(keys).toContain("giftCards");

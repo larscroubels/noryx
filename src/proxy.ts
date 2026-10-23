@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 import { PATHNAME_HEADER } from "@/i18n/config";
+import { customDomainPath, isPlatformHost, slugForHost } from "@/lib/custom-domains";
 import { updateSession } from "@/lib/supabase/proxy";
 
 /** Routes that need a signed-in user. Real authorisation happens again on the server and in RLS. */
@@ -11,6 +12,20 @@ const GUEST_ONLY = ["/login", "/signup", "/forgot-password"];
 export async function proxy(request: NextRequest) {
   // Always overwritten, so a visitor can't pick another route's language by sending it.
   request.headers.set(PATHNAME_HEADER, request.nextUrl.pathname);
+
+  // Ultra: a business's own domain shows its public page.
+  const host = request.headers.get("host") ?? "";
+  if (host && !isPlatformHost(host)) {
+    const slug = await slugForHost(host);
+    const target = slug ? customDomainPath(slug, request.nextUrl.pathname) : null;
+    if (target) {
+      const url = request.nextUrl.clone();
+      url.pathname = target;
+      request.headers.set(PATHNAME_HEADER, target);
+      return NextResponse.rewrite(url, { request: { headers: request.headers } });
+    }
+  }
+
   const { response, userId } = await updateSession(request);
   const { pathname, search } = request.nextUrl;
 

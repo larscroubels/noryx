@@ -16,7 +16,7 @@ import { formatDate, formatDateTime } from "@/lib/format";
 import { getI18n } from "@/i18n/server";
 import { createClient } from "@/lib/supabase/server";
 
-import { StatusForm, SubscriptionForm } from "./status-form";
+import { DomainForm, StatusForm, SubscriptionForm } from "./status-form";
 
 const STATUS_TONE = { active: "success", suspended: "warning", closed: "neutral" } as const;
 
@@ -29,6 +29,7 @@ export default async function AdminPage() {
     { data: events },
     { data: plans },
     { data: subscriptions },
+    { data: domainRows },
   ] = await Promise.all([
     supabase.rpc("admin_platform_stats"),
     supabase.rpc("admin_list_businesses"),
@@ -39,7 +40,9 @@ export default async function AdminPage() {
       .limit(20),
     supabase.from("plans").select("id, name").eq("is_active", true).order("sort_order"),
     supabase.from("business_subscriptions").select("business_id, plan_id, status, trial_ends_at"),
+    supabase.from("businesses").select("id, custom_domain"),
   ]);
+  const domains = new Map((domainRows ?? []).map((row) => [row.id, row.custom_domain]));
   const s = (stats ?? {}) as Record<string, number>;
   const figures = [
     [a.stats.businesses, s.businesses_total],
@@ -136,6 +139,7 @@ export default async function AdminPage() {
                         )}
                       </p>
                     )}
+                  <DomainForm businessId={b.id} domain={domains.get(b.id) ?? null} />
                 </TableCell>
                 <TableCell>
                   <StatusForm businessId={b.id} status={b.status} />

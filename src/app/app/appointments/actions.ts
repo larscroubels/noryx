@@ -187,6 +187,19 @@ export async function changeStatus(formData: FormData) {
   refresh(parsed.data.appointmentId);
 }
 
+/** Deletes an appointment everywhere (calendar, history, client link); payments stay, unlinked. */
+export async function deleteAppointment(formData: FormData) {
+  const id = String(formData.get("appointmentId") ?? "");
+  const date = String(formData.get("date") ?? "");
+  const workspace = await authorize(["appointments.manage_all", "appointments.manage_own"]);
+  if (!workspace || !/^[0-9a-f-]{36}$/.test(id)) return;
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("delete_appointment", { p_appointment_id: id });
+  if (error) return;
+  refresh(id);
+  redirect(`/app/calendar?deleted=1${/^\d{4}-\d{2}-\d{2}$/.test(date) ? `&date=${date}` : ""}`);
+}
+
 export async function cancelAppointment(formData: FormData) {
   const parsed = cancelSchema(await getT()).safeParse(formToObject(formData));
   if (!parsed.success) return;

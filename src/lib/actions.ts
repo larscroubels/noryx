@@ -47,6 +47,7 @@ export function databaseErrorMessage(
     plan_feature_inventory: t.errors.planFeatureInventory,
     plan_feature_branding: t.errors.planFeatureBranding,
     plan_feature_team_permissions: t.errors.planFeatureTeamPermissions,
+    plan_feature_time_clock: t.errors.planFeatureTimeClock,
   };
   if (plan[error.message]) return plan[error.message]!;
   switch (error.code) {

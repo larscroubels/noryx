@@ -1,6 +1,14 @@
 import type { admin as en } from "../en/admin";
 
 export const admin: typeof en = {
+  domain: {
+    label: "Domaine propre",
+    placeholder: "hairsalonsylvie.be",
+    save: "Enregistrer le domaine",
+    saved: "Domaine enregistré et consigné dans le journal d'audit.",
+    failed: "Le domaine n'a pas pu être enregistré. Vérifiez l'orthographe, ou il est peut-être déjà utilisé.",
+    ultraOnly: "Fonctionne uniquement avec Ultra, dès que le DNS pointe vers NORYX.",
+  },
   metaTitle: "Administration de la plateforme",
   badge: "Admin plateforme",
   back: "Retour à l'espace",

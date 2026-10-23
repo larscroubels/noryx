@@ -81,17 +81,18 @@ export function AppShowcase({ labels }: { labels: AppShowcaseLabels }) {
           <h3 className="font-display text-display-sm font-semibold">{labels.benefitsTitle}</h3>
           <ul className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
             {labels.benefits.map((benefit, index) => (
-              <li key={benefit.title} className="flex gap-4">
+              <li
+                key={benefit.title}
+                className="row-span-2 grid grid-cols-[auto_minmax(0,1fr)] grid-rows-subgrid gap-x-4 gap-y-0"
+              >
                 <span
                   aria-hidden="true"
-                  className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-pink-50 text-pink-700 ring-1 ring-pink-100 [&_svg]:size-5"
+                  className="row-span-2 flex size-10 shrink-0 items-center justify-center rounded-lg bg-pink-50 text-pink-700 ring-1 ring-pink-100 [&_svg]:size-5"
                 >
                   {BENEFIT_ICONS[index]}
                 </span>
-                <span>
-                  <span className="block font-semibold">{benefit.title}</span>
-                  <span className="text-fg-muted">{benefit.text}</span>
-                </span>
+                <span className="font-semibold">{benefit.title}</span>
+                <span className="mt-1 text-fg-muted">{benefit.text}</span>
               </li>
             ))}
           </ul>

@@ -130,6 +130,11 @@ export const common = {
   copyLink: "Copy link",
   copied: "Copied",
   plans: {
+    ultra: {
+      name: "Ultra",
+      description:
+        "Everything in Pro plus your own domain name and a custom one-page website set up by the NORYX team.",
+    },
     basic: {
       name: "Basic",
       description:
@@ -143,6 +148,8 @@ export const common = {
   } as Record<string, { name: string; description: string }>,
   noPlan: "No plan",
   features: {
+    time_clock: "Time clock for your team",
+    custom_domain: "Your own domain name and one-page website",
     online_booking: "Online booking system",
     finance: "Payments & finance",
     inventory: "Products & stock",

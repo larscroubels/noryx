@@ -23,6 +23,7 @@ export const RESERVED_SLUGS = new Set([
   "design-system",
   "docs",
   "download",
+  "for-you",
   "explore",
   "faq",
   "features",

@@ -116,6 +116,7 @@ export const settings: typeof en = {
     saved: "Paramètres de la boutique enregistrés.",
   },
   plan: {
+    customDomain: (domain) => `Votre domaine : ${domain}`,
     status: {
       trialing: "Essai",
       active: "Actif",
