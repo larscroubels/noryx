@@ -20,7 +20,9 @@ import { dictionaries, type Dictionary } from "./dictionaries";
 
 /** Language the salon chose for its workspace (Settings › Business profile). */
 async function workspaceLocale(): Promise<Locale | null> {
-  const memberships = await getMemberships();
+  // The root layout asks for the language; if the workspaces can't be loaded, fall back
+  // to the visitor's language so the page's own error screen can render (already logged).
+  const memberships = await getMemberships().catch(() => []);
   if (memberships.length === 0) return null;
   const preferred = (await cookies()).get(ACTIVE_BUSINESS_COOKIE)?.value;
   const membership = memberships.find((m) => m.business.id === preferred) ?? memberships[0]!;
