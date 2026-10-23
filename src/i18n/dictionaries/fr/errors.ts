@@ -1,6 +1,7 @@
 import type { errors as en } from "../en/errors";
 
 export const errors: typeof en = {
+  planFeatureTimeClock: "La pointeuse fait partie de Pro.",
   generic: "Une erreur s'est produite. Veuillez réessayer.",
   noPermission: "Vous n'avez pas l'autorisation d'effectuer cette action.",
   alreadyExists: "Cet élément existe déjà. Choisissez une autre valeur.",

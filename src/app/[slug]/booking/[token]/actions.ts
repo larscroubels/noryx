@@ -1,14 +1,16 @@
 "use server";
 
 import { headers } from "next/headers";
-import { revalidatePath } from "next/cache";
 
 import { getT } from "@/i18n/server";
 import { failure, success, type ActionState } from "@/lib/actions";
+import { logger } from "@/lib/logger";
+import { processNotificationsForDeletedBooking } from "@/lib/notifications";
 import { rateLimit } from "@/lib/rate-limit";
 import { createClient } from "@/lib/supabase/server";
 
-export async function cancelOwnBooking(
+/** The client cancels through their private link: the booking is deleted everywhere. */
+export async function deleteOwnBooking(
   _prev: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
@@ -19,14 +21,14 @@ export async function cancelOwnBooking(
     return failure(m.tooMany);
   }
   const token = String(formData.get("token") ?? "");
-  const slug = String(formData.get("slug") ?? "");
   if (!/^[a-f0-9]{48}$/.test(token)) return failure(MESSAGES.booking_not_found!);
   const supabase = await createClient();
-  const { error } = await supabase.rpc("cancel_booking_by_token", {
-    p_token: token,
-    p_reason: String(formData.get("reason") ?? "").slice(0, 500) || undefined,
-  });
-  if (error) return failure(MESSAGES[error.message] ?? m.failed);
-  revalidatePath(`/${slug}/booking/${token}`);
-  return success(m.done);
+  const { data: deletedId, error } = await supabase.rpc("delete_booking_by_token", { p_token: token });
+  if (error || !deletedId) return failure((error && MESSAGES[error.message]) ?? m.failed);
+  // The booking is gone; a notification hiccup must not turn that into an error for the client.
+  await processNotificationsForDeletedBooking(deletedId).catch((cause) =>
+    logger.error("booking.delete_notice_failed", { cause }),
+  );
+  // No revalidation: the page keeps showing the confirmation until the client leaves it.
+  return success(m.deleted);
 }

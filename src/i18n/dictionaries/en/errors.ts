@@ -1,4 +1,5 @@
 export const errors = {
+  planFeatureTimeClock: "The time clock is part of Pro.",
   generic: "Something went wrong. Please try again.",
   noPermission: "You don't have permission to do this.",
   alreadyExists: "This already exists. Please choose a different value.",

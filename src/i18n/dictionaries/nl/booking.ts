@@ -99,19 +99,18 @@ export const booking: typeof en = {
     },
   },
   manage: {
+    deleteInfo: (hours) =>
+      `Je kunt online annuleren tot ${hours} uur voor je afspraak. Je boeking wordt dan overal verwijderd, ook bij de salon. Wil je verzetten? Annuleer dan en boek een nieuw tijdstip.`,
+    deleteSubmit: "Annuleren en mijn boeking verwijderen",
+    deleted: "Je boeking is geannuleerd en overal verwijderd.",
     title: "Je boeking",
     notFound: "Boeking niet gevonden",
     notFoundText: "Controleer of je de volledige link uit je bevestiging hebt geopend.",
-    cancelInfo: (hours) =>
-      `Je kunt online annuleren tot ${hours} uur voor je afspraak. Wil je verzetten? Annuleer dan en boek een nieuw tijdstip.`,
     cancelled: "Deze boeking is geannuleerd.",
     closed: "Online annuleren is niet meer mogelijk voor deze afspraak.",
     callPhone: (phone) => `Bel ${phone}.`,
     contactSalon: "Neem contact op met de salon.",
     bookAnother: "Nog een afspraak boeken",
-    reasonHint: "Wordt gedeeld met de salon.",
-    submit: "Mijn boeking annuleren",
-    done: "Je boeking is geannuleerd.",
     tooMany: "Te veel pogingen. Wacht een paar minuten.",
     failed: "We konden je boeking niet annuleren. Neem contact op met de salon.",
     rpc: {

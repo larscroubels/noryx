@@ -1,6 +1,8 @@
 import { account } from "./account";
 import { admin } from "./admin";
 import { app } from "./app";
+import { assistant } from "./assistant";
+import { audience } from "./audience";
 import { appointments } from "./appointments";
 import { appShowcase } from "./app-showcase";
 import { auth } from "./auth";
@@ -19,6 +21,7 @@ import { services } from "./services";
 import { settings } from "./settings";
 import { staff } from "./staff";
 import { team } from "./team";
+import { timeClock } from "./time-clock";
 import { validation } from "./validation";
 
 export const fr = {
@@ -44,4 +47,7 @@ export const fr = {
   pricing,
   giftCards,
   appShowcase,
+  timeClock,
+  audience,
+  assistant,
 };

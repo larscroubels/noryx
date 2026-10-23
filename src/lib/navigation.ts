@@ -13,6 +13,7 @@ export type WorkspaceNavKey =
   | "team"
   | "finance"
   | "settings"
+  | "time"
   | "help";
 
 type NavDefinition = {
@@ -45,6 +46,12 @@ export const WORKSPACE_NAV: NavDefinition[] = [
     href: "/app/schedule",
     anyOf: ["schedule.manage_own"],
     hideIf: "staff.manage",
+  },
+  {
+    key: "time",
+    href: "/app/time",
+    anyOf: ["schedule.manage_own", "staff.manage"],
+    feature: "time_clock",
   },
   {
     key: "products",

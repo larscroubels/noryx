@@ -65,3 +65,30 @@ export async function setSubscription(
   revalidatePath("/admin");
   return success(t.admin.planUpdated);
 }
+
+const domainSchema = (t: Dictionary) =>
+  z.object({
+    businessId: z.uuid(),
+    domain: z.string().trim().max(253),
+    reason: reason(t),
+  });
+
+/** Assigns (or clears) an Ultra business's own domain; DNS must point to NORYX. */
+export async function setCustomDomain(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const t = await getT();
+  if (!(await isPlatformAdmin())) return failure(t.admin.errors.required);
+  const parsed = domainSchema(t).safeParse(formToObject(formData));
+  if (!parsed.success) return validationFailure(parsed.error, t);
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("admin_set_custom_domain", {
+    p_business_id: parsed.data.businessId,
+    p_domain: parsed.data.domain,
+    p_reason: parsed.data.reason,
+  });
+  if (error) return failure(t.admin.domain.failed, { domain: [t.admin.domain.failed] });
+  revalidatePath("/admin");
+  return success(t.admin.domain.saved);
+}

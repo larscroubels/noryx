@@ -1,4 +1,12 @@
 export const admin = {
+  domain: {
+    label: "Own domain",
+    placeholder: "hairsalonsylvie.be",
+    save: "Save domain",
+    saved: "Domain saved and recorded in the audit log.",
+    failed: "The domain could not be saved. Check the spelling, or it may already be in use.",
+    ultraOnly: "Only works on Ultra, once DNS points to NORYX.",
+  },
   metaTitle: "Platform admin",
   badge: "Platform admin",
   back: "Back to workspace",

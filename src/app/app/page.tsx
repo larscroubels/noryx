@@ -22,6 +22,8 @@ import { can, requireWorkspace } from "@/lib/auth/session";
 import { getEntitlements, hasFeature } from "@/lib/billing/entitlements";
 import { formatLocalDate, formatMoney, formatTime } from "@/lib/format";
 import { createClient } from "@/lib/supabase/server";
+
+import { ClockCard } from "./time/clock-card";
 import {
   addDays,
   dayBoundsUtc,
@@ -139,6 +141,19 @@ export default async function OverviewPage({ searchParams }: PageProps<"/app">) 
   ];
   const showChecklist = can(workspace, "settings.manage") && checklist.some((item) => !item.done);
   const entitlements = await getEntitlements(business.id);
+  // Professionals with a linked profile clock in and out right from the dashboard.
+  const clockStaff =
+    hasFeature(entitlements, "time_clock") && can(workspace, "schedule.manage_own")
+      ? workspace.staffId
+      : null;
+  const { data: openEntry } = clockStaff
+    ? await supabase
+        .from("time_entries")
+        .select("clock_in")
+        .eq("staff_id", clockStaff)
+        .is("clock_out", null)
+        .maybeSingle()
+    : { data: null };
   const showStock =
     hasFeature(entitlements, "inventory") &&
     (can(workspace, "products.manage") || can(workspace, "inventory.manage"));
@@ -298,6 +313,14 @@ export default async function OverviewPage({ searchParams }: PageProps<"/app">) 
         </Card>
 
         <div className="grid content-start gap-6">
+          {clockStaff && (
+            <ClockCard
+              compact
+              openSince={openEntry?.clock_in ?? null}
+              serverNow={requestTime()}
+              timeZone={tz}
+            />
+          )}
           {pendingCount > 0 && (
             <Card className="border-warning-100 bg-warning-50/50">
               <CardContent className="flex items-start gap-3">

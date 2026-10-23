@@ -42,7 +42,15 @@ export async function processNotificationsForGiftCard(giftCardId: string) {
   await markSkipped("gift_card_id", giftCardId);
 }
 
-async function markSkipped(payloadKey: "order_id" | "gift_card_id", id: string) {
+/** Same rule for the salon's notice that a client deleted a booking. */
+export async function processNotificationsForDeletedBooking(appointmentId: string) {
+  await markSkipped("deleted_appointment_id", appointmentId);
+}
+
+async function markSkipped(
+  payloadKey: "order_id" | "gift_card_id" | "deleted_appointment_id",
+  id: string,
+) {
   const admin = createAdminClient();
   if (!admin || isEmailDeliveryConfigured()) return;
   const { error } = await admin

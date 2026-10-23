@@ -93,9 +93,9 @@ export default async function ManageBookingPage({ params }: PageProps<"/[slug]/b
             {booking.can_cancel ? (
               <div className="grid gap-3">
                 <p className="text-sm text-fg-muted">
-                  {m.cancelInfo(booking.cancellation_notice_hours)}
+                  {m.deleteInfo(booking.cancellation_notice_hours)}
                 </p>
-                <CancelForm token={token} slug={slug} />
+                <CancelForm token={token} />
               </div>
             ) : booking.status === "cancelled" ? (
               <Alert tone="neutral">{m.cancelled}</Alert>

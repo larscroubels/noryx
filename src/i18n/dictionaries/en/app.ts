@@ -2,6 +2,7 @@ export const app = {
   metaTitle: "Workspace",
   account: "Account",
   nav: {
+    time: "Time clock",
     overview: "Overview",
     calendar: "Calendar",
     customers: "Customers",

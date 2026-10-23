@@ -113,6 +113,7 @@ export const settings: typeof en = {
     saved: "Webshopinstellingen opgeslagen.",
   },
   plan: {
+    customDomain: (domain) => `Je eigen domein: ${domain}`,
     status: {
       trialing: "Proefperiode",
       active: "Actief",

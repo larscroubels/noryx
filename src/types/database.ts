@@ -390,6 +390,7 @@ export type Database = {
           created_at: string;
           created_by: string | null;
           currency: string;
+          custom_domain: string | null;
           description: string | null;
           email: string | null;
           gift_card_allow_custom: boolean;
@@ -430,6 +431,7 @@ export type Database = {
           created_at?: string;
           created_by?: string | null;
           currency?: string;
+          custom_domain?: string | null;
           description?: string | null;
           email?: string | null;
           gift_card_allow_custom?: boolean;
@@ -469,6 +471,7 @@ export type Database = {
           created_at?: string;
           created_by?: string | null;
           currency?: string;
+          custom_domain?: string | null;
           description?: string | null;
           email?: string | null;
           gift_card_allow_custom?: boolean;
@@ -1709,6 +1712,61 @@ export type Database = {
           },
         ];
       };
+      time_entries: {
+        Row: {
+          business_id: string;
+          clock_in: string;
+          clock_out: string | null;
+          created_at: string;
+          created_by: string | null;
+          edited_at: string | null;
+          edited_by: string | null;
+          id: string;
+          note: string | null;
+          staff_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          business_id: string;
+          clock_in: string;
+          clock_out?: string | null;
+          created_at?: string;
+          created_by?: string | null;
+          edited_at?: string | null;
+          edited_by?: string | null;
+          id?: string;
+          note?: string | null;
+          staff_id: string;
+        };
+        Update: {
+          business_id?: string;
+          clock_in?: string;
+          clock_out?: string | null;
+          created_at?: string;
+          created_by?: string | null;
+          edited_at?: string | null;
+          edited_by?: string | null;
+          id?: string;
+          note?: string | null;
+          staff_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "time_entries_business_id_fkey";
+            columns: ["business_id"];
+            isOneToOne: false;
+            referencedRelation: "businesses";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "time_entries_business_id_staff_id_fkey";
+            columns: ["business_id", "staff_id"];
+            isOneToOne: false;
+            referencedRelation: "staff_members";
+            referencedColumns: ["business_id", "id"];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
@@ -1753,6 +1811,10 @@ export type Database = {
         };
         Returns: undefined;
       };
+      admin_set_custom_domain: {
+        Args: { p_business_id: string; p_domain: string; p_reason: string };
+        Returns: undefined;
+      };
       admin_set_subscription: {
         Args: {
           p_business_id: string;
@@ -1785,6 +1847,48 @@ export type Database = {
       cancel_booking_by_token: { Args: { p_reason?: string; p_token: string }; Returns: undefined };
       cancel_gift_card: { Args: { p_gift_card_id: string; p_reason: string }; Returns: undefined };
       cancel_order: { Args: { p_order_id: string }; Returns: undefined };
+      clock_in: {
+        Args: { p_business_id: string };
+        Returns: {
+          business_id: string;
+          clock_in: string;
+          clock_out: string | null;
+          created_at: string;
+          created_by: string | null;
+          edited_at: string | null;
+          edited_by: string | null;
+          id: string;
+          note: string | null;
+          staff_id: string;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "time_entries";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
+      clock_out: {
+        Args: { p_business_id: string };
+        Returns: {
+          business_id: string;
+          clock_in: string;
+          clock_out: string | null;
+          created_at: string;
+          created_by: string | null;
+          edited_at: string | null;
+          edited_by: string | null;
+          id: string;
+          note: string | null;
+          staff_id: string;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "time_entries";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
       create_business: {
         Args: {
           p_business_type?: Database["public"]["Enums"]["business_type"];
@@ -1860,6 +1964,12 @@ export type Database = {
         Returns: Json;
       };
       current_plan: { Args: { p_business_id: string }; Returns: string };
+      delete_appointment: { Args: { p_appointment_id: string }; Returns: undefined };
+      delete_booking_by_token: { Args: { p_token: string }; Returns: string };
+      delete_time_entry: {
+        Args: { p_business_id: string; p_entry_id: string };
+        Returns: undefined;
+      };
       get_booking_by_token: { Args: { p_token: string }; Returns: Json };
       get_gift_card_by_code: { Args: { p_code: string; p_slug: string }; Returns: Json };
       get_invitation: { Args: { p_token: string }; Returns: Json };
@@ -1938,6 +2048,7 @@ export type Database = {
         Args: { p_business_id: string };
         Returns: Database["public"]["Enums"]["member_role"];
       };
+      own_staff_id: { Args: { p_business_id: string }; Returns: string };
       redeem_gift_card: {
         Args: {
           p_amount_cents: number;
@@ -1950,11 +2061,24 @@ export type Database = {
         Returns: Json;
       };
       remove_member: { Args: { p_member_id: string }; Returns: undefined };
+      require_time_clock: { Args: { p_business_id: string }; Returns: undefined };
+      resolve_custom_domain: { Args: { p_host: string }; Returns: string };
       reverse_gift_card_redemption: {
         Args: { p_reason: string; p_transaction_id: number };
         Returns: undefined;
       };
       revoke_invitation: { Args: { p_invitation_id: string }; Returns: undefined };
+      save_time_entry: {
+        Args: {
+          p_business_id: string;
+          p_clock_in: string;
+          p_clock_out?: string;
+          p_entry_id?: string;
+          p_note?: string;
+          p_staff_id: string;
+        };
+        Returns: string;
+      };
       set_gift_card_blocked: {
         Args: { p_blocked: boolean; p_gift_card_id: string; p_reason: string };
         Returns: undefined;

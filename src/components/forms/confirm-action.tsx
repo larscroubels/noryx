@@ -24,6 +24,7 @@ export function ConfirmAction({
   hiddenFields,
   tone = "danger",
   triggerVariant = "secondary",
+  triggerSize,
   children,
 }: {
   trigger: ReactNode;
@@ -34,6 +35,7 @@ export function ConfirmAction({
   hiddenFields: Record<string, string>;
   tone?: "danger" | "primary";
   triggerVariant?: ButtonProps["variant"];
+  triggerSize?: ButtonProps["size"];
   children?: ReactNode;
 }) {
   const [open, setOpen] = useState(false);
@@ -41,7 +43,9 @@ export function ConfirmAction({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={triggerVariant}>{trigger}</Button>
+        <Button variant={triggerVariant} size={triggerSize}>
+          {trigger}
+        </Button>
       </DialogTrigger>
       <DialogContent title={title} description={description} size="sm">
         <form action={action}>

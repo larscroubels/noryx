@@ -152,4 +152,38 @@ describe("Basic and Pro plans", () => {
     await setPlan(admin, "pro");
     expect((await publicPage()).rows[0]).toEqual({ logo: "x/logo.png", colour: "#B83D5D" });
   });
+
+  it("offers Ultra with everything in Pro plus a custom domain", async () => {
+    const { rows } = await db.query<{ extra: string[]; missing: string[] }>(
+      `select array(select unnest(u.features) except select unnest(p.features)) as extra,
+              array(select unnest(p.features) except select unnest(u.features)) as missing
+       from public.plans u, public.plans p where u.id = 'ultra' and p.id = 'pro'`,
+    );
+    expect(rows[0]).toEqual({ extra: ["custom_domain"], missing: [] });
+  });
+
+  it("maps a custom domain to the business page only on Ultra", async () => {
+    const resolve = (host: string) =>
+      as(db, { role: "anon" }, (tx) =>
+        tx.query<{ slug: string | null }>("select public.resolve_custom_domain($1) as slug", [host]),
+      );
+    await expect(
+      as(db, user(owner), (tx) =>
+        tx.query("select public.admin_set_custom_domain($1, 'studioplans.be', 'Own domain')", [businessId]),
+      ),
+    ).rejects.toThrow(/Platform administrator/);
+    await as(
+      db,
+      user(admin),
+      (tx) =>
+        tx.query("select public.admin_set_custom_domain($1, 'https://www.StudioPlans.be', 'Own domain')", [
+          businessId,
+        ]),
+      { commit: true },
+    );
+    expect((await resolve("studioplans.be")).rows[0]!.slug).toBeNull();
+    await setPlan(admin, "ultra");
+    expect((await resolve("www.studioplans.be:443")).rows[0]!.slug).toBe("studio-plans");
+    expect((await resolve("other.be")).rows[0]!.slug).toBeNull();
+  });
 });

@@ -89,7 +89,7 @@ tests/db/                Database tests (tenant isolation, roles, booking)
 
 1. Create a Supabase project in an **EU region** and apply the migrations: `supabase link --project-ref <ref> && supabase db push`. Do **not** run `seed.sql` in production.
 2. In the Supabase dashboard: set the Site URL and redirect URLs to your domain, enable email confirmation, paste the templates from `supabase/templates/`, and configure a custom SMTP provider (Supabase's built-in mailer is rate-limited and not for production).
-3. Set `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` and `SUPABASE_SECRET_KEY` in your hosting provider (e.g. Vercel). The secret key must never be exposed to the browser.
+3. Set `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` and `SUPABASE_SECRET_KEY` in your hosting provider (e.g. Vercel). The secret key must never be exposed to the browser. Optionally set `ANTHROPIC_API_KEY` to switch on the AI assistant on the website.
 4. Create the first platform administrator manually: `insert into public.platform_admins (user_id) values ('<auth user id>');`
 
 See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the security model and design decisions.

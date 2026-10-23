@@ -256,6 +256,12 @@ export default async function SettingsPage() {
                 ))}
               </ul>
               <p className="text-fg-muted">
+                {business.custom_domain && (
+                  <>
+                    {st.plan.customDomain(business.custom_domain)}
+                    <br />
+                  </>
+                )}
                 {st.plan.customers(String(entitlements.maxCustomers ?? st.plan.unlimited))} ·{" "}
                 <Link href="/pricing" className="font-semibold text-pink-700 hover:underline">
                   {st.plan.comparePlans}

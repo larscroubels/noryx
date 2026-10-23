@@ -43,6 +43,12 @@ export const appointments: typeof en = {
     submit: "Créer le rendez-vous",
   },
   detail: {
+    deleteForGood: "Supprimer",
+    deleteTitle: "Supprimer définitivement ce rendez-vous ?",
+    deleteText:
+      "Le rendez-vous disparaît partout : de l'agenda, de l'historique du client et de son lien de réservation. Les paiements enregistrés restent dans vos finances, sans le rendez-vous. Cette action est irréversible.",
+    deleteConfirm: "Supprimer définitivement",
+    deleted: "Le rendez-vous a été supprimé partout.",
     metaTitle: "Rendez-vous",
     back: "Retour à l'agenda",
     created: "Rendez-vous créé.",
@@ -84,6 +90,7 @@ export const appointments: typeof en = {
     saveNote: "Enregistrer la note",
   },
   errors: {
+    delete: "Vous n'avez pas l'autorisation de supprimer ce rendez-vous.",
     overlap:
       "Ce collaborateur est déjà réservé à ce moment-là. Choisissez une autre heure ou un autre collaborateur.",
     create: "Vous n'avez pas l'autorisation de créer des rendez-vous.",

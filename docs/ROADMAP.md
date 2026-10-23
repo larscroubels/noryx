@@ -65,6 +65,16 @@ Status as of 22 October 2026. The full product brief is in [`PRODUCT_BRIEF.md`](
 - Each salon chooses its language (Settings › Business profile): the workspace uses it, public salon pages open in it and clients can switch.
 - **Open:** French help screenshots (French courses show the English captures until `npm run help:screenshots` is run against the local stack), translated transactional emails.
 
+## Time clock, deleting appointments, Ultra and the website assistant ✅ (first version)
+
+- **Time clock** (Pro/Ultra) at `/app/time`: professionals clock in and out (also from the dashboard) and see their week. Managers see the team's hours per day, get a warning about entries open longer than 12 hours, correct or delete entries and export a week as CSV.
+- **Deleting appointments**: the salon (or the professional, for their own) and the client (through their private link, within the cancellation deadline) can delete a booking. It is removed everywhere; payments stay, unlinked.
+- **Ultra plan**: everything in Pro plus the salon's own domain (e.g. hairsalonsylvie.be) and a one-page website, for a one-time €150. Platform admins assign the domain in `/admin`; the proxy serves the salon's pages on it.
+- **Newsletter extra** (€5/month) is on the pricing page as "in development". It isn't built yet.
+- **"Who it's for"** is its own page at `/for-you`.
+- **AI assistant** in the bottom-right corner of the public website, answering from the site's content in NL/FR/EN (needs `ANTHROPIC_API_KEY`; otherwise FAQ/help search).
+- **Open:** newsletter module (needs the email provider and marketing consent), automatic DNS/TLS for custom domains, the one-page website template itself, shared rate limiting for the assistant, payroll exports from the time clock.
+
 ## Phase 8 — Launch preparation ⏳
 
 - Done so far: automated accessibility audit (axe, WCAG 2.2 AA) on 17 key pages in both languages plus the help centre, security headers, end-to-end flows in Chrome.
@@ -75,8 +85,10 @@ Status as of 22 October 2026. The full product brief is in [`PRODUCT_BRIEF.md`](
 1. **Supabase project** (EU region) for staging/production.
 2. **Email provider** for transactional mail (e.g. Postmark, Resend) — also used as Supabase Auth SMTP.
 3. **Payment provider** for deposits, webshop and subscriptions (Mollie vs Stripe — both support Bancontact).
-4. **Prices** for Basic and Pro (the pricing page says "price coming soon"), and whether an expired trial should keep falling back to Basic (current behaviour) or become read-only.
+4. **Prices** for Basic, Pro and Ultra (the pricing page says "price coming soon"), and whether an expired trial should keep falling back to Basic (current behaviour) or become read-only.
 5. **French** is implemented; decide whether a native speaker reviews it before launch.
 6. **Domain** and whether salons get subdomains or custom domains.
 7. **Vector logo** (SVG) from the designer.
 8. **Gift cards**: confirm with the accountant that revenue on redemption (not on sale) is right, including VAT; which expiry and refund rules salons must follow (NORYX lets each salon set them and enforces none); whether unused balances of expired or cancelled cards need a report.
+9. **Ultra**: who sets up DNS and the one-page website, and whether the €150 includes the first year of the domain.
+10. **AI assistant**: an Anthropic API key and a monthly budget for it (each answer costs a few cents; the rate limits cap the worst case).

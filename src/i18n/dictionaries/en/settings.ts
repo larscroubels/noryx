@@ -108,6 +108,7 @@ export const settings = {
     saved: "Webshop settings saved.",
   },
   plan: {
+    customDomain: (domain: string) => `Your own domain: ${domain}`,
     status: {
       trialing: "Trial",
       active: "Active",

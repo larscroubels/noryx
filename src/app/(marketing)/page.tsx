@@ -40,6 +40,7 @@ const FEATURE_ICONS = [
   <LockKeyhole key="lock" />,
   <ShoppingBag key="bag" />,
   <ChartNoAxesColumn key="chart" />,
+  <Clock3 key="clock" />,
 ];
 const TEAM_ICONS = [
   <UserRound key="user" />,
@@ -109,11 +110,12 @@ export default async function LandingPage() {
             <h2 className="mt-3 font-display text-display-md font-semibold">{m.features.title}</h2>
             <p className="mt-4 text-lg text-fg-muted">{m.features.lead}</p>
           </div>
-          <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Each card spans three shared rows (subgrid): titles and texts line up across a row. */}
+          <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {m.features.items.map((feature, index) => (
               <li
                 key={feature.title}
-                className="rounded-xl border border-neutral-200/70 bg-surface p-6 shadow-sm"
+                className="row-span-3 grid grid-rows-subgrid gap-y-0 rounded-xl border border-neutral-200/70 bg-surface p-6 shadow-sm"
               >
                 <span
                   aria-hidden="true"
@@ -168,7 +170,7 @@ export default async function LandingPage() {
             {m.team.items.map((item, index) => (
               <div
                 key={item.title}
-                className="rounded-xl bg-surface p-6 shadow-sm ring-1 ring-neutral-200/70"
+                className="row-span-3 grid grid-rows-subgrid gap-y-0 rounded-xl bg-surface p-6 shadow-sm ring-1 ring-neutral-200/70"
               >
                 <span aria-hidden="true" className="text-rosegold-700 [&_svg]:size-5">
                   {TEAM_ICONS[index]}
@@ -178,26 +180,6 @@ export default async function LandingPage() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Who it's for */}
-      <section id="for-you" className="scroll-mt-20 py-20 sm:py-24">
-        <div className="container-page text-center">
-          <p className="eyebrow">{m.forYou.eyebrow}</p>
-          <h2 className="mx-auto mt-3 max-w-2xl font-display text-display-md font-semibold">
-            {m.forYou.title}
-          </h2>
-          <ul className="mx-auto mt-10 flex max-w-4xl flex-wrap justify-center gap-3">
-            {m.forYou.types.map((type) => (
-              <li
-                key={type}
-                className="rounded-full border border-champagne-200 bg-surface-warm px-5 py-2.5 text-sm font-semibold text-fg"
-              >
-                {type}
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
 
@@ -216,14 +198,14 @@ export default async function LandingPage() {
             {m.roadmap.items.map((item, index) => (
               <li
                 key={item.title}
-                className="rounded-xl border border-dashed border-border-strong bg-surface/70 p-5"
+                className="row-span-4 grid grid-rows-subgrid gap-y-0 rounded-xl border border-dashed border-border-strong bg-surface/70 p-5"
               >
                 <span aria-hidden="true" className="text-fg-subtle [&_svg]:size-5">
                   {ROADMAP_ICONS[index]}
                 </span>
                 <h3 className="mt-3 font-semibold">{item.title}</h3>
                 <p className="mt-1 text-sm text-fg-muted">{item.text}</p>
-                <Badge tone="outline" className="mt-4">
+                <Badge tone="outline" className="mt-4 self-end justify-self-start">
                   {m.roadmap.badge}
                 </Badge>
               </li>

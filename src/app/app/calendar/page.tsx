@@ -11,6 +11,7 @@ import Link from "next/link";
 
 import { AppointmentStatusBadge } from "@/components/appointments/appointment-status-badge";
 import { PageHeader } from "@/components/layout/page-header";
+import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/feedback";
@@ -498,6 +499,7 @@ export default async function CalendarPage({ searchParams }: PageProps<"/app/cal
 
   return (
     <div className="grid gap-6">
+      {params.deleted === "1" && <Alert tone="success">{t.appointments.detail.deleted}</Alert>}
       <PageHeader
         title={pendingOnly ? c.requests : c.title}
         description={pendingOnly ? c.requestsText : undefined}

@@ -1,4 +1,5 @@
 import {
+  Clock3,
   CalendarDays,
   Clock4,
   ExternalLink,
@@ -53,6 +54,7 @@ const ICONS: Record<WorkspaceNavKey, React.ReactNode> = {
   giftCards: <Gift />,
   finance: <Wallet />,
   settings: <Settings />,
+  time: <Clock3 />,
   help: <LifeBuoy />,
 };
 

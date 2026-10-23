@@ -4,6 +4,7 @@ export const app: typeof en = {
   metaTitle: "Espace de travail",
   account: "Compte",
   nav: {
+    time: "Pointeuse",
     overview: "Aperçu",
     calendar: "Agenda",
     customers: "Clients",

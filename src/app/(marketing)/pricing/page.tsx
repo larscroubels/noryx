@@ -1,10 +1,15 @@
-import { ArrowRight, Check, Clock3, Minus, Sparkles } from "lucide-react";
+import { ArrowRight, Check, Clock3, Mail, Minus, Sparkles } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { getT } from "@/i18n/server";
+import { getI18n, getT } from "@/i18n/server";
+import {
+  formatWholeEuros,
+  NEWSLETTER_MONTHLY_CENTS,
+  ULTRA_SETUP_FEE_CENTS,
+} from "@/lib/billing/pricing";
 import { cn } from "@/lib/cn";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -28,11 +33,13 @@ function Cell({ value, yes, no }: { value: boolean | string; yes: string; no: st
 }
 
 export default async function PricingPage() {
-  const t = await getT();
+  const { t, intl } = await getI18n();
   const p = t.pricing;
+  const euros = (cents: number) => formatWholeEuros(cents, intl);
   const plans = [
-    { key: "basic" as const, plan: p.plans.basic, highlight: false },
-    { key: "pro" as const, plan: p.plans.pro, highlight: true },
+    { key: "basic" as const, highlight: false },
+    { key: "pro" as const, highlight: true },
+    { key: "ultra" as const, highlight: false },
   ];
 
   return (
@@ -47,64 +54,100 @@ export default async function PricingPage() {
         </div>
       </section>
 
-      <section className="container-page -mt-6 grid gap-6 md:grid-cols-2 lg:mx-auto lg:max-w-5xl">
-        {plans.map(({ key, plan, highlight }, index) => (
-          <article
-            key={key}
-            aria-labelledby={`plan-${key}`}
-            className={cn(
-              "relative flex flex-col rounded-2xl bg-surface p-7 shadow-sm motion-safe:animate-card-in sm:p-8",
-              highlight ? "ring-2 ring-pink-700" : "ring-1 ring-border",
-            )}
-            style={{ animationDelay: `${index * 90}ms` }}
-          >
-            <div className="flex items-center justify-between gap-3">
-              <h2 id={`plan-${key}`} className="font-display text-display-sm font-semibold">
-                {plan.name}
-              </h2>
-              {highlight && (
-                <Badge tone="brand" icon={<Sparkles />}>
-                  {p.trialBadge}
-                </Badge>
+      {/* Cards share their rows (subgrid), so names, prices, lists and buttons line up across plans. */}
+      <section className="container-page -mt-6 grid gap-6 md:grid-cols-2 lg:mx-auto lg:max-w-6xl lg:grid-cols-3">
+        {plans.map(({ key, highlight }, index) => {
+          const plan = p.plans[key];
+          return (
+            <article
+              key={key}
+              aria-labelledby={`plan-${key}`}
+              className={cn(
+                "relative row-span-7 grid grid-rows-subgrid gap-y-0 rounded-2xl bg-surface p-7 shadow-sm motion-safe:animate-card-in sm:p-8",
+                highlight ? "ring-2 ring-pink-700" : "ring-1 ring-border",
               )}
-            </div>
-            <p className="mt-1 text-fg-muted">{plan.tagline}</p>
-            <p className="mt-6 text-2xl font-semibold">{p.priceSoon}</p>
-            <p className="text-sm text-fg-muted">{p.priceNote}</p>
-            <ul className="mt-7 grid flex-1 content-start gap-3 text-sm">
-              {"everything" in plan && <li className="font-semibold">{plan.everything}</li>}
-              {plan.features.map((feature) => (
-                <li key={feature} className="flex gap-2.5">
-                  <Check className="mt-0.5 size-4 shrink-0 text-success-600" aria-hidden="true" />
-                  {feature}
-                </li>
-              ))}
-              {"soon" in plan && (
-                <li className="flex flex-wrap items-center gap-2.5 text-fg-muted">
-                  <Clock3 className="size-4 shrink-0" aria-hidden="true" />
-                  {plan.soon}
-                  <Badge tone="neutral">{p.soonBadge}</Badge>
-                </li>
-              )}
-            </ul>
-            <Button
-              asChild
-              size="lg"
-              variant={highlight ? "primary" : "secondary"}
-              className="mt-8"
+              style={{ animationDelay: `${index * 90}ms` }}
             >
-              <Link href="/signup">
-                {p.cta} <ArrowRight aria-hidden="true" />
-              </Link>
-            </Button>
-          </article>
-        ))}
+              <div className="flex items-center justify-between gap-3">
+                <h2 id={`plan-${key}`} className="font-display text-display-sm font-semibold">
+                  {plan.name}
+                </h2>
+                {highlight && (
+                  <Badge tone="brand" icon={<Sparkles />}>
+                    {p.trialBadge}
+                  </Badge>
+                )}
+              </div>
+              <p className="mt-1 text-fg-muted">{plan.tagline}</p>
+              <div className="mt-6">
+                <p className="text-2xl font-semibold">{p.priceSoon}</p>
+                <p className="text-sm text-fg-muted">{p.priceNote}</p>
+                {"setupFee" in plan && (
+                  <p className="mt-2 text-sm font-semibold text-pink-700">
+                    {plan.setupFee(euros(ULTRA_SETUP_FEE_CENTS))}
+                  </p>
+                )}
+              </div>
+              <p className="mt-7 text-sm font-semibold">{"everything" in plan ? plan.everything : ""}</p>
+              <ul className="mt-3 grid content-start gap-3 text-sm">
+                {plan.features.map((feature) => (
+                  <li key={feature} className="flex gap-2.5">
+                    <Check className="mt-0.5 size-4 shrink-0 text-success-600" aria-hidden="true" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-5 text-sm text-fg-muted">
+                {"soon" in plan && (
+                  <p className="flex flex-wrap items-center gap-2.5">
+                    <Clock3 className="size-4 shrink-0" aria-hidden="true" />
+                    {plan.soon}
+                    <Badge tone="neutral">{p.soonBadge}</Badge>
+                  </p>
+                )}
+                {"setupNote" in plan && <p>{plan.setupNote}</p>}
+              </div>
+              <Button
+                asChild
+                size="lg"
+                variant={highlight ? "primary" : "secondary"}
+                className="mt-8 self-end"
+              >
+                <Link href="/signup">
+                  {p.cta} <ArrowRight aria-hidden="true" />
+                </Link>
+              </Button>
+            </article>
+          );
+        })}
       </section>
 
-      <section
-        aria-labelledby="trial-title"
-        className="container-page mt-20 lg:mx-auto lg:max-w-5xl"
-      >
+      <section aria-labelledby="extras-title" className="container-page mt-16 lg:mx-auto lg:max-w-6xl">
+        <h2 id="extras-title" className="font-display text-display-sm font-semibold">
+          {p.addOns.title}
+        </h2>
+        <p className="mt-1 text-fg-muted">{p.addOns.lead}</p>
+        <div className="mt-6 flex flex-col gap-4 rounded-2xl bg-surface p-6 ring-1 ring-border sm:flex-row sm:items-center sm:p-7">
+          <span
+            aria-hidden="true"
+            className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-pink-50 text-pink-700 ring-1 ring-pink-100"
+          >
+            <Mail className="size-5" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="flex flex-wrap items-center gap-2 font-semibold">
+              {p.addOns.newsletter.name}
+              <Badge tone="neutral">{p.soonBadge}</Badge>
+            </p>
+            <p className="mt-1 text-sm text-fg-muted">{p.addOns.newsletter.text}</p>
+          </div>
+          <p className="text-lg font-semibold whitespace-nowrap">
+            {p.addOns.newsletter.price(euros(NEWSLETTER_MONTHLY_CENTS))}
+          </p>
+        </div>
+      </section>
+
+      <section aria-labelledby="trial-title" className="container-page mt-20 lg:mx-auto lg:max-w-6xl">
         <h2 id="trial-title" className="font-display text-display-sm font-semibold">
           {p.trial.title}
         </h2>
@@ -112,7 +155,7 @@ export default async function PricingPage() {
           {p.trial.steps.map((step, index) => (
             <li
               key={step.title}
-              className="rounded-xl bg-surface-warm p-5 ring-1 ring-champagne-200"
+              className="row-span-3 grid grid-rows-subgrid gap-y-0 rounded-xl bg-surface-warm p-5 ring-1 ring-champagne-200"
             >
               <span
                 aria-hidden="true"
@@ -128,10 +171,7 @@ export default async function PricingPage() {
         <p className="mt-5 text-sm text-fg-muted">{p.billingNote}</p>
       </section>
 
-      <section
-        aria-labelledby="compare-title"
-        className="container-page mt-20 lg:mx-auto lg:max-w-5xl"
-      >
+      <section aria-labelledby="compare-title" className="container-page mt-20 lg:mx-auto lg:max-w-6xl">
         <h2 id="compare-title" className="font-display text-display-sm font-semibold">
           {p.compare.title}
         </h2>
@@ -142,12 +182,11 @@ export default async function PricingPage() {
                 <th scope="col" className="px-4 py-3 font-semibold sm:px-5">
                   {p.compare.feature}
                 </th>
-                <th scope="col" className="w-20 px-3 py-3 text-center font-semibold sm:w-28 sm:px-5">
-                  {p.plans.basic.name}
-                </th>
-                <th scope="col" className="w-20 px-3 py-3 text-center font-semibold sm:w-28 sm:px-5">
-                  {p.plans.pro.name}
-                </th>
+                {plans.map(({ key }) => (
+                  <th key={key} scope="col" className="w-[4.5rem] px-2 py-3 text-center font-semibold sm:w-28 sm:px-5">
+                    {p.plans[key].name}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -156,12 +195,11 @@ export default async function PricingPage() {
                   <th scope="row" className="px-4 py-3 font-normal sm:px-5">
                     {row.label}
                   </th>
-                  <td className="px-3 py-3 text-center sm:px-5">
-                    <Cell value={row.basic} yes={p.compare.included} no={p.compare.notIncluded} />
-                  </td>
-                  <td className="px-3 py-3 text-center sm:px-5">
-                    <Cell value={row.pro} yes={p.compare.included} no={p.compare.notIncluded} />
-                  </td>
+                  {plans.map(({ key }) => (
+                    <td key={key} className="px-2 py-3 text-center sm:px-5">
+                      <Cell value={row[key]} yes={p.compare.included} no={p.compare.notIncluded} />
+                    </td>
+                  ))}
                 </tr>
               ))}
             </tbody>

@@ -123,6 +123,10 @@ export const marketing: typeof en = {
         title: "Paiements & dépenses en un coup d'œil",
         text: "Enregistrez comment vos clients ont payé, notez vos frais et consultez le chiffre d'affaires par prestation, collaborateur et mode de paiement — avec exports CSV.",
       },
+      {
+        title: "Une pointeuse pour votre équipe",
+        text: "Les collaborateurs pointent leur arrivée et leur départ depuis leur espace, et vous voyez les heures de chacun par semaine — avec corrections et export CSV.",
+      },
     ],
   },
   booking: {
@@ -230,15 +234,27 @@ export const marketing: typeof en = {
     items: [
       {
         q: "Combien coûte NORYX ?",
-        a: "NORYX propose deux abonnements : Basic et Pro. Les prix seront annoncés avant le lancement. Vous pouvez essayer Pro gratuitement pendant 14 jours, sans données de paiement.",
+        a: "NORYX propose trois abonnements : Basic, Pro et Ultra. Les prix mensuels seront annoncés avant le lancement. Ultra coûte 150 € une seule fois pour votre nom de domaine et votre site, et l'option newsletter coûte 5 € par mois. Vous pouvez essayer Pro gratuitement pendant 14 jours, sans données de paiement.",
       },
       {
-        q: "Quelle est la différence entre Basic et Pro ?",
-        a: "Basic est le système de réservation — réservation en ligne, agenda, prestations et plannings de l'équipe — pour jusqu'à 250 clients. Pro ajoute les clients illimités, les paiements et finances, le stock, une boutique en ligne et votre propre identité visuelle sur votre page de réservation.",
+        q: "Quelle est la différence entre Basic, Pro et Ultra ?",
+        a: "Basic est le système de réservation — réservation en ligne, agenda, prestations et plannings de l'équipe — pour jusqu'à 250 clients. Pro ajoute les clients illimités, les paiements et finances, le stock, une boutique en ligne, une pointeuse et votre propre identité visuelle sur votre page de réservation. Ultra y ajoute votre propre nom de domaine et un site one-page mis en place par l'équipe NORYX.",
       },
       {
         q: "Que se passe-t-il après l'essai de 14 jours ?",
-        a: "Vous choisissez Basic ou Pro. Si vous ne choisissez pas, votre établissement continue avec Basic. Rien n'est facturé automatiquement : il n'est pas encore possible de payer via NORYX.",
+        a: "Vous choisissez Basic, Pro ou Ultra. Si vous ne choisissez pas, votre établissement continue avec Basic. Rien n'est facturé automatiquement : il n'est pas encore possible de payer via NORYX.",
+      },
+      {
+        q: "Puis-je envoyer une newsletter à mes clients ?",
+        a: "L'option newsletter est en développement. Elle coûtera 5 € par mois en plus de n'importe quel abonnement et n'atteindra que les clients qui ont accepté de recevoir des messages marketing.",
+      },
+      {
+        q: "Comment fonctionne la pointeuse ?",
+        a: "Les collaborateurs pointent leur arrivée et leur départ dans leur espace. Les propriétaires et managers voient les heures de chacun par semaine, peuvent corriger les pointages et les exporter en CSV. La pointeuse fait partie de Pro et Ultra.",
+      },
+      {
+        q: "Que se passe-t-il quand un rendez-vous est supprimé ?",
+        a: "La suppression retire le rendez-vous partout : de l'agenda, de l'historique du client et de son lien de réservation privé. Les clients peuvent supprimer leur propre réservation via ce lien jusqu'à votre délai d'annulation. Les paiements enregistrés restent dans vos finances.",
       },
       {
         q: "Les clients peuvent-ils réserver sans créer de compte ?",

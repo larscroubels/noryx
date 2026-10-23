@@ -118,6 +118,10 @@ export const marketing: typeof en = {
         title: "Betalingen & uitgaven in één oogopslag",
         text: "Registreer hoe klanten betaalden, noteer je kosten en zie de omzet per behandeling, medewerker en betaalmethode — met CSV-export.",
       },
+      {
+        title: "Een prikklok voor je team",
+        text: "Medewerkers klokken in en uit vanuit hun eigen werkruimte, en jij ziet ieders uren per week — met correcties en CSV-export.",
+      },
     ],
   },
   booking: {
@@ -221,15 +225,27 @@ export const marketing: typeof en = {
     items: [
       {
         q: "Wat kost NORYX?",
-        a: "NORYX heeft twee abonnementen: Basic en Pro. De prijzen worden bekendgemaakt vóór de lancering. Je kunt Pro 14 dagen gratis proberen, zonder betaalgegevens.",
+        a: "NORYX heeft drie abonnementen: Basic, Pro en Ultra. De maandprijzen worden bekendgemaakt vóór de lancering. Ultra kost eenmalig €150 extra voor je eigen domeinnaam en website, en de nieuwsbrief kost €5 per maand extra. Je kunt Pro 14 dagen gratis proberen, zonder betaalgegevens.",
       },
       {
-        q: "Wat is het verschil tussen Basic en Pro?",
-        a: "Basic is het boekingssysteem — online boeken, agenda, behandelingen en roosters — voor tot 250 klanten. Pro voegt onbeperkt klanten, betalingen en financiën, voorraad, een webshop en je eigen huisstijl op je boekingspagina toe.",
+        q: "Wat is het verschil tussen Basic, Pro en Ultra?",
+        a: "Basic is het boekingssysteem — online boeken, agenda, behandelingen en roosters — voor tot 250 klanten. Pro voegt onbeperkt klanten, betalingen en financiën, voorraad, een webshop, een prikklok en je eigen huisstijl op je boekingspagina toe. Ultra voegt daar je eigen domeinnaam en een onepage-website op maat aan toe, opgezet door het NORYX-team.",
       },
       {
         q: "Wat gebeurt er na de proefperiode van 14 dagen?",
-        a: "Je kiest Basic of Pro. Kies je niets, dan werkt je zaak verder met Basic. Er wordt niets automatisch aangerekend: betalen via NORYX is nog niet mogelijk.",
+        a: "Je kiest Basic, Pro of Ultra. Kies je niets, dan werkt je zaak verder met Basic. Er wordt niets automatisch aangerekend: betalen via NORYX is nog niet mogelijk.",
+      },
+      {
+        q: "Kan ik een nieuwsbrief naar mijn klanten sturen?",
+        a: "De nieuwsbrief is in ontwikkeling. Ze kost €5 per maand extra bij elk abonnement en bereikt alleen klanten die toestemming gaven voor marketingberichten.",
+      },
+      {
+        q: "Hoe werkt de prikklok?",
+        a: "Medewerkers klokken in en uit in hun werkruimte. Eigenaars en managers zien ieders uren per week, kunnen registraties corrigeren en exporteren als CSV. De prikklok zit in Pro en Ultra.",
+      },
+      {
+        q: "Wat gebeurt er als een afspraak verwijderd wordt?",
+        a: "Verwijderen haalt de afspraak overal weg: uit de agenda, uit de geschiedenis van de klant en uit de privéboekingslink van de klant. Klanten kunnen hun eigen boeking via die link verwijderen tot je annuleringstermijn. Geregistreerde betalingen blijven in je financiën.",
       },
       {
         q: "Kunnen klanten boeken zonder account?",

@@ -6,6 +6,7 @@ import {
   Gift,
   Mail,
   Phone,
+  Trash2,
   UserX,
 } from "lucide-react";
 import type { Metadata } from "next";
@@ -37,7 +38,7 @@ import { minutesToTime, utcToZoned } from "@/lib/time";
 
 import { PaymentForm } from "../../finance/finance-forms";
 import { RedeemGiftCardForm } from "../../gift-cards/forms";
-import { cancelAppointment, changeStatus } from "../actions";
+import { cancelAppointment, changeStatus, deleteAppointment } from "../actions";
 import { InternalNoteForm, RescheduleForm } from "./forms";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -174,7 +175,7 @@ export default async function AppointmentPage({
             </span>
           </div>
         </div>
-        {nextStatuses.length > 0 && (
+        {canManage && (
           <div className="flex flex-wrap gap-2">
             {nextStatuses.map((status) => {
               const config = STATUS_ACTIONS[status];
@@ -196,6 +197,7 @@ export default async function AppointmentPage({
                     <CircleSlash aria-hidden="true" /> {d.cancel}
                   </>
                 }
+                triggerSize="sm"
                 title={d.cancelTitle}
                 description={d.cancelText}
                 confirmLabel={d.cancelConfirm}
@@ -207,6 +209,20 @@ export default async function AppointmentPage({
                 </Field>
               </ConfirmAction>
             )}
+            <ConfirmAction
+              trigger={
+                <>
+                  <Trash2 aria-hidden="true" /> {d.deleteForGood}
+                </>
+              }
+              triggerVariant="ghost"
+              triggerSize="sm"
+              title={d.deleteTitle}
+              description={d.deleteText}
+              confirmLabel={d.deleteConfirm}
+              action={deleteAppointment}
+              hiddenFields={{ appointmentId: appointment.id, date: local.date }}
+            />
           </div>
         )}
       </div>
