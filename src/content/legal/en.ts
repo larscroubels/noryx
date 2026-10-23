@@ -154,6 +154,7 @@ export function en(c: CompanyText): LegalContent {
                 "Strictly necessary",
               ],
               ["noryx_locale", "Remembers the language you choose (NL, FR or EN).", "1 year", "Functional, at your request"],
+              ["noryx_cookie_consent", "Remembers your choice in the cookie banner (refuse or accept).", "6 months", "Strictly necessary"],
             ],
           },
         },
@@ -161,7 +162,7 @@ export function en(c: CompanyText): LegalContent {
           id: "consent",
           title: "Consent",
           paragraphs: [
-            "Strictly necessary cookies, and cookies that remember a setting you chose yourself, don't need consent. That's why you don't see a cookie banner. If we ever use other cookies, for example for statistics, we'll ask for your consent first and update this policy.",
+            "The cookies above don't need consent: they're necessary or remember a choice you made yourself. In the cookie banner you choose whether we may also use other cookies in the future, such as for statistics. We don't use any at the moment, so refusing or accepting doesn't change how NORYX works. You can change your choice at any time through ‘Cookie settings’ at the bottom of the page. If we ever use such cookies, they will only load after your consent and we'll update this policy.",
           ],
         },
         {

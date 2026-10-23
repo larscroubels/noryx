@@ -154,6 +154,7 @@ export function fr(c: CompanyText): LegalContent {
                 "Strictement nécessaire",
               ],
               ["noryx_locale", "Retient la langue choisie (NL, FR ou EN).", "1 an", "Fonctionnel, à votre demande"],
+              ["noryx_cookie_consent", "Retient votre choix dans la bannière cookies (refuser ou accepter).", "6 mois", "Strictement nécessaire"],
             ],
           },
         },
@@ -161,7 +162,7 @@ export function fr(c: CompanyText): LegalContent {
           id: "consent",
           title: "Consentement",
           paragraphs: [
-            "Les cookies strictement nécessaires et ceux qui retiennent un réglage que vous avez choisi ne nécessitent pas de consentement. C'est pourquoi vous ne voyez pas de bannière cookies. Si nous utilisons un jour d'autres cookies, par exemple pour des statistiques, nous vous demanderons d'abord votre consentement et adapterons cette politique.",
+            "Les cookies ci-dessus ne nécessitent pas de consentement : ils sont nécessaires ou retiennent un choix que vous avez fait. Dans la bannière cookies, vous choisissez si nous pouvons aussi utiliser à l'avenir d'autres cookies, par exemple pour des statistiques. Nous n'en utilisons aucun pour le moment : refuser ou accepter ne change donc rien au fonctionnement de NORYX. Vous pouvez modifier votre choix à tout moment via « Paramètres des cookies » en bas de page. Si nous utilisons un jour de tels cookies, ils ne se chargeront qu'après votre consentement et nous adapterons cette politique.",
           ],
         },
         {

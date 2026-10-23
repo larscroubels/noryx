@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { Logo } from "@/components/brand/logo";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
+import { CookieSettingsButton } from "@/components/legal/cookie-notice";
 import { AssistantWidget } from "@/components/marketing/assistant/assistant-widget";
 import { SiteMenu } from "@/components/marketing/site-menu";
 import { SiteNav } from "@/components/marketing/site-nav";
@@ -124,6 +125,9 @@ export default async function MarketingLayout({ children }: { children: React.Re
                 </Link>
               </li>
             ))}
+            <li>
+              <CookieSettingsButton label={t.site.cookieNotice.settings} />
+            </li>
           </ul>
         </div>
       </footer>

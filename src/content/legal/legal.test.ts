@@ -23,7 +23,13 @@ describe("legal pages", () => {
     for (const locale of LOCALES) {
       const table = legalContent(locale).cookies.sections.find((section) => section.table)!.table!;
       const names = table.rows.map((row) => row[0]);
-      expect(names).toEqual(["sb-…-auth-token", "sb-…-auth-token-code-verifier", "noryx_business", "noryx_locale"]);
+      expect(names).toEqual([
+        "sb-…-auth-token",
+        "sb-…-auth-token-code-verifier",
+        "noryx_business",
+        "noryx_locale",
+        "noryx_cookie_consent",
+      ]);
     }
   });
 

@@ -152,6 +152,15 @@ export const site: typeof en = {
     terms: "Conditions générales",
     notice: "Informations légales",
   },
+  cookieNotice: {
+    label: "Choix des cookies",
+    title: "Cookies",
+    text: "NORYX utilise des cookies nécessaires pour vous garder connecté et retenir votre langue. Nous n'utiliserions d'autres cookies, par exemple pour des statistiques, qu'avec votre consentement. Nous n'en utilisons aucun pour le moment.",
+    accept: "Accepter",
+    refuse: "Refuser",
+    more: "En savoir plus",
+    settings: "Paramètres des cookies",
+  },
   faqGroups: { product: "NORYX et nos formules", usage: "Utiliser NORYX" },
   cta: { start: "Commencer l'essai gratuit", pricing: "Comparer les formules", signIn: "Se connecter" },
 };

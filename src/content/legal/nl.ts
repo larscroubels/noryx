@@ -153,6 +153,7 @@ export function nl(c: CompanyText): LegalContent {
                 "Strikt noodzakelijk",
               ],
               ["noryx_locale", "Onthoudt de taal die je kiest (NL, FR of EN).", "1 jaar", "Functioneel, op jouw verzoek"],
+              ["noryx_cookie_consent", "Onthoudt je keuze in de cookiemelding (weigeren of accepteren).", "6 maanden", "Strikt noodzakelijk"],
             ],
           },
         },
@@ -160,7 +161,7 @@ export function nl(c: CompanyText): LegalContent {
           id: "consent",
           title: "Toestemming",
           paragraphs: [
-            "Voor strikt noodzakelijke cookies en voor cookies die een functie onthouden die je zelf kiest, is geen toestemming nodig. Daarom zie je geen cookiebanner. Gaan we ooit andere cookies gebruiken, bijvoorbeeld voor statistieken, dan vragen we eerst je toestemming en passen we deze verklaring aan.",
+            "Voor de cookies hierboven is geen toestemming nodig: ze zijn noodzakelijk of onthouden een keuze die je zelf maakt. In de cookiemelding kies je of we in de toekomst ook andere cookies, zoals voor statistieken, mogen gebruiken. Op dit moment gebruiken we er geen, dus weigeren of accepteren verandert niets aan hoe NORYX werkt. Je kunt je keuze altijd wijzigen via ‘Cookie-instellingen’ onderaan de pagina. Gaan we ooit zulke cookies gebruiken, dan laden ze alleen na je toestemming en passen we deze verklaring aan.",
           ],
         },
         {

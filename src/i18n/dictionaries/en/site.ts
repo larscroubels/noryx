@@ -148,6 +148,15 @@ export const site = {
     terms: "Terms and conditions",
     notice: "Legal information",
   },
+  cookieNotice: {
+    label: "Cookie choice",
+    title: "Cookies",
+    text: "NORYX uses necessary cookies to keep you signed in and remember your language. We'd only use other cookies, such as for statistics, with your consent. We don't use any at the moment.",
+    accept: "Accept",
+    refuse: "Refuse",
+    more: "More info",
+    settings: "Cookie settings",
+  },
   faqGroups: { product: "NORYX and our plans", usage: "Using NORYX" },
   cta: { start: "Start your free trial", pricing: "Compare plans", signIn: "Sign in" },
 };

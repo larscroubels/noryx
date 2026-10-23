@@ -21,6 +21,23 @@ export const COMPANY = {
   dataRegion: null as string | null,
 };
 
+/** The visitor's choice in the cookie banner (listed in the cookie policy). */
+export const COOKIE_CONSENT_COOKIE = "noryx_cookie_consent";
+/** How long a choice is remembered before the banner asks again. */
+export const COOKIE_CONSENT_MAX_AGE = 60 * 60 * 24 * 182;
+/** Sent when "Cookie settings" is clicked, so the banner opens again. */
+export const COOKIE_SETTINGS_EVENT = "noryx:cookie-settings";
+
+export type CookieConsent = "necessary" | "all";
+
+/**
+ * Reads the stored choice. NORYX sets no optional cookies today; anything optional
+ * added later (statistics, marketing) may only load when this returns "all".
+ */
+export function parseCookieConsent(value: string | undefined): CookieConsent | null {
+  return value === "all" || value === "necessary" ? value : null;
+}
+
 /** Date the legal texts were last changed (YYYY-MM-DD). */
 export const LEGAL_UPDATED = "2026-10-24";
 
