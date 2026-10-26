@@ -21,6 +21,7 @@ import { getI18n, getT } from "@/i18n/server";
 import { can, requireWorkspace } from "@/lib/auth/session";
 import { getEntitlements, hasFeature } from "@/lib/billing/entitlements";
 import { formatLocalDate, formatMoney, formatTime } from "@/lib/format";
+import { buildSetupChecklist } from "@/lib/setup-checklist";
 import { createClient } from "@/lib/supabase/server";
 
 import { ClockCard } from "./time/clock-card";
@@ -117,28 +118,12 @@ export default async function OverviewPage({ searchParams }: PageProps<"/app">) 
   ).length;
   const pendingCount = pendingResult.count ?? 0;
 
-  const checklist = [
-    {
-      done: (setup[0].count ?? 0) > 0,
-      label: o.checklist.hours,
-      href: "/app/settings#hours",
-    },
-    {
-      done: (setup[1].count ?? 0) > 0,
-      label: o.checklist.services,
-      href: "/app/services",
-    },
-    {
-      done: (setup[2].count ?? 0) > 0,
-      label: o.checklist.staff,
-      href: "/app/staff",
-    },
-    {
-      done: business.booking_enabled,
-      label: o.checklist.publish,
-      href: "/app/settings#booking",
-    },
-  ];
+  const checklist = buildSetupChecklist({
+    hours: setup[0].count ?? 0,
+    services: setup[1].count ?? 0,
+    workingHours: setup[2].count ?? 0,
+    bookingEnabled: business.booking_enabled,
+  }).map((item) => ({ ...item, label: o.checklist[item.key] }));
   const showChecklist = can(workspace, "settings.manage") && checklist.some((item) => !item.done);
   const entitlements = await getEntitlements(business.id);
   // Professionals with a linked profile clock in and out right from the dashboard.
