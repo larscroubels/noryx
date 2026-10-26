@@ -1996,6 +1996,20 @@ export type Database = {
       cancel_booking_by_token: { Args: { p_reason?: string; p_token: string }; Returns: undefined };
       cancel_gift_card: { Args: { p_gift_card_id: string; p_reason: string }; Returns: undefined };
       cancel_order: { Args: { p_order_id: string }; Returns: undefined };
+      client_book_appointment: {
+        Args: {
+          p_business_id: string;
+          p_note?: string;
+          p_service_id: string;
+          p_staff_id: string;
+          p_starts_at: string;
+        };
+        Returns: Json;
+      };
+      client_cancel_appointment: {
+        Args: { p_appointment_id: string; p_reason?: string };
+        Returns: undefined;
+      };
       clock_in: {
         Args: { p_business_id: string };
         Returns: {
@@ -2197,6 +2211,7 @@ export type Database = {
         };
         Returns: undefined;
       };
+      my_appointments: { Args: Record<PropertyKey, never>; Returns: Json[] };
       my_business_permissions: { Args: { p_business_id: string }; Returns: string[] };
       my_business_role: {
         Args: { p_business_id: string };
