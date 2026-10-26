@@ -1,22 +1,32 @@
 import { Redirect } from "expo-router";
 
+import { useT } from "~/i18n";
+import { useAccount } from "~/lib/account-context";
 import { useSession } from "~/lib/session";
-import { Button } from "~/ui/Button";
+import { ErrorState } from "~/ui/ErrorState";
 import { Screen } from "~/ui/Screen";
-import { Symbol } from "~/ui/Symbol";
-import { Text } from "~/ui/Text";
+import { Skeleton } from "~/ui/Skeleton";
 
-/** Entry point; signed-in users pick their side in the next step (Task 4). */
+/** Sends the user to sign-in, the salon side, the client side or the side picker. */
 export default function Index() {
-  const { status, session, signOut } = useSession();
+  const { status } = useSession();
+  const account = useAccount();
+  const { app } = useT();
+
   if (status !== "signedIn") return <Redirect href="/sign-in" />;
-  return (
-    <Screen scroll={false}>
-      <Symbol />
-      <Text variant="title">{session?.user.email}</Text>
-      <Button variant="secondary" onPress={() => void signOut()}>
-        Sign out
-      </Button>
-    </Screen>
-  );
+  if (account.status === "error") {
+    return (
+      <Screen scroll={false}>
+        <ErrorState
+          message={app.common.loadFailed}
+          retryLabel={app.common.retry}
+          onRetry={account.refetch}
+        />
+      </Screen>
+    );
+  }
+  if (account.side === "salon") return <Redirect href="/salon" />;
+  if (account.side === "client") return <Redirect href="/client" />;
+  if (account.side === "pick") return <Redirect href="/pick-side" />;
+  return <Skeleton label={app.common.loading} lines={4} />;
 }

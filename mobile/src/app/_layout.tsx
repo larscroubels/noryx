@@ -1,18 +1,24 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import { I18nProvider, useT } from "~/i18n";
+import { AccountProvider } from "~/lib/account-context";
 import { SessionProvider, useSession } from "~/lib/session";
 import { fontAssets } from "~/theme/fonts";
 import { colors } from "~/theme/tokens";
 
 void SplashScreen.preventAutoHideAsync();
 
-function Session({ children }: { children: ReactNode }) {
+function Session({ client, children }: { client: QueryClient; children: ReactNode }) {
   const { app } = useT();
-  return <SessionProvider endedMessage={app.auth.sessionEnded}>{children}</SessionProvider>;
+  return (
+    <SessionProvider endedMessage={app.auth.sessionEnded} onSignedOut={() => client.clear()}>
+      {children}
+    </SessionProvider>
+  );
 }
 
 function Navigator() {
@@ -27,17 +33,29 @@ function Navigator() {
   if (!ready) return null;
   return (
     <Stack
-      screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.screen } }}
+      screenOptions={{
+        headerShown: false,
+        contentStyle: { backgroundColor: colors.screen },
+        headerTintColor: colors.primary,
+        headerStyle: { backgroundColor: colors.screen },
+      }}
     />
   );
 }
 
 export default function RootLayout() {
+  const [queryClient] = useState(
+    () => new QueryClient({ defaultOptions: { queries: { retry: 1, staleTime: 30_000 } } }),
+  );
   return (
-    <I18nProvider>
-      <Session>
-        <Navigator />
-      </Session>
-    </I18nProvider>
+    <QueryClientProvider client={queryClient}>
+      <I18nProvider>
+        <Session client={queryClient}>
+          <AccountProvider>
+            <Navigator />
+          </AccountProvider>
+        </Session>
+      </I18nProvider>
+    </QueryClientProvider>
   );
 }

@@ -5,6 +5,7 @@ export const en = {
     close: "Close",
     loading: "Loading…",
     loadFailed: "We couldn't load this. Check your connection and try again.",
+    signOut: "Sign out",
   },
   tabs: {
     today: "Today",
@@ -25,5 +26,19 @@ export const en = {
     termsLabel: "I agree to the terms and conditions and the privacy policy",
     readTerms: "Read the terms",
     readPrivacy: "Read the privacy policy",
+  },
+  side: {
+    pickTitle: "Where do you want to start?",
+    pickLead:
+      "You work at a salon and you're also a client. You can switch any time in your profile.",
+    salon: "My salon work",
+    client: "My appointments as a client",
+    switchToSalon: "Switch to my salon work",
+    switchToClient: "Switch to my client side",
+  },
+  clientSoon: {
+    title: "Booking in the app is almost here",
+    text: "Soon you'll link your salons here with their code and book in a few taps. Until then, book on your salon's booking page.",
+    runSalon: "Run a salon? Set it up on noryx",
   },
 };
