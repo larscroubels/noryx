@@ -11,7 +11,18 @@ export const settings = {
     booking: "Online booking",
     shop: "Webshop",
     giftCards: "Gift cards",
+    appCode: "App code",
     plan: "Plan",
+  },
+  connectionCode: {
+    description: "Clients enter this code in the NORYX app to connect to your salon.",
+    copy: "Copy code",
+    copied: "Copied",
+    regenerate: "New code",
+    regenerateTitle: "Create a new code?",
+    regenerateText:
+      "The current code stops working for new connections. Clients who are already connected stay connected.",
+    regenerated: "A new code was created.",
   },
   profile: {
     description: "How your business appears to clients.",

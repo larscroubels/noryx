@@ -218,6 +218,42 @@ export type Database = {
           },
         ];
       };
+      business_connection_codes: {
+        Row: {
+          active: boolean;
+          business_id: string;
+          code: string;
+          created_at: string;
+          created_by: string | null;
+          id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          active?: boolean;
+          business_id: string;
+          code: string;
+          created_at?: string;
+          created_by?: string | null;
+          id?: string;
+        };
+        Update: {
+          active?: boolean;
+          business_id?: string;
+          code?: string;
+          created_at?: string;
+          created_by?: string | null;
+          id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "business_connection_codes_business_id_fkey";
+            columns: ["business_id"];
+            isOneToOne: false;
+            referencedRelation: "businesses";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       business_invitations: {
         Row: {
           accepted_at: string | null;
@@ -494,6 +530,68 @@ export type Database = {
           timezone?: string;
           updated_at?: string;
           website_url?: string | null;
+        };
+        Relationships: [];
+      };
+      client_links: {
+        Row: {
+          business_id: string;
+          categories: Database["public"]["Enums"]["client_category"][];
+          customer_id: string;
+          id: string;
+          linked_at: string;
+          unlinked_at: string | null;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          business_id: string;
+          categories: Database["public"]["Enums"]["client_category"][];
+          customer_id: string;
+          id?: string;
+          linked_at?: string;
+          unlinked_at?: string | null;
+          user_id: string;
+        };
+        Update: {
+          business_id?: string;
+          categories?: Database["public"]["Enums"]["client_category"][];
+          customer_id?: string;
+          id?: string;
+          linked_at?: string;
+          unlinked_at?: string | null;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "client_links_business_id_customer_id_fkey";
+            columns: ["business_id", "customer_id"];
+            isOneToOne: false;
+            referencedRelation: "customers";
+            referencedColumns: ["business_id", "id"];
+          },
+          {
+            foreignKeyName: "client_links_business_id_fkey";
+            columns: ["business_id"];
+            isOneToOne: false;
+            referencedRelation: "businesses";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      connection_code_attempts: {
+        Row: {
+          attempted_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          attempted_at?: string;
+          user_id: string;
+        };
+        Update: {
+          attempted_at?: string;
+          user_id?: string;
         };
         Relationships: [];
       };
@@ -2021,6 +2119,7 @@ export type Database = {
         Args: { p_business_id: string; p_entry_id: string };
         Returns: undefined;
       };
+      ensure_connection_code: { Args: { p_business_id: string }; Returns: string };
       get_booking_by_token: { Args: { p_token: string }; Returns: Json };
       get_gift_card_by_code: { Args: { p_code: string; p_slug: string }; Returns: Json };
       get_invitation: { Args: { p_token: string }; Returns: Json };
@@ -2069,6 +2168,10 @@ export type Database = {
       is_own_staff: { Args: { p_staff_id: string }; Returns: boolean };
       is_platform_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
       issue_booking_token: { Args: { p_appointment_id: string }; Returns: string };
+      link_business_by_code: {
+        Args: { p_categories: Database["public"]["Enums"]["client_category"][]; p_code: string };
+        Returns: Json;
+      };
       list_business_members: {
         Args: { p_business_id: string };
         Returns: {
@@ -2099,6 +2202,8 @@ export type Database = {
         Args: { p_business_id: string };
         Returns: Database["public"]["Enums"]["member_role"];
       };
+      my_client_links: { Args: Record<PropertyKey, never>; Returns: Json[] };
+      new_connection_code: { Args: { p_business_id: string }; Returns: string };
       own_staff_id: { Args: { p_business_id: string }; Returns: string };
       redeem_gift_card: {
         Args: {
@@ -2111,6 +2216,7 @@ export type Database = {
         };
         Returns: Json;
       };
+      regenerate_connection_code: { Args: { p_business_id: string }; Returns: string };
       remove_member: { Args: { p_member_id: string }; Returns: undefined };
       require_time_clock: { Args: { p_business_id: string }; Returns: undefined };
       resolve_custom_domain: { Args: { p_host: string }; Returns: string };
@@ -2148,6 +2254,7 @@ export type Database = {
         };
         Returns: string;
       };
+      unlink_business: { Args: { p_business_id: string }; Returns: undefined };
       update_member: {
         Args: {
           p_granted?: string[];
@@ -2171,6 +2278,7 @@ export type Database = {
         | "skincare_clinic"
         | "independent_professional"
         | "other";
+      client_category: "hair" | "nails" | "beauty" | "brows" | "lashes" | "other";
       expense_category:
         | "products"
         | "rent"
@@ -2328,6 +2436,7 @@ export const Constants = {
         "independent_professional",
         "other",
       ],
+      client_category: ["hair", "nails", "beauty", "brows", "lashes", "other"],
       expense_category: [
         "products",
         "rent",

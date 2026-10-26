@@ -13,7 +13,18 @@ export const settings: typeof en = {
     booking: "Online boeken",
     shop: "Webshop",
     giftCards: "Cadeaubonnen",
+    appCode: "App-code",
     plan: "Abonnement",
+  },
+  connectionCode: {
+    description: "Klanten vullen deze code in de NORYX-app in om met je salon te koppelen.",
+    copy: "Code kopiëren",
+    copied: "Gekopieerd",
+    regenerate: "Nieuwe code",
+    regenerateTitle: "Een nieuwe code maken?",
+    regenerateText:
+      "De huidige code werkt niet meer voor nieuwe koppelingen. Klanten die al gekoppeld zijn, blijven gekoppeld.",
+    regenerated: "Er is een nieuwe code gemaakt.",
   },
   profile: {
     description: "Hoe je zaak verschijnt voor klanten.",

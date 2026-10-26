@@ -13,7 +13,18 @@ export const settings: typeof en = {
     booking: "Réservation en ligne",
     shop: "Boutique en ligne",
     giftCards: "Chèques-cadeaux",
+    appCode: "Code app",
     plan: "Abonnement",
+  },
+  connectionCode: {
+    description: "Vos clients saisissent ce code dans l'app NORYX pour se relier à votre salon.",
+    copy: "Copier le code",
+    copied: "Copié",
+    regenerate: "Nouveau code",
+    regenerateTitle: "Créer un nouveau code ?",
+    regenerateText:
+      "Le code actuel ne fonctionnera plus pour de nouvelles liaisons. Les clients déjà reliés le restent.",
+    regenerated: "Un nouveau code a été créé.",
   },
   profile: {
     description: "Comment votre établissement apparaît à vos clients.",

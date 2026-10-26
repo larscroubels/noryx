@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from "react";
 
+import { ConfirmAction } from "@/components/forms/confirm-action";
 import { fieldError, FormAlert, SubmitButton } from "@/components/forms/form-controls";
 import { WeeklyHoursEditor } from "@/components/forms/weekly-hours-editor";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ import type { HoursRange } from "@/lib/validation/hours";
 import type { Tables } from "@/types/database";
 
 import {
+  regenerateConnectionCode,
   saveBookingPolicy,
   saveBusinessProfile,
   saveGiftCardSettings,
@@ -551,6 +553,43 @@ export function BrandImageForm({
           </SubmitButton>
         </div>
       </form>
+    </div>
+  );
+}
+
+/** The salon's code for the NORYX app, with copy and (for settings managers) a new code. */
+export function ConnectionCodeCard({ code }: { code: string }) {
+  const t = useT();
+  const c = t.settings.connectionCode;
+  const [copied, setCopied] = useState(false);
+  return (
+    <div className="grid gap-4">
+      <p className="text-sm text-fg-muted">{c.description}</p>
+      <div className="flex flex-wrap items-center gap-3">
+        <p className="rounded-lg bg-surface-subtle px-4 py-2 font-mono text-xl font-semibold tracking-widest ring-1 ring-border">
+          {code}
+        </p>
+        <Button
+          type="button"
+          variant="secondary"
+          size="sm"
+          onClick={async () => {
+            await navigator.clipboard.writeText(code);
+            setCopied(true);
+          }}
+        >
+          {copied ? c.copied : c.copy}
+        </Button>
+        <ConfirmAction
+          trigger={c.regenerate}
+          title={c.regenerateTitle}
+          description={c.regenerateText}
+          confirmLabel={c.regenerate}
+          action={regenerateConnectionCode}
+          hiddenFields={{}}
+          tone="primary"
+        />
+      </div>
     </div>
   );
 }

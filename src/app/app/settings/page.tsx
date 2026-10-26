@@ -23,6 +23,7 @@ import {
   OpeningHoursForm,
   GiftCardSettingsForm,
   ShopSettingsForm,
+  ConnectionCodeCard,
 } from "./forms";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -37,6 +38,7 @@ const SECTIONS = [
   "booking",
   "shop",
   "giftCards",
+  "appCode",
   "plan",
 ] as const;
 
@@ -45,6 +47,10 @@ export default async function SettingsPage() {
   const { t, intl } = await getI18n();
   const st = t.settings;
   const supabase = await createClient();
+  // Created on first view; clients enter it in the NORYX app.
+  const { data: connectionCode } = await supabase.rpc("ensure_connection_code", {
+    p_business_id: business.id,
+  });
   const { data: location } = await supabase
     .from("locations")
     .select("id, name, address_line1, postal_code, city, phone")
@@ -189,6 +195,14 @@ export default async function SettingsPage() {
             </CardHeader>
             <CardContent>
               <GiftCardSettingsForm business={business} />
+            </CardContent>
+          </Card>
+          <Card id="appCode" className="scroll-mt-24">
+            <CardHeader>
+              <CardTitle>{st.sections.appCode}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ConnectionCodeCard code={connectionCode ?? ""} />
             </CardContent>
           </Card>
           <Card id="plan" className="scroll-mt-24">

@@ -231,3 +231,12 @@ export async function removeBrandImage(formData: FormData) {
   if (previous) await supabase.storage.from(BUSINESS_ASSETS_BUCKET).remove([previous]);
   revalidateBusiness(workspace.business.slug);
 }
+
+/** A new app connection code; the old one stops working for new links. */
+export async function regenerateConnectionCode() {
+  const workspace = await authorize("settings.manage");
+  if (!workspace) return;
+  const supabase = await createClient();
+  await supabase.rpc("regenerate_connection_code", { p_business_id: workspace.business.id });
+  revalidatePath("/app/settings");
+}
