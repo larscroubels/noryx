@@ -17,4 +17,13 @@ export const en = {
     title: "Language",
     salon: "Salon language",
   },
+  auth: {
+    signUpLead:
+      "One account for booking at your salons, and for your work if you're on a salon's team.",
+    sessionEnded: "You've been signed out. Please sign in again.",
+    notConfigured: "This build of the app isn't connected to NORYX yet.",
+    termsLabel: "I agree to the terms and conditions and the privacy policy",
+    readTerms: "Read the terms",
+    readPrivacy: "Read the privacy policy",
+  },
 };

@@ -1,24 +1,43 @@
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { useEffect, type ReactNode } from "react";
 
+import { I18nProvider, useT } from "~/i18n";
+import { SessionProvider, useSession } from "~/lib/session";
 import { fontAssets } from "~/theme/fonts";
 import { colors } from "~/theme/tokens";
 
 void SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
-  const [loaded, error] = useFonts(fontAssets);
+function Session({ children }: { children: ReactNode }) {
+  const { app } = useT();
+  return <SessionProvider endedMessage={app.auth.sessionEnded}>{children}</SessionProvider>;
+}
+
+function Navigator() {
+  const { status } = useSession();
+  const [fontsLoaded, fontError] = useFonts(fontAssets);
+  const ready = (fontsLoaded || Boolean(fontError)) && status !== "loading";
 
   useEffect(() => {
-    if (loaded || error) void SplashScreen.hideAsync();
-  }, [loaded, error]);
+    if (ready) void SplashScreen.hideAsync();
+  }, [ready]);
 
-  if (!loaded && !error) return null;
+  if (!ready) return null;
   return (
     <Stack
       screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.screen } }}
     />
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <I18nProvider>
+      <Session>
+        <Navigator />
+      </Session>
+    </I18nProvider>
   );
 }

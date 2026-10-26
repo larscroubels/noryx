@@ -18,4 +18,13 @@ export const nl: typeof en = {
     title: "Taal",
     salon: "Taal van de salon",
   },
+  auth: {
+    signUpLead:
+      "Eén account om te boeken bij je salons, en voor je werk als je in het team van een salon zit.",
+    sessionEnded: "Je bent afgemeld. Meld je opnieuw aan.",
+    notConfigured: "Deze versie van de app is nog niet met NORYX verbonden.",
+    termsLabel: "Ik ga akkoord met de algemene voorwaarden en het privacybeleid",
+    readTerms: "Voorwaarden lezen",
+    readPrivacy: "Privacybeleid lezen",
+  },
 };
