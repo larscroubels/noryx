@@ -8,6 +8,7 @@ Requirements: `docs/PRODUCT_BRIEF.md`. Progress and open work: `docs/ROADMAP.md`
 
 - `npm run dev` — needs local Supabase running (`colima start`, then `npm run db:start`).
 - `npm run check` — lint + typecheck + tests. Run before finishing any change.
+- NORYX app (`mobile/`, Expo): `npm --prefix mobile run check` (lint + typecheck + jest), `npm --prefix mobile start` (Expo Go). It imports pure web code via `@/…` (`../src`); its own code is `~/…`. Never import server-only modules from the app.
 - `npm run db:reset` — re-applies migrations and the demo seed; then `npm run db:types` after schema changes.
 - New migrations go in `supabase/migrations/` (timestamped). Apply locally with `supabase migration up --local`.
 

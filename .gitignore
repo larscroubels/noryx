@@ -38,3 +38,8 @@ next-env.d.ts
 
 # Superpowers plan workspaces (local scratch)
 .superpowers/
+
+# NORYX app
+mobile/.env
+mobile/.expo/
+mobile/node_modules/
