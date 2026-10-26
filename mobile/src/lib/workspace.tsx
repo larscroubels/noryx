@@ -1,14 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import * as SecureStore from "expo-secure-store";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, useMemo, type ReactNode } from "react";
 
 import { hasPermission, type MemberRole, type Permission } from "@/lib/auth/permissions";
 import type { Tables } from "@/types/database";
@@ -19,9 +10,8 @@ import { ErrorState } from "~/ui/ErrorState";
 import { Screen } from "~/ui/Screen";
 
 import type { Membership } from "./account";
+import { useAccount } from "./account-context";
 import { supabase } from "./supabase";
-
-const BUSINESS_KEY = "noryx.business";
 
 export type Workspace = {
   business: Tables<"businesses">;
@@ -68,31 +58,19 @@ export function WorkspaceProvider({
   children: ReactNode;
 }) {
   const { app, setSalonLocale } = useT();
-  const [preferred, setPreferred] = useState<string | null | undefined>(undefined);
-
-  useEffect(() => {
-    void SecureStore.getItemAsync(BUSINESS_KEY).then(setPreferred);
-  }, []);
-
-  // The stored choice is re-validated against the memberships, as on the website.
-  const membership = memberships.find((m) => m.business.id === preferred) ?? memberships[0] ?? null;
-  const businessId = membership?.business.id ?? null;
+  const { businessId, setBusinessId } = useAccount();
+  const membership = memberships.find((m) => m.business.id === businessId) ?? null;
 
   const query = useQuery({
     queryKey: ["workspace", businessId, userId],
     queryFn: () => loadWorkspace(businessId!, userId),
-    enabled: Boolean(businessId) && preferred !== undefined,
+    enabled: Boolean(businessId),
   });
 
   useEffect(() => {
     setSalonLocale(query.data?.business.locale ?? null);
     return () => setSalonLocale(null);
   }, [query.data?.business.locale, setSalonLocale]);
-
-  const switchBusiness = useCallback((id: string) => {
-    setPreferred(id);
-    void SecureStore.setItemAsync(BUSINESS_KEY, id);
-  }, []);
 
   const value = useMemo<Workspace | null>(() => {
     if (!query.data || !membership) return null;
@@ -102,9 +80,9 @@ export function WorkspaceProvider({
       role: membership.role,
       memberships,
       can: (p) => (Array.isArray(p) ? p : [p]).some((key) => hasPermission(permissions, key)),
-      switchBusiness,
+      switchBusiness: setBusinessId,
     };
-  }, [query.data, membership, memberships, switchBusiness]);
+  }, [query.data, membership, memberships, setBusinessId]);
 
   if (query.isError) {
     return (

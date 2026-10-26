@@ -42,4 +42,11 @@ export const fr: typeof en = {
     text: "Bientôt, vous lierez ici vos salons avec leur code et réserverez en quelques gestes. D'ici là, réservez via la page de réservation de votre salon.",
     runSalon: "Vous avez un salon ? Configurez-le sur noryx",
   },
+  profile: {
+    title: "Profil",
+    open: "Ouvrir votre profil",
+    deviceLanguage: "Langue du téléphone",
+    business: "Établissement",
+    deleted: "Votre compte a été supprimé.",
+  },
 };

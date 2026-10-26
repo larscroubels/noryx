@@ -41,4 +41,11 @@ export const nl: typeof en = {
     text: "Binnenkort koppel je hier je salons met hun code en boek je in een paar tikken. Tot dan boek je via de boekingspagina van je salon.",
     runSalon: "Heb je een salon? Stel die in op noryx",
   },
+  profile: {
+    title: "Profiel",
+    open: "Open je profiel",
+    deviceLanguage: "Taal van je telefoon",
+    business: "Zaak",
+    deleted: "Je account is verwijderd.",
+  },
 };

@@ -1,12 +1,12 @@
-import { Redirect, Tabs } from "expo-router";
-import type { ColorValue } from "react-native";
-import { CalendarDays, Clock, Menu, Sun, Users } from "lucide-react-native";
+import { Redirect, router, Tabs } from "expo-router";
+import { Pressable, type ColorValue } from "react-native";
+import { CalendarDays, CircleUserRound, Clock, Menu, Sun, Users } from "lucide-react-native";
 
 import { useT } from "~/i18n";
 import { useAccount } from "~/lib/account-context";
 import { WorkspaceProvider } from "~/lib/workspace";
 import { fonts } from "~/theme/fonts";
-import { colors } from "~/theme/tokens";
+import { colors, TOUCH } from "~/theme/tokens";
 
 export default function SalonLayout() {
   const { app } = useT();
@@ -34,6 +34,21 @@ export default function SalonLayout() {
           headerTitleStyle: { fontFamily: fonts.display, fontSize: 22, color: colors.fg },
           headerShadowVisible: false,
           sceneStyle: { backgroundColor: colors.screen },
+          headerRight: () => (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={app.profile.open}
+              onPress={() => router.push("/profile")}
+              style={{
+                minWidth: TOUCH,
+                minHeight: TOUCH,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <CircleUserRound color={colors.fg} size={24} />
+            </Pressable>
+          ),
         }}
       >
         <Tabs.Screen name="index" options={tab(app.tabs.today, Sun)} />

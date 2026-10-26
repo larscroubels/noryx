@@ -41,4 +41,11 @@ export const en = {
     text: "Soon you'll link your salons here with their code and book in a few taps. Until then, book on your salon's booking page.",
     runSalon: "Run a salon? Set it up on noryx",
   },
+  profile: {
+    title: "Profile",
+    open: "Open your profile",
+    deviceLanguage: "Phone language",
+    business: "Business",
+    deleted: "Your account has been deleted.",
+  },
 };

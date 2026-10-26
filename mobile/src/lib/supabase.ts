@@ -3,14 +3,10 @@ import { AppState } from "react-native";
 
 import type { Database } from "@/types/database";
 
+import { PUBLISHABLE_KEY, SUPABASE_URL } from "./env";
 import { secureStorage } from "./secure-storage";
 
-/** Same project and publishable key as the website; never a service-role key. */
-export const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL ?? "";
-export const SITE_URL = (process.env.EXPO_PUBLIC_SITE_URL ?? "").replace(/\/$/, "");
-const PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "";
-
-export const isConfigured = Boolean(SUPABASE_URL && PUBLISHABLE_KEY && SITE_URL);
+export { isConfigured, SITE_URL } from "./env";
 
 export const supabase = createClient<Database>(
   SUPABASE_URL || "https://not-configured.invalid",
