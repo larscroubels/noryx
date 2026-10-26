@@ -3,7 +3,7 @@ import { z } from "zod";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { parseMoneyToCents } from "@/lib/format";
 import { PAYMENT_METHODS } from "@/lib/finance/summary";
-import { GIFT_CARD_CODE_PATTERN } from "@/lib/gift-cards";
+import { GIFT_CARD_CODE_PATTERN } from "@/lib/gift-card-codes";
 
 import { checkbox, rules } from "./common";
 

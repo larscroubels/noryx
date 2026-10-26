@@ -83,3 +83,52 @@ export async function setupCounts(businessId: string) {
 export function customerName(customer: AppointmentListItem["customer"], fallback: string) {
   return customer ? [customer.first_name, customer.last_name].filter(Boolean).join(" ") : fallback;
 }
+
+export type AppointmentDetail = {
+  id: string;
+  business_id: string;
+  starts_at: string;
+  ends_at: string;
+  status: AppointmentStatus;
+  service_name: string;
+  staff_id: string;
+  price_cents: number;
+  currency: string;
+  source: "online" | "staff";
+  customer_note: string | null;
+  internal_note: string | null;
+  cancelled_by: string | null;
+  cancellation_reason: string | null;
+  customer: {
+    id: string;
+    first_name: string;
+    last_name: string | null;
+    email: string | null;
+    phone: string | null;
+  } | null;
+  staff: { display_name: string } | null;
+};
+
+export async function getAppointment(id: string): Promise<AppointmentDetail | null> {
+  const { data, error } = await supabase
+    .from("appointments")
+    .select(
+      "id, business_id, starts_at, ends_at, status, service_name, staff_id, price_cents, currency, source, customer_note, internal_note, cancelled_by, cancellation_reason, customer:customers(id, first_name, last_name, email, phone), staff:staff_members(display_name)",
+    )
+    .eq("id", id)
+    .maybeSingle();
+  if (error) throw error;
+  return data as AppointmentDetail | null;
+}
+
+/** Recorded (not refunded) payments for an appointment; RLS hides them without finance access. */
+export async function recordedPayments(appointmentId: string) {
+  const { data, error } = await supabase
+    .from("payments")
+    .select("amount_cents, refunded_at")
+    .eq("appointment_id", appointmentId);
+  if (error) return null;
+  return (data ?? [])
+    .filter((p) => p.refunded_at === null)
+    .reduce((sum, p) => sum + p.amount_cents, 0);
+}

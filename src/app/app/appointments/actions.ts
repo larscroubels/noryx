@@ -242,7 +242,7 @@ export async function rescheduleAppointment(
   const supabase = await createClient();
   const { data: appointment } = await supabase
     .from("appointments")
-    .select("id, status, staff_id, service_id, duration_minutes, ends_at, blocked_until")
+    .select("id, status, staff_id")
     .eq("id", parsed.data.appointmentId)
     .eq("business_id", workspace.business.id)
     .maybeSingle();
@@ -255,23 +255,17 @@ export async function rescheduleAppointment(
   }
   if (appointment.status === "cancelled") return failure(e.cancelledMove);
 
-  const bufferMs =
-    new Date(appointment.blocked_until).getTime() - new Date(appointment.ends_at).getTime();
   const startsAt = zonedTimeToUtc(
     parsed.data.date,
     timeToMinutes(parsed.data.time),
     workspace.business.timezone,
   );
-  const endsAt = new Date(startsAt.getTime() + appointment.duration_minutes * 60_000);
-  const { error } = await supabase
-    .from("appointments")
-    .update({
-      staff_id: parsed.data.staffId,
-      starts_at: startsAt.toISOString(),
-      ends_at: endsAt.toISOString(),
-      blocked_until: new Date(endsAt.getTime() + bufferMs).toISOString(),
-    })
-    .eq("id", appointment.id);
+  // Same function as the NORYX app: it keeps the buffer and lets RLS decide.
+  const { error } = await supabase.rpc("reschedule_appointment", {
+    p_appointment_id: appointment.id,
+    p_staff_id: parsed.data.staffId,
+    p_starts_at: startsAt.toISOString(),
+  });
   if (error) return failure(error.code === "23P01" ? e.overlap : databaseErrorMessage(error, t));
   refresh(appointment.id);
   return success(t.appointments.moved);

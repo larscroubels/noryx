@@ -2235,6 +2235,10 @@ export type Database = {
       regenerate_connection_code: { Args: { p_business_id: string }; Returns: string };
       remove_member: { Args: { p_member_id: string }; Returns: undefined };
       require_time_clock: { Args: { p_business_id: string }; Returns: undefined };
+      reschedule_appointment: {
+        Args: { p_appointment_id: string; p_staff_id: string; p_starts_at: string };
+        Returns: undefined;
+      };
       resolve_custom_domain: { Args: { p_host: string }; Returns: string };
       reverse_gift_card_redemption: {
         Args: { p_reason: string; p_transaction_id: number };
