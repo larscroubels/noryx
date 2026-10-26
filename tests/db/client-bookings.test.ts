@@ -162,7 +162,22 @@ describe("client bookings", () => {
     const client = await linkedClient("Moving Client");
     const booked = await bookAs(client, wednesdayAt(780));
     await call(client, "select public.unlink_business($1) as result", [businessId]);
+    // Visits recorded after unlinking are not part of that history.
+    const email = (
+      await db.query<{ email: string }>("select email from auth.users where id = $1", [client])
+    ).rows[0]!.email;
+    await as(
+      db,
+      service,
+      (tx) =>
+        tx.query(
+          "select public.create_online_booking($1, $2, $3, $4, $5, 'Moving', 'Client', $6, '')",
+          [businessId, locationId, serviceId, staffId, wednesdayAt(1020).toISOString(), email],
+        ),
+      { commit: true },
+    );
     const mine = await myAppointments(client);
+    expect(mine).toHaveLength(1);
     expect(mine[0]).toMatchObject({
       appointment_id: booked.appointment_id,
       linked: false,
@@ -206,5 +221,27 @@ describe("client bookings", () => {
     for (let i = 0; i < 6; i++) await bookAs(client, wednesdayAt(540 + i * 60));
     await expect(bookAs(client, wednesdayAt(1020))).rejects.toThrow(/too_many_bookings/);
     weeks = 1;
+  });
+
+  it("books at a full Basic salon when the client is already a customer", async () => {
+    const client = await linkedClient("Basic Regular");
+    const count = (
+      await db.query<{ n: number }>(
+        "select count(*)::int as n from public.customers where business_id = $1",
+        [businessId],
+      )
+    ).rows[0]!.n;
+    await db.query(
+      "update public.business_subscriptions set plan_id = 'basic', status = 'active' where business_id = $1",
+      [businessId],
+    );
+    await db.query(
+      "insert into public.customers (business_id, first_name) select $1, 'Filler' from generate_series(1, $2::int)",
+      [businessId, 250 - count],
+    );
+    weeks = 3;
+    const booked = await bookAs(client, wednesdayAt(600));
+    weeks = 1;
+    expect(booked.status).toBe("confirmed");
   });
 });

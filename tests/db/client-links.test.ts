@@ -54,8 +54,8 @@ describe("connection codes", () => {
   it("gives every salon one active, readable code", async () => {
     const first = await codeOf();
     const second = await codeOf(businessId, staff);
-    // Up to four letters from the slug "studio-link".
-    expect(first).toMatch(/^STUD-\d{4}$/);
+    // Up to four letters from the slug "studio-link", six unambiguous characters.
+    expect(first).toMatch(/^STUD-[2-9A-HJ-NP-Z]{6}$/);
     expect(second).toBe(first);
   });
 
@@ -171,6 +171,18 @@ describe("linking a salon", () => {
       [client],
     );
     expect(relinked.rows[0]).toEqual({ linked_at: before.rows[0]!.linked_at, unlinked_at: null });
+  });
+
+  it("never links two accounts to one customer record", async () => {
+    const first = await createUser(db, "First Holder");
+    await link(first, await codeOf());
+    const second = await createUser(db, "Second Holder");
+    // The salon edits the record's email to the second person's address.
+    await db.query(
+      "update public.customers set email = $2 where id = (select customer_id from public.client_links where user_id = $1)",
+      [first, await emailOf(second)],
+    );
+    expect((await link(second, await codeOf())).error).toBe("customer_already_linked");
   });
 
   it("keeps links private", async () => {

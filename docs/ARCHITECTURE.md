@@ -127,11 +127,11 @@ Booking, cancellation and order events write rows to `notifications` (outbox). `
 
 ## Client accounts (NORYX app)
 
-- Every salon has one active **connection code** (`business_connection_codes`, e.g. `ATEL-1234`), shown in Settings and created on first view (`ensure_connection_code`); `regenerate_connection_code` (settings.manage, audited) deactivates the old code without breaking existing links.
-- A client links a salon with `link_business_by_code(code, categories)`: requires a confirmed email, at most 10 attempts per 15 minutes, unknown and inactive codes give the same error, the Basic customer limit applies. It reuses the salon's customer with the same email (setting `customers.user_id`) or creates one. Links live in `client_links` (own rows only).
-- **Privacy rule**: a client sees only appointments created since linking (`my_appointments`). Unlinking keeps that history visible and cancellable, never cancels anything, and stops new bookings.
+- Every salon has one active **connection code** (`business_connection_codes`, e.g. `ATEL-7KQ2MX`: slug letters plus six characters without look-alikes; older four-digit codes stay valid), shown in Settings and created on first view (`ensure_connection_code`); `regenerate_connection_code` (settings.manage, audited) deactivates the old code without breaking existing links.
+- A client links a salon with `link_business_by_code(code, categories)`: requires a confirmed email, at most 10 attempts per 15 minutes, unknown and inactive codes give the same error, the Basic customer limit applies. It reuses the salon's customer with the same email (setting `customers.user_id`) or creates one; a customer record has at most one live link (`customer_already_linked`). Links live in `client_links` (own rows only).
+- **Privacy rule**: a client sees only appointments created since linking (`my_appointments`). Unlinking keeps the history up to that moment visible and cancellable, never cancels anything, and stops new bookings.
 - `client_book_appointment` runs `create_online_booking` with the linked customer's details, so the salon's own rules apply unchanged (plus 6 bookings per user per hour); `client_cancel_appointment` applies the same deadline as the private booking link.
-- **Account deletion** (`POST /api/account/delete` for the app, a card under Account on the website): `prepare_account_deletion` refuses while the user is a salon's only owner, clears `customers.user_id`, removes links and memberships; the server then deletes the auth user. Salons keep their client records.
+- **Account deletion** (`POST /api/account/delete` for the app, bearer token only; a card under Account on the website): `prepare_account_deletion` refuses while the user is a salon's only owner, clears `customers.user_id`, removes links and memberships; the server then deletes the auth user. Salons keep their client records.
 
 ## Privacy (GDPR preparation)
 
