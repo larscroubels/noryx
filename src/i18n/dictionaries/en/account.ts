@@ -20,4 +20,15 @@ export const account = {
   samePassword: "Choose a password that is different from your current one.",
   passwordFailed: "We couldn't change your password. Please try again.",
   passwordChanged: "Your password has been changed.",
+  delete: {
+    title: "Delete account",
+    text: "Permanently deletes your login and removes your links to salons in the NORYX app. Salons keep their own records of your visits. This can't be undone.",
+    confirmWord: "DELETE",
+    confirm: (word: string) => `Type ${word} to confirm`,
+    mismatch: "Type the word exactly as shown.",
+    button: "Delete my account",
+    ownerBlocked:
+      "You're the only owner of a business. Add another owner or close the business before deleting your account.",
+    failed: "We couldn't delete your account. Please try again.",
+  },
 };

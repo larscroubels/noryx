@@ -2220,6 +2220,7 @@ export type Database = {
       my_client_links: { Args: Record<PropertyKey, never>; Returns: Json[] };
       new_connection_code: { Args: { p_business_id: string }; Returns: string };
       own_staff_id: { Args: { p_business_id: string }; Returns: string };
+      prepare_account_deletion: { Args: Record<PropertyKey, never>; Returns: undefined };
       redeem_gift_card: {
         Args: {
           p_amount_cents: number;

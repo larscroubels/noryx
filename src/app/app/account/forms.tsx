@@ -8,7 +8,24 @@ import { Input } from "@/components/ui/input";
 import { useT } from "@/i18n/client";
 import { IDLE } from "@/lib/actions";
 
-import { changeEmail, changePassword, updateProfile } from "./actions";
+import { changeEmail, changePassword, deleteAccountAction, updateProfile } from "./actions";
+
+export function DeleteAccountForm() {
+  const [state, action] = useActionState(deleteAccountAction, IDLE);
+  const t = useT();
+  const d = t.account.delete;
+  return (
+    <form action={action} className="grid gap-4" noValidate>
+      <FormAlert state={state} />
+      <Field label={d.confirm(d.confirmWord)} error={fieldError(state, "confirm")} required>
+        <Input name="confirm" autoComplete="off" autoCapitalize="characters" spellCheck={false} />
+      </Field>
+      <div className="flex justify-end">
+        <SubmitButton variant="danger">{d.button}</SubmitButton>
+      </div>
+    </form>
+  );
+}
 
 export function ProfileForm({ fullName }: { fullName: string }) {
   const [state, action] = useActionState(updateProfile, IDLE);

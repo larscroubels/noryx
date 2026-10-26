@@ -22,4 +22,15 @@ export const account: typeof en = {
   samePassword: "Kies een wachtwoord dat verschilt van je huidige.",
   passwordFailed: "We konden je wachtwoord niet wijzigen. Probeer het opnieuw.",
   passwordChanged: "Je wachtwoord is gewijzigd.",
+  delete: {
+    title: "Account verwijderen",
+    text: "Verwijdert je login definitief en ontkoppelt je van salons in de NORYX-app. Salons houden hun eigen gegevens over je bezoeken. Dit kan niet ongedaan worden gemaakt.",
+    confirmWord: "VERWIJDEREN",
+    confirm: (word: string) => `Typ ${word} om te bevestigen`,
+    mismatch: "Typ het woord precies zoals het er staat.",
+    button: "Mijn account verwijderen",
+    ownerBlocked:
+      "Je bent de enige eigenaar van een zaak. Voeg een andere eigenaar toe of sluit de zaak voor je je account verwijdert.",
+    failed: "We konden je account niet verwijderen. Probeer het opnieuw.",
+  },
 };

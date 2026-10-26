@@ -25,4 +25,15 @@ export const account: typeof en = {
   samePassword: "Choisissez un mot de passe différent de votre mot de passe actuel.",
   passwordFailed: "Nous n'avons pas pu modifier votre mot de passe. Veuillez réessayer.",
   passwordChanged: "Votre mot de passe a été modifié.",
+  delete: {
+    title: "Supprimer le compte",
+    text: "Supprime définitivement votre identifiant et vos liens avec les salons dans l'app NORYX. Les salons conservent leurs propres données sur vos visites. Cette action est irréversible.",
+    confirmWord: "SUPPRIMER",
+    confirm: (word: string) => `Tapez ${word} pour confirmer`,
+    mismatch: "Tapez le mot exactement comme indiqué.",
+    button: "Supprimer mon compte",
+    ownerBlocked:
+      "Vous êtes le seul propriétaire d'un établissement. Ajoutez un autre propriétaire ou fermez l'établissement avant de supprimer votre compte.",
+    failed: "Nous n'avons pas pu supprimer votre compte. Veuillez réessayer.",
+  },
 };

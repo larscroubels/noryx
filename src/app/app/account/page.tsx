@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { getT } from "@/i18n/server";
 import { requireWorkspace } from "@/lib/auth/session";
 
-import { EmailForm, PasswordForm, ProfileForm } from "./forms";
+import { DeleteAccountForm, EmailForm, PasswordForm, ProfileForm } from "./forms";
 
 export async function generateMetadata(): Promise<Metadata> {
   return { title: (await getT()).account.metaTitle };
@@ -63,6 +63,17 @@ export default async function AccountPage() {
               </li>
             ))}
           </ul>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <div>
+            <CardTitle>{a.delete.title}</CardTitle>
+            <CardDescription>{a.delete.text}</CardDescription>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <DeleteAccountForm />
         </CardContent>
       </Card>
     </div>

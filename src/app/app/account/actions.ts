@@ -1,8 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
+import { deleteAccount } from "@/lib/account-deletion";
 import { failure, formToObject, success, validationFailure, type ActionState } from "@/lib/actions";
 import { requireUser } from "@/lib/auth/session";
 import { publicEnv } from "@/lib/env";
@@ -62,4 +64,29 @@ export async function changePassword(_prev: ActionState, formData: FormData): Pr
     return failure(t.account.passwordFailed);
   }
   return success(t.account.passwordChanged);
+}
+
+export async function deleteAccountAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const user = await requireUser("/app/account");
+  const t = await getT();
+  const d = t.account.delete;
+  const parsed = z
+    .object({
+      confirm: z
+        .string()
+        .trim()
+        .refine((v) => v.toUpperCase() === d.confirmWord, d.mismatch),
+    })
+    .safeParse(formToObject(formData));
+  if (!parsed.success) return validationFailure(parsed.error, t);
+  const supabase = await createClient();
+  const result = await deleteAccount(supabase, user.id);
+  if (!result.ok)
+    return failure(result.error === "account_owns_business" ? d.ownerBlocked : d.failed);
+  // The session belongs to a deleted user now; clear its cookies.
+  await supabase.auth.signOut();
+  redirect("/");
 }
