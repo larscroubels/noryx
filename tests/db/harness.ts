@@ -54,15 +54,26 @@ export async function as<T>(
 
 let userCounter = 0;
 
-/** Creates an auth user (as the superuser, like Supabase Auth would). */
-export async function createUser(db: TestDatabase, fullName = "Test User") {
+/**
+ * Creates an auth user (as the superuser, like Supabase Auth would). Users have a
+ * confirmed email unless `confirmed: false` is passed.
+ */
+export async function createUser(
+  db: TestDatabase,
+  fullName = "Test User",
+  { confirmed = true }: { confirmed?: boolean } = {},
+) {
   userCounter += 1;
   const id = `00000000-0000-4000-8000-${String(userCounter).padStart(12, "0")}`;
-  await db.query("insert into auth.users (id, email, raw_user_meta_data) values ($1, $2, $3)", [
-    id,
-    `user${userCounter}@example.test`,
-    JSON.stringify({ full_name: fullName }),
-  ]);
+  await db.query(
+    "insert into auth.users (id, email, raw_user_meta_data, email_confirmed_at) values ($1, $2, $3, $4)",
+    [
+      id,
+      `user${userCounter}@example.test`,
+      JSON.stringify({ full_name: fullName }),
+      confirmed ? new Date() : null,
+    ],
+  );
   return id;
 }
 
