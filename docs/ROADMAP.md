@@ -91,7 +91,21 @@ Status as of 22 October 2026. The full product brief is in [`PRODUCT_BRIEF.md`](
 ## NORYX app — backend and website (plan A) ✅ (2026-10-26)
 
 - One connection code per salon in Settings, client links (`link_business_by_code`, unlink, my links), client booking, cancelling and history with the privacy rule (only visits since linking), self-service account deletion on the website and through `POST /api/account/delete`. Design: `docs/superpowers/specs/2026-10-26-mobile-app-design.md`.
-- **Open:** plan B (Expo app shell, sign-in, salon side) and plan C (client side), each written after the previous one is merged.
+- **Open:** plan C (client side), written after plan B is merged.
+
+## NORYX app — shell, sign-in and salon side (plan B) ✅ (2026-10-27)
+
+- **The app:** an Expo app in `mobile/` with:
+  - sign-in, sign-up and password reset (the reset completes on the website);
+  - a choice of side, and a profile with language, business switcher, side switch, sign-out and account deletion;
+  - the salon tabs Today (schedule, approvals, setup checklist), Calendar (day and week, per professional), Clients (search, contact, visits, notes), Clock and More (workspace pages opened signed in);
+  - appointment actions: confirm, complete, no-show, cancel, reschedule, record payment, redeem a gift card and internal note.
+- **Shared with the website:** `reschedule_appointment` (RPC) and `buildSetupChecklist`.
+- **Open:**
+  - plan C (client side);
+  - the manual test on a real iPhone and Android phone (`mobile/README.md`);
+  - a 1024 px app icon;
+  - Apple and Google developer accounts and the store listings.
 
 ## Phase 8 — Launch preparation ⏳
 

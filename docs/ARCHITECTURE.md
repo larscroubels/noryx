@@ -133,6 +133,32 @@ Booking, cancellation and order events write rows to `notifications` (outbox). `
 - `client_book_appointment` runs `create_online_booking` with the linked customer's details, so the salon's own rules apply unchanged (plus 6 bookings per user per hour); `client_cancel_appointment` applies the same deadline as the private booking link.
 - **Account deletion** (`POST /api/account/delete` for the app, bearer token only; a card under Account on the website): `prepare_account_deletion` refuses while the user is a salon's only owner, clears `customers.user_id`, removes links and memberships; the server then deletes the auth user. Salons keep their client records.
 
+## The NORYX app (`mobile/`)
+
+- **Stack:** Expo (SDK 58), Expo Router and TypeScript. It is its own npm project with its own `npm run check`. The website's tsconfig and ESLint ignore `mobile/`.
+- **Shared code:** the app imports pure modules from `src/` through `@/…`:
+  - `time`, `format`, appointment status rules, navigation, the time clock, validation schemas, `databaseErrorMessage` and the dictionaries;
+  - Metro `watchFolders` includes `../src`.
+  - It never imports server-only modules (`@/lib/supabase/server`, `@/lib/auth/session`, `next/*`). Shared modules must not import web UI components. That is why `gift-card-codes.ts` was split out of `gift-cards.ts`.
+- **Data and sessions:**
+  - The app uses the same Supabase project and publishable key as the website, with the user's own session.
+  - RLS, the status trigger and the overlap constraint decide every action, exactly as on the website.
+  - The session is stored in the Keychain/Keystore through `expo-secure-store`, split into chunks.
+  - When the session ends without the user signing out, the app returns to sign-in with a message.
+- **Routes:**
+  - `/sign-in` and the other account screens;
+  - `/salon`: a stack with the workspace, the tabs Today · Calendar · Clients · Clock · More, and appointment and client details pushed on top;
+  - `/client` (plan C);
+  - `/profile` and `/delete-account`.
+  - Side choice: team members go to the salon side; clients and new accounts go to the client side. Someone who is both returns to the side they used last, or picks a side on first use.
+- **Moving an appointment** goes through `reschedule_appointment`. It is SECURITY INVOKER, keeps the buffer, and raises `appointment_not_found` when RLS hides the row. The website's action uses it too.
+- **Website routes for the app:** both accept a bearer token only.
+  - `POST /api/account/delete`.
+  - `POST /api/app/web-link`: returns a one-time magic link to `/auth/confirm?…&next=/app/…`, so "More" opens workspace pages already signed in.
+    - `workspacePath` allows only `/app` paths.
+    - It is limited to 10 links per minute per user.
+    - `generateLink` sends no email.
+
 ## Privacy (GDPR preparation)
 
 Legal pages (`/privacy`, `/cookies`, `/terms`, `/legal`) are built from `src/content/legal/` with the operator details from `src/lib/legal.ts`; a test keeps the three languages structurally identical and the cookie table in line with the cookies the app sets. Cookies: Supabase auth (`sb-…-auth-token`, code verifier), `noryx_business` (session) and `noryx_locale` (1 year); no analytics or third-party scripts, fonts are self-hosted.
