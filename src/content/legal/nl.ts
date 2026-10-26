@@ -50,6 +50,7 @@ export function nl(c: CompanyText): LegalContent {
           paragraphs: [
             "Boek je een afspraak, bestel je in de webshop of koop je een cadeaubon bij een salon die NORYX gebruikt, dan gaan je naam, e-mailadres, telefoonnummer en de details van je afspraak of bestelling naar **die salon**. De salon beslist wat ermee gebeurt en is je eerste aanspreekpunt.",
             "Via de privélink bij je boeking kun je je afspraak bekijken en binnen de termijn van de salon annuleren. Wil je je gegevens inzien of laten wissen, vraag het dan aan de salon: zij kan ze in NORYX exporteren of verwijderen. Lukt dat niet, neem dan contact met ons op, dan helpen we de salon.",
+            "Maak je een klantaccount aan in de NORYX-app, dan bewaren we je naam, e-mailadres en de salons waaraan je je koppelt. Verwijder je je account, dan verdwijnt dat; salons houden hun eigen klantgegevens.",
             "Berichten over aanbiedingen van een salon krijg je alleen als je dat zelf aanvinkt bij het boeken.",
           ],
         },

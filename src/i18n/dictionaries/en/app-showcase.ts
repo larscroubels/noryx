@@ -15,7 +15,7 @@ export const appShowcase = {
     { category: "Beauty salon", name: "Beauty Salon Kim", short: "Kim", code: "KIM-2094" },
   ] as { category: string; name: string; short: string; code: string }[],
   diagramCaption:
-    "Each professional will get a code of their own in their NORYX workspace. That code links Larissa to that professional and their calendar.",
+    "Each salon will get a code of its own in its NORYX workspace. That code links Larissa to that salon and its calendar.",
   storyEyebrow: "How it will work",
   storyTitle: "Set up once. Then everything is one tap away.",
   storyLabel: "Walkthrough of the planned app",

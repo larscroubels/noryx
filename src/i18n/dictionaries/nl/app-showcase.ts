@@ -16,7 +16,7 @@ export const appShowcase: typeof en = {
     { category: "Schoonheidssalon", name: "Schoonheidssalon Kim", short: "Kim", code: "KIM-2094" },
   ],
   diagramCaption:
-    "Elke professional krijgt een eigen code in de NORYX-werkruimte. Die code koppelt Larissa aan die professional en de eigen agenda.",
+    "Elke salon krijgt een eigen code in de NORYX-werkruimte. Die code koppelt Larissa aan die salon en haar agenda.",
   storyEyebrow: "Zo gaat het werken",
   storyTitle: "Eén keer instellen. Daarna alles met één tik.",
   storyLabel: "Rondleiding door de geplande app",

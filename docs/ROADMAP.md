@@ -86,7 +86,12 @@ Status as of 22 October 2026. The full product brief is in [`PRODUCT_BRIEF.md`](
 
 - `/privacy` (GDPR privacy policy, incl. the salon-as-controller role for client data), `/cookies` (only strictly necessary and functional cookies, so no consent banner), `/terms` (B2B terms with the Article 28 GDPR data processing agreement) and `/legal` (operator details required by the Code of Economic Law), in NL (reference), FR and EN. Linked from the footer, the sign-up checkbox, booking, shop, gift cards, the contact form and the assistant.
 - Company details live in `src/lib/legal.ts` and show "[nog in te vullen]" until filled in.
-- **Open:** company details (name, legal form, address, KBO and VAT number, contact email, Supabase region), review by a Belgian lawyer, a consent banner if analytics are ever added, self-service account deletion (now via the contact form).
+- **Open:** company details (name, legal form, address, KBO and VAT number, contact email, Supabase region), review by a Belgian lawyer, a consent banner if analytics are ever added. The sentence on client accounts in the NORYX app (2026-10-26) also needs that legal review.
+
+## NORYX app — backend and website (plan A) ✅ (2026-10-26)
+
+- One connection code per salon in Settings, client links (`link_business_by_code`, unlink, my links), client booking, cancelling and history with the privacy rule (only visits since linking), self-service account deletion on the website and through `POST /api/account/delete`. Design: `docs/superpowers/specs/2026-10-26-mobile-app-design.md`.
+- **Open:** plan B (Expo app shell, sign-in, salon side) and plan C (client side), each written after the previous one is merged.
 
 ## Phase 8 — Launch preparation ⏳
 

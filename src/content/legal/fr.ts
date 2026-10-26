@@ -51,6 +51,7 @@ export function fr(c: CompanyText): LegalContent {
           paragraphs: [
             "Quand vous réservez un rendez-vous, commandez dans la boutique en ligne ou achetez une carte cadeau auprès d'un salon qui utilise NORYX, votre nom, votre adresse e-mail, votre numéro de téléphone et les détails de votre rendez-vous ou commande sont transmis à **ce salon**. Le salon décide de leur utilisation et est votre premier interlocuteur.",
             "Grâce au lien privé de votre réservation, vous pouvez consulter votre rendez-vous et l'annuler dans le délai du salon. Pour consulter ou effacer vos données, adressez-vous au salon : il peut les exporter ou les supprimer dans NORYX. Si cela ne fonctionne pas, contactez-nous et nous aiderons le salon.",
+            "Si vous créez un compte client dans l'app NORYX, nous conservons votre nom, votre adresse e-mail et les salons auxquels vous vous liez. Supprimer votre compte efface ces données ; les salons conservent leurs propres fiches clients.",
             "Vous ne recevez des offres d'un salon que si vous cochez vous-même cette case lors de la réservation.",
           ],
         },

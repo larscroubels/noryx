@@ -125,6 +125,14 @@ Dutch is the default interface language; French and English are also available. 
 
 Booking, cancellation and order events write rows to `notifications` (outbox). `src/lib/notifications.ts` marks them `skipped` with the reason "No email provider configured" until a provider is integrated — the product never claims a message was sent. Auth emails (confirmation, password reset, email change) are sent by Supabase Auth using the branded templates in `supabase/templates/`.
 
+## Client accounts (NORYX app)
+
+- Every salon has one active **connection code** (`business_connection_codes`, e.g. `ATEL-1234`), shown in Settings and created on first view (`ensure_connection_code`); `regenerate_connection_code` (settings.manage, audited) deactivates the old code without breaking existing links.
+- A client links a salon with `link_business_by_code(code, categories)`: requires a confirmed email, at most 10 attempts per 15 minutes, unknown and inactive codes give the same error, the Basic customer limit applies. It reuses the salon's customer with the same email (setting `customers.user_id`) or creates one. Links live in `client_links` (own rows only).
+- **Privacy rule**: a client sees only appointments created since linking (`my_appointments`). Unlinking keeps that history visible and cancellable, never cancels anything, and stops new bookings.
+- `client_book_appointment` runs `create_online_booking` with the linked customer's details, so the salon's own rules apply unchanged (plus 6 bookings per user per hour); `client_cancel_appointment` applies the same deadline as the private booking link.
+- **Account deletion** (`POST /api/account/delete` for the app, a card under Account on the website): `prepare_account_deletion` refuses while the user is a salon's only owner, clears `customers.user_id`, removes links and memberships; the server then deletes the auth user. Salons keep their client records.
+
 ## Privacy (GDPR preparation)
 
 Legal pages (`/privacy`, `/cookies`, `/terms`, `/legal`) are built from `src/content/legal/` with the operator details from `src/lib/legal.ts`; a test keeps the three languages structurally identical and the cookie table in line with the cookies the app sets. Cookies: Supabase auth (`sb-…-auth-token`, code verifier), `noryx_business` (session) and `noryx_locale` (1 year); no analytics or third-party scripts, fonts are self-hosted.

@@ -51,6 +51,7 @@ export function en(c: CompanyText): LegalContent {
           paragraphs: [
             "When you book an appointment, order from the webshop or buy a gift card from a salon that uses NORYX, your name, email address, phone number and the details of your appointment or order go to **that salon**. The salon decides what happens with them and is your first point of contact.",
             "With the private link from your booking you can view your appointment and cancel it within the salon's deadline. To see or erase your data, ask the salon: it can export or delete it in NORYX. If that doesn't work, contact us and we'll help the salon.",
+            "If you create a client account in the NORYX app, we store your name, email address and the salons you link to. Deleting your account removes it; salons keep their own client records.",
             "You only receive offers from a salon if you tick that box yourself when booking.",
           ],
         },
