@@ -48,4 +48,7 @@ export const nl: typeof en = {
     business: "Zaak",
     deleted: "Je account is verwijderd.",
   },
+  more: {
+    lead: "Deze onderdelen van je werkruimte openen op de NORYX-website, al aangemeld.",
+  },
 };

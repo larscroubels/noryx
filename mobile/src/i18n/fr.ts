@@ -49,4 +49,7 @@ export const fr: typeof en = {
     business: "Établissement",
     deleted: "Votre compte a été supprimé.",
   },
+  more: {
+    lead: "Ces parties de votre espace s'ouvrent sur le site NORYX, déjà connecté.",
+  },
 };

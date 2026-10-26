@@ -48,4 +48,7 @@ export const en = {
     business: "Business",
     deleted: "Your account has been deleted.",
   },
+  more: {
+    lead: "These parts of your workspace open on the NORYX website, already signed in.",
+  },
 };
