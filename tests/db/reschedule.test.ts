@@ -133,4 +133,12 @@ describe("reschedule_appointment", () => {
       /appointment_not_found/,
     );
   });
+
+  it("staff can't hand their own appointment to a colleague", async () => {
+    const id = await appointment(ben, 1140);
+    await expect(reschedule(staffUser, id, anna, wednesdayAt(1140))).rejects.toMatchObject({
+      code: "42501",
+    });
+    await reschedule(staffUser, id, ben, wednesdayAt(1200));
+  });
 });

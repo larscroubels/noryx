@@ -50,5 +50,7 @@ export const nl: typeof en = {
   },
   more: {
     lead: "Deze onderdelen van je werkruimte openen op de NORYX-website, al aangemeld.",
+    failed:
+      "We konden deze pagina niet aangemeld openen. Controleer je verbinding en probeer opnieuw.",
   },
 };

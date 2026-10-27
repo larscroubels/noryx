@@ -3,6 +3,7 @@ import { databaseErrorMessage } from "@/lib/actions";
 import type { AppointmentStatus } from "@/lib/appointments/status";
 import { giftCardErrorMessage, normaliseGiftCardCode } from "@/lib/gift-card-codes";
 
+import { isAuthError, reportAuthFailure } from "~/lib/auth-failure";
 import { supabase } from "~/lib/supabase";
 
 /**
@@ -15,6 +16,7 @@ export type ActionResult = { ok: true; message?: string } | { ok: false; message
 type DbError = { code?: string; message?: string; details?: string } | null;
 
 function fail(error: DbError, t: Dictionary): ActionResult {
+  if (isAuthError(error)) reportAuthFailure();
   if (error?.code === "23P01") return { ok: false, message: t.appointments.errors.overlap };
   return { ok: false, message: databaseErrorMessage(error as never, t) };
 }
@@ -69,6 +71,8 @@ export async function reschedule(
   });
   if (error?.message === "appointment_not_found")
     return { ok: false, message: t.appointments.errors.reschedule };
+  // RLS's WITH CHECK: members who manage only their own calendar can't hand it over.
+  if (error?.code === "42501") return { ok: false, message: t.appointments.errors.moveOwn };
   return error ? fail(error, t) : { ok: true, message: t.appointments.moved };
 }
 

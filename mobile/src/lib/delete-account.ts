@@ -1,3 +1,4 @@
+import { reportAuthFailure } from "./auth-failure";
 import { SITE_URL } from "./env";
 
 export type DeletionOutcome = "deleted" | "owns_business" | "failed";
@@ -14,6 +15,7 @@ export async function requestAccountDeletion(
     });
     const body = (await response.json().catch(() => null)) as { error?: string } | null;
     if (response.ok) return "deleted";
+    if (response.status === 401) reportAuthFailure();
     return body?.error === "account_owns_business" ? "owns_business" : "failed";
   } catch {
     return "failed";

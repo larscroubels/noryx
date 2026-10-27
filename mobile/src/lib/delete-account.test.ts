@@ -1,3 +1,4 @@
+import { reportAuthFailure } from "./auth-failure";
 import { requestAccountDeletion } from "./delete-account";
 
 const respond = (status: number, body: unknown) =>
@@ -27,4 +28,11 @@ it("sends the bearer token", async () => {
   const [url, init] = fetchImpl.mock.calls[0];
   expect(String(url)).toMatch(/\/api\/account\/delete$/);
   expect(init).toMatchObject({ method: "POST", headers: { Authorization: "Bearer tok" } });
+});
+
+jest.mock("./auth-failure", () => ({ reportAuthFailure: jest.fn() }));
+
+it("reports a rejected session", async () => {
+  await requestAccountDeletion("tok", respond(401, { ok: false }));
+  expect(reportAuthFailure).toHaveBeenCalled();
 });

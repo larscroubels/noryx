@@ -50,5 +50,6 @@ export const en = {
   },
   more: {
     lead: "These parts of your workspace open on the NORYX website, already signed in.",
+    failed: "We couldn't open this page signed in. Check your connection and try again.",
   },
 };

@@ -61,3 +61,12 @@ it("empty note saves null", async () => {
   expect(await saveInternalNote("a1", "   ", t)).toEqual({ ok: true });
   expect(mockUpdate).toHaveBeenCalledWith({ internal_note: null }, { count: "exact" });
 });
+
+it("explains a refused move to another professional like the website", async () => {
+  mockResult.error = { code: "42501", message: "new row violates row-level security policy" };
+  const result = await reschedule(
+    { appointmentId: "a1", staffId: "colleague", startsAt: "2026-11-04T09:00:00Z" },
+    t,
+  );
+  expect(result).toEqual({ ok: false, message: t.appointments.errors.moveOwn });
+});

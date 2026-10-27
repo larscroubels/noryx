@@ -4,7 +4,7 @@ import { useState } from "react";
 import { forgotPasswordSchema } from "@/lib/validation/auth";
 
 import { useT } from "~/i18n";
-import { authErrorMessage } from "~/lib/auth-errors";
+import { resetRequestResult } from "~/lib/auth-errors";
 import { fieldErrors, type FieldErrors } from "~/lib/form";
 import { SITE_URL, supabase } from "~/lib/supabase";
 import { AuthLayout } from "~/ui/AuthLayout";
@@ -32,12 +32,7 @@ export default function ForgotPassword() {
       redirectTo: `${SITE_URL}/auth/confirm?next=/reset-password`,
     });
     setBusy(false);
-    // As on the website: the same answer whether or not the account exists.
-    setResult(
-      error?.code === "over_request_rate_limit" || error?.code === "over_email_send_rate_limit"
-        ? { tone: "danger", message: authErrorMessage("signUp", error, t) }
-        : { tone: "success", message: t.auth.messages.resetSent },
-    );
+    setResult(resetRequestResult(error, t));
   }
 
   return (

@@ -1,4 +1,4 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -6,6 +6,7 @@ import { useEffect, useState, type ReactNode } from "react";
 
 import { I18nProvider, useT } from "~/i18n";
 import { AccountProvider } from "~/lib/account-context";
+import { isAuthError, reportAuthFailure } from "~/lib/auth-failure";
 import { SessionProvider, useSession } from "~/lib/session";
 import { fontAssets } from "~/theme/fonts";
 import { colors } from "~/theme/tokens";
@@ -45,7 +46,13 @@ function Navigator() {
 
 export default function RootLayout() {
   const [queryClient] = useState(
-    () => new QueryClient({ defaultOptions: { queries: { retry: 1, staleTime: 30_000 } } }),
+    () =>
+      new QueryClient({
+        // A refused session ends the sign-in instead of leaving every screen on "retry".
+        queryCache: new QueryCache({ onError: (e) => isAuthError(e) && reportAuthFailure() }),
+        mutationCache: new MutationCache({ onError: (e) => isAuthError(e) && reportAuthFailure() }),
+        defaultOptions: { queries: { retry: 1, staleTime: 30_000 } },
+      }),
   );
   return (
     <QueryClientProvider client={queryClient}>

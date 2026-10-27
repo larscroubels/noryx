@@ -1,6 +1,6 @@
 import { dictionaries } from "@/i18n/dictionaries";
 
-import { authErrorMessage } from "./auth-errors";
+import { authErrorMessage, resetRequestResult } from "./auth-errors";
 
 const t = dictionaries.en;
 const m = t.auth.messages;
@@ -26,4 +26,21 @@ it("maps sign-up errors like the website", () => {
     t.errors.tooManyAttempts,
   );
   expect(authErrorMessage("signUp", {}, t)).toBe(m.signupFailed);
+});
+
+it("never claims a reset email was sent when the request didn't reach NORYX", () => {
+  expect(resetRequestResult(null, t)).toEqual({ tone: "success", message: m.resetSent });
+  // Unknown accounts get the same answer as known ones (no account probing).
+  expect(resetRequestResult({ code: "user_not_found", status: 400 }, t)).toEqual({
+    tone: "success",
+    message: m.resetSent,
+  });
+  expect(resetRequestResult({ name: "AuthRetryableFetchError", status: 0 }, t)).toEqual({
+    tone: "danger",
+    message: t.errors.generic,
+  });
+  expect(resetRequestResult({ code: "over_email_send_rate_limit", status: 429 }, t)).toEqual({
+    tone: "danger",
+    message: m.emailRateLimit,
+  });
 });

@@ -22,6 +22,7 @@ import { openWorkspacePage } from "~/lib/open-workspace-page";
 import { useWorkspace } from "~/lib/workspace";
 import { colors, TOUCH } from "~/theme/tokens";
 import { Card } from "~/ui/Card";
+import { Notice } from "~/ui/Notice";
 import { Screen } from "~/ui/Screen";
 import { Text } from "~/ui/Text";
 
@@ -45,17 +46,23 @@ export default function More() {
   const { t, app } = useT();
   const { permissions } = useWorkspace();
   const [opening, setOpening] = useState<string | null>(null);
+  const [failed, setFailed] = useState(false);
   const items = visibleNav(permissions).filter((item) => !NATIVE.includes(item.key));
 
   async function open(href: string) {
     setOpening(href);
-    await openWorkspacePage(href);
-    setOpening(null);
+    setFailed(false);
+    try {
+      setFailed(!(await openWorkspacePage(href)));
+    } finally {
+      setOpening(null);
+    }
   }
 
   return (
     <Screen>
       <Text color="fg-muted">{app.more.lead}</Text>
+      {failed ? <Notice tone="danger" message={app.more.failed} /> : null}
       <Card>
         {items.map((item) => {
           const Icon = ICONS[item.key] ?? ClipboardList;

@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { CheckCircle2, Circle } from "lucide-react-native";
+import { useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 
 import { buildSetupChecklist } from "@/lib/setup-checklist";
@@ -14,6 +15,7 @@ import { AppointmentRow } from "~/salon/AppointmentRow";
 import { colors, TOUCH } from "~/theme/tokens";
 import { Button } from "~/ui/Button";
 import { Card } from "~/ui/Card";
+import { Notice } from "~/ui/Notice";
 import { EmptyState } from "~/ui/EmptyState";
 import { ErrorState } from "~/ui/ErrorState";
 import { Screen } from "~/ui/Screen";
@@ -35,6 +37,7 @@ export default function Today() {
   const today = todayInZone(tz);
   const { start, end } = dayBoundsUtc(today, tz);
   const showChecklist = can("settings.manage");
+  const [linkFailed, setLinkFailed] = useState(false);
 
   const todays = useQuery({
     queryKey: ["appointments", business.id, "today", today],
@@ -127,6 +130,7 @@ export default function Today() {
           <Text variant="heading" accessibilityRole="header">
             {o.finish}
           </Text>
+          {linkFailed ? <Notice tone="danger" message={app.more.failed} /> : null}
           <Text color="fg-muted">
             {o.finishProgress(checklist.filter((i) => i.done).length, checklist.length)}
           </Text>
@@ -135,7 +139,7 @@ export default function Today() {
               key={item.key}
               accessibilityRole="link"
               accessibilityLabel={`${o.checklist[item.key]} ${item.done ? o.done : o.todo}`}
-              onPress={() => void openWorkspacePage(item.href)}
+              onPress={() => void openWorkspacePage(item.href).then((ok) => setLinkFailed(!ok))}
               style={styles.check}
             >
               {item.done ? (

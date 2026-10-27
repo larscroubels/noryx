@@ -14,3 +14,24 @@ export function authErrorMessage(flow: "signIn" | "signUp", error: AuthError, t:
   if (code === "email_address_not_authorized") return m.emailNotAllowed;
   return m.signupFailed;
 }
+
+type ResetError = { code?: string; name?: string; status?: number } | null | undefined;
+
+/**
+ * What to tell the user after requesting a reset email. As on the website, unknown and
+ * known accounts get the same answer — but a request that never reached NORYX (offline,
+ * server error) or was rate limited must not claim an email is on its way.
+ */
+export function resetRequestResult(
+  error: ResetError,
+  t: Dictionary,
+): { tone: "success" | "danger"; message: string } {
+  if (!error) return { tone: "success", message: t.auth.messages.resetSent };
+  if (error.code === "over_request_rate_limit")
+    return { tone: "danger", message: t.errors.tooManyAttempts };
+  if (error.code === "over_email_send_rate_limit")
+    return { tone: "danger", message: t.auth.messages.emailRateLimit };
+  if (error.name === "AuthRetryableFetchError" || !error.status || error.status >= 500)
+    return { tone: "danger", message: t.errors.generic };
+  return { tone: "success", message: t.auth.messages.resetSent };
+}

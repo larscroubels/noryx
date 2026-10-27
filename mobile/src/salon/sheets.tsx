@@ -112,6 +112,7 @@ export function RescheduleSheet({
   appointment,
   timeZone,
   staff,
+  canChooseStaff,
   visible,
   onClose,
   onDone,
@@ -119,6 +120,8 @@ export function RescheduleSheet({
   appointment: AppointmentDetail;
   timeZone: string;
   staff: StaffOption[];
+  /** False for members who may only move their own appointments (RLS refuses others). */
+  canChooseStaff: boolean;
   visible: boolean;
   onClose: () => void;
   onDone: Done;
@@ -178,7 +181,9 @@ export function RescheduleSheet({
       />
       <Text variant="label">{t.common.fields.professional}</Text>
       <Chips
-        options={staff.map((s) => ({ value: s.id, label: s.display_name }))}
+        options={staff
+          .filter((s) => canChooseStaff || s.id === appointment.staff_id)
+          .map((s) => ({ value: s.id, label: s.display_name }))}
         value={staffId}
         onChange={setStaffId}
       />
@@ -298,8 +303,9 @@ export function GiftCardSheet({
   const g = t.giftCards.redeem;
   const [code, setCode] = useState("");
   const [amount, setAmount] = useState("");
-  // One key per attempt, so a retried tap can't redeem twice.
-  const [idempotencyKey] = useState(() => randomUUID());
+  // One key per redemption: a retried tap can't redeem twice, and the next card
+  // gets a new key instead of replaying the previous redemption.
+  const [idempotencyKey, setIdempotencyKey] = useState(() => randomUUID());
   const [errors, setErrors] = useState<FieldErrors>({});
   const { busy, failure, run } = useSubmit();
   const money = (cents: number) => formatMoney(cents, appointment.currency, locale);
@@ -326,7 +332,12 @@ export function GiftCardSheet({
           t,
           money,
         ),
-      onDone,
+      (message) => {
+        setIdempotencyKey(randomUUID());
+        setCode("");
+        setAmount("");
+        onDone(message);
+      },
     );
   }
 

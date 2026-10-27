@@ -51,5 +51,7 @@ export const fr: typeof en = {
   },
   more: {
     lead: "Ces parties de votre espace s'ouvrent sur le site NORYX, déjà connecté.",
+    failed:
+      "Nous n'avons pas pu ouvrir cette page en étant connecté. Vérifiez votre connexion et réessayez.",
   },
 };

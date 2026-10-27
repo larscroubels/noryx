@@ -13,6 +13,7 @@ import {
 
 import type { Database } from "@/types/database";
 
+import { onAuthFailure } from "./auth-failure";
 import { supabase } from "./supabase";
 
 type Status = "loading" | "signedOut" | "signedIn";
@@ -84,11 +85,24 @@ export function SessionProvider({
     };
   }, [client]);
 
+  // A request was refused as unauthorised: if Supabase confirms the session is gone,
+  // end it on this device (the SIGNED_OUT event shows the "signed out" message).
+  useEffect(() => {
+    onAuthFailure(() => {
+      void client.auth.getUser().then(({ error }) => {
+        if (error) void client.auth.signOut({ scope: "local" });
+      });
+    });
+    return () => onAuthFailure(null);
+  }, [client]);
+
   const signOut = useCallback(
     async (reason?: string) => {
       userSignedOut.current = true;
       setMessage(reason ?? null);
-      await client.auth.signOut();
+      const { error } = await client.auth.signOut();
+      // Offline the server can't be told; still end the session on this device.
+      if (error) await client.auth.signOut({ scope: "local" });
     },
     [client],
   );

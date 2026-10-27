@@ -237,36 +237,44 @@ export default function AppointmentScreen() {
         ) : null}
       </Screen>
 
-      <CancelSheet
-        appointment={a}
-        visible={sheet === "cancel"}
-        onClose={() => setSheet(null)}
-        onDone={() => refresh(t.common.appointmentStatus.cancelled)}
-      />
-      <RescheduleSheet
-        appointment={a}
-        timeZone={tz}
-        staff={staff.data ?? []}
-        visible={sheet === "reschedule"}
-        onClose={() => setSheet(null)}
-        onDone={refresh}
-      />
-      {userId ? (
-        <PaymentSheet
+      {/* Mounted only while open, so every opening starts with empty fields. */}
+      {sheet === "cancel" ? (
+        <CancelSheet
           appointment={a}
-          userId={userId}
-          visible={sheet === "payment"}
+          visible
+          onClose={() => setSheet(null)}
+          onDone={() => refresh(t.common.appointmentStatus.cancelled)}
+        />
+      ) : null}
+      {sheet === "reschedule" ? (
+        <RescheduleSheet
+          appointment={a}
+          timeZone={tz}
+          staff={staff.data ?? []}
+          canChooseStaff={can("appointments.manage_all")}
+          visible
           onClose={() => setSheet(null)}
           onDone={refresh}
         />
       ) : null}
-      <GiftCardSheet
-        appointment={a}
-        locale={intl}
-        visible={sheet === "giftCard"}
-        onClose={() => setSheet(null)}
-        onDone={refresh}
-      />
+      {sheet === "payment" && userId ? (
+        <PaymentSheet
+          appointment={a}
+          userId={userId}
+          visible
+          onClose={() => setSheet(null)}
+          onDone={refresh}
+        />
+      ) : null}
+      {sheet === "giftCard" ? (
+        <GiftCardSheet
+          appointment={a}
+          locale={intl}
+          visible
+          onClose={() => setSheet(null)}
+          onDone={refresh}
+        />
+      ) : null}
     </>
   );
 }
