@@ -54,6 +54,8 @@ export const nl: typeof en = {
       "We konden deze pagina niet aangemeld openen. Controleer je verbinding en probeer opnieuw.",
   },
   client: {
+    tabs: { book: "Boeken", appointments: "Afspraken" },
+    chooseSalon: (category: string) => `Welke salon voor ${category.toLowerCase()}?`,
     onboarding: {
       welcomeTitle: "Welkom bij NORYX",
       welcomeText: "Koppel de salons waar je komt en boek er in een paar tikken.",

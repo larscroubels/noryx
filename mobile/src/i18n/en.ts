@@ -53,6 +53,8 @@ export const en = {
     failed: "We couldn't open this page signed in. Check your connection and try again.",
   },
   client: {
+    tabs: { book: "Book", appointments: "Appointments" },
+    chooseSalon: (category: string) => `Which salon for ${category.toLowerCase()}?`,
     onboarding: {
       welcomeTitle: "Welcome to NORYX",
       welcomeText: "Link the salons you visit and book with them in a few taps.",

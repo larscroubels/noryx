@@ -1,5 +1,7 @@
 import type { MemberRole } from "@/lib/auth/permissions";
 
+import type { ClientLink } from "~/client/api";
+
 import { supabase } from "./supabase";
 
 export type Membership = {
@@ -7,15 +9,7 @@ export type Membership = {
   business: { id: string; slug: string; name: string; status: string; locale: string };
 };
 
-export type ClientLink = {
-  business_id: string;
-  slug: string;
-  name: string;
-  logo_path: string | null;
-  categories: string[];
-  linked_at: string;
-  unlinked_at: string | null;
-};
+export type { ClientLink } from "~/client/api";
 
 export type Account = { memberships: Membership[]; links: ClientLink[] };
 

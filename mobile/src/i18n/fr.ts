@@ -55,6 +55,8 @@ export const fr: typeof en = {
       "Nous n'avons pas pu ouvrir cette page en étant connecté. Vérifiez votre connexion et réessayez.",
   },
   client: {
+    tabs: { book: "Réserver", appointments: "Rendez-vous" },
+    chooseSalon: (category: string) => `Quel salon pour ${category.toLowerCase()} ?`,
     onboarding: {
       welcomeTitle: "Bienvenue sur NORYX",
       welcomeText: "Liez les salons où vous allez et réservez en quelques gestes.",
