@@ -54,6 +54,25 @@ export const nl: typeof en = {
       "We konden deze pagina niet aangemeld openen. Controleer je verbinding en probeer opnieuw.",
   },
   client: {
+    onboarding: {
+      welcomeTitle: "Welkom bij NORYX",
+      welcomeText: "Koppel de salons waar je komt en boek er in een paar tikken.",
+      start: "Aan de slag",
+      servicesTitle: "Welke diensten gebruik je?",
+      servicesText: "Kies er één of meer. Je kunt dit later aanpassen.",
+      next: "Volgende",
+      codesTitle: "Vul de codes van je salons in",
+      codesText:
+        "Vraag elke salon naar zijn NORYX-code. Doet één salon meerdere diensten? Gebruik dan dezelfde code.",
+      codeLabel: (category: string) => `Code voor ${category}`,
+      link: "Salons koppelen",
+      linked: (name: string) => `Gekoppeld: ${name}`,
+      resend: "Bevestigingsmail opnieuw sturen",
+      resent:
+        "We hebben de bevestigingsmail opnieuw gestuurd. Open hem en koppel daarna hier je salons.",
+      resendFailed: "We konden de mail niet sturen. Probeer het over een minuut opnieuw.",
+      done: "Beginnen met boeken",
+    },
     linkErrors: {
       too_many_attempts: "Te veel codes geprobeerd. Wacht 15 minuten en probeer opnieuw.",
       connection_code_invalid: "We herkennen deze code niet. Vraag ze na bij je salon.",

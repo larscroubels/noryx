@@ -55,6 +55,24 @@ export const fr: typeof en = {
       "Nous n'avons pas pu ouvrir cette page en étant connecté. Vérifiez votre connexion et réessayez.",
   },
   client: {
+    onboarding: {
+      welcomeTitle: "Bienvenue sur NORYX",
+      welcomeText: "Liez les salons où vous allez et réservez en quelques gestes.",
+      start: "Commencer",
+      servicesTitle: "Quels services utilisez-vous ?",
+      servicesText: "Choisissez-en un ou plusieurs. Vous pourrez modifier cela plus tard.",
+      next: "Suivant",
+      codesTitle: "Saisissez les codes de vos salons",
+      codesText:
+        "Demandez son code NORYX à chaque salon. Un salon propose plusieurs services ? Utilisez le même code.",
+      codeLabel: (category: string) => `Code pour ${category}`,
+      link: "Lier les salons",
+      linked: (name: string) => `Lié : ${name}`,
+      resend: "Renvoyer l'e-mail de confirmation",
+      resent: "Nous avons renvoyé l'e-mail de confirmation. Ouvrez-le, puis liez vos salons ici.",
+      resendFailed: "Nous n'avons pas pu envoyer l'e-mail. Réessayez dans une minute.",
+      done: "Commencer à réserver",
+    },
     linkErrors: {
       too_many_attempts: "Trop de codes essayés. Attendez 15 minutes et réessayez.",
       connection_code_invalid:

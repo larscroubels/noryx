@@ -53,6 +53,24 @@ export const en = {
     failed: "We couldn't open this page signed in. Check your connection and try again.",
   },
   client: {
+    onboarding: {
+      welcomeTitle: "Welcome to NORYX",
+      welcomeText: "Link the salons you visit and book with them in a few taps.",
+      start: "Get started",
+      servicesTitle: "Which services do you use?",
+      servicesText: "Choose one or more. You can change this later.",
+      next: "Next",
+      codesTitle: "Enter your salons' codes",
+      codesText:
+        "Ask each salon for its NORYX code. One salon can serve several services: use the same code.",
+      codeLabel: (category: string) => `Code for ${category}`,
+      link: "Link salons",
+      linked: (name: string) => `Linked: ${name}`,
+      resend: "Resend confirmation email",
+      resent: "We sent the confirmation email again. Open it, then link your salons here.",
+      resendFailed: "We couldn't send the email. Please try again in a minute.",
+      done: "Start booking",
+    },
     linkErrors: {
       too_many_attempts: "Too many codes tried. Please wait 15 minutes and try again.",
       connection_code_invalid: "We don't recognise this code. Check it with your salon.",
