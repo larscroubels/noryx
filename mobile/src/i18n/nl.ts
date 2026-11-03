@@ -54,6 +54,20 @@ export const nl: typeof en = {
       "We konden deze pagina niet aangemeld openen. Controleer je verbinding en probeer opnieuw.",
   },
   client: {
+    appointments: {
+      upcoming: "Gepland",
+      history: "Geschiedenis",
+      previousSalons: "Vorige salons",
+      previousText:
+        "Salons die je ontkoppeld hebt. Je geschiedenis blijft hier staan en geplande afspraken kun je nog annuleren.",
+      empty: "Nog geen afspraken",
+      emptyText: "Boek bij een van je salons via de tab hieronder.",
+      cancelTitle: "Deze afspraak annuleren?",
+      cancelText: (name: string) => `Het tijdstip komt weer vrij bij ${name}.`,
+      cancelConfirm: "Afspraak annuleren",
+      cancelled: "Je afspraak is geannuleerd.",
+      tooLate: (name: string) => `Annuleren in de app kan niet meer. Neem contact op met ${name}.`,
+    },
     tabs: { book: "Boeken", appointments: "Afspraken" },
     chooseSalon: (category: string) => `Welke salon voor ${category.toLowerCase()}?`,
     onboarding: {

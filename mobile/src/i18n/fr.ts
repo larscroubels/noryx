@@ -55,6 +55,20 @@ export const fr: typeof en = {
       "Nous n'avons pas pu ouvrir cette page en étant connecté. Vérifiez votre connexion et réessayez.",
   },
   client: {
+    appointments: {
+      upcoming: "À venir",
+      history: "Historique",
+      previousSalons: "Anciens salons",
+      previousText:
+        "Les salons que vous avez déliés. Votre historique reste ici, et les rendez-vous à venir peuvent encore être annulés.",
+      empty: "Pas encore de rendez-vous",
+      emptyText: "Réservez auprès d'un de vos salons via l'onglet ci-dessous.",
+      cancelTitle: "Annuler ce rendez-vous ?",
+      cancelText: (name: string) => `Le créneau redevient libre chez ${name}.`,
+      cancelConfirm: "Annuler le rendez-vous",
+      cancelled: "Votre rendez-vous a été annulé.",
+      tooLate: (name: string) => `Il est trop tard pour annuler dans l'app. Contactez ${name}.`,
+    },
     tabs: { book: "Réserver", appointments: "Rendez-vous" },
     chooseSalon: (category: string) => `Quel salon pour ${category.toLowerCase()} ?`,
     onboarding: {

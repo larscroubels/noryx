@@ -32,6 +32,9 @@ export type ClientAppointment = {
   price_cents: number;
   currency: string;
   locale: string;
+  /** The salon's time zone; dates and times are shown in it. */
+  timezone: string;
+  cancellation_notice_hours: number;
   status: AppointmentStatus;
   can_cancel: boolean;
 };

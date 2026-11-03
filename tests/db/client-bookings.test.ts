@@ -114,7 +114,11 @@ describe("client bookings", () => {
     expect(booked.status).toBe("confirmed");
     const mine = await myAppointments(client);
     expect(mine).toEqual([
-      expect.objectContaining({ appointment_id: booked.appointment_id, linked: true }),
+      expect.objectContaining({
+        appointment_id: booked.appointment_id,
+        linked: true,
+        timezone: "Europe/Brussels",
+      }),
     ]);
   });
 

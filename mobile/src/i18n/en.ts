@@ -53,6 +53,20 @@ export const en = {
     failed: "We couldn't open this page signed in. Check your connection and try again.",
   },
   client: {
+    appointments: {
+      upcoming: "Upcoming",
+      history: "History",
+      previousSalons: "Previous salons",
+      previousText:
+        "Salons you unlinked. Your history stays here, and upcoming visits can still be cancelled.",
+      empty: "No appointments yet",
+      emptyText: "Book with one of your salons from its tab below.",
+      cancelTitle: "Cancel this appointment?",
+      cancelText: (name: string) => `The time becomes free again at ${name}.`,
+      cancelConfirm: "Cancel appointment",
+      cancelled: "Your appointment was cancelled.",
+      tooLate: (name: string) => `It's too late to cancel in the app. Please contact ${name}.`,
+    },
     tabs: { book: "Book", appointments: "Appointments" },
     chooseSalon: (category: string) => `Which salon for ${category.toLowerCase()}?`,
     onboarding: {
