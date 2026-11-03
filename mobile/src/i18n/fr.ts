@@ -54,4 +54,15 @@ export const fr: typeof en = {
     failed:
       "Nous n'avons pas pu ouvrir cette page en étant connecté. Vérifiez votre connexion et réessayez.",
   },
+  client: {
+    linkErrors: {
+      too_many_attempts: "Trop de codes essayés. Attendez 15 minutes et réessayez.",
+      connection_code_invalid:
+        "Nous ne reconnaissons pas ce code. Vérifiez-le auprès de votre salon.",
+      categories_required: "Choisissez au moins un service pour ce salon.",
+      customer_already_linked:
+        "Votre fiche client dans ce salon est déjà liée à un autre compte. Contactez le salon.",
+      client_link_required: "Liez à nouveau ce salon avec son code avant de réserver.",
+    },
+  },
 };

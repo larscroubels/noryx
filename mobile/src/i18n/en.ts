@@ -52,4 +52,14 @@ export const en = {
     lead: "These parts of your workspace open on the NORYX website, already signed in.",
     failed: "We couldn't open this page signed in. Check your connection and try again.",
   },
+  client: {
+    linkErrors: {
+      too_many_attempts: "Too many codes tried. Please wait 15 minutes and try again.",
+      connection_code_invalid: "We don't recognise this code. Check it with your salon.",
+      categories_required: "Choose at least one service for this salon.",
+      customer_already_linked:
+        "This salon's client record is already linked to another account. Please contact the salon.",
+      client_link_required: "Link this salon again with its code before booking.",
+    },
+  },
 };

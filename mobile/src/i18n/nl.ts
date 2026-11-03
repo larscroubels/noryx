@@ -53,4 +53,14 @@ export const nl: typeof en = {
     failed:
       "We konden deze pagina niet aangemeld openen. Controleer je verbinding en probeer opnieuw.",
   },
+  client: {
+    linkErrors: {
+      too_many_attempts: "Te veel codes geprobeerd. Wacht 15 minuten en probeer opnieuw.",
+      connection_code_invalid: "We herkennen deze code niet. Vraag ze na bij je salon.",
+      categories_required: "Kies minstens één dienst voor deze salon.",
+      customer_already_linked:
+        "Je klantgegevens bij deze salon zijn al aan een ander account gekoppeld. Neem contact op met de salon.",
+      client_link_required: "Koppel deze salon opnieuw met de code voor je boekt.",
+    },
+  },
 };
