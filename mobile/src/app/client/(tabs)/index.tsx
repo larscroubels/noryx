@@ -3,6 +3,7 @@ import { ChevronRight } from "lucide-react-native";
 import { useState } from "react";
 import { Pressable, StyleSheet } from "react-native";
 
+import { BookingFlow } from "~/client/BookingFlow";
 import { CategoryIcon } from "~/client/CategoryIcon";
 import { categoryLabel, tabsFromLinks } from "~/client/links";
 import { useT } from "~/i18n";
@@ -53,13 +54,8 @@ export default function SalonTab() {
     );
   }
 
-  return (
-    <Screen>
-      <Text variant="title" accessibilityRole="header">
-        {salon.name}
-      </Text>
-    </Screen>
-  );
+  // A new salon starts a fresh booking.
+  return <BookingFlow key={salon.slug} slug={salon.slug} />;
 }
 
 const styles = StyleSheet.create({
