@@ -55,7 +55,9 @@ export const fr: typeof en = {
       "Nous n'avons pas pu ouvrir cette page en étant connecté. Vérifiez votre connexion et réessayez.",
   },
   client: {
+    bookAgain: "Réserver un autre rendez-vous",
     salons: {
+      replaceText: (services: string) => `Le nouveau salon reprend : ${services}.`,
       title: "Salons liés",
       linked: "Vos salons",
       previous: "Déliés",
@@ -109,6 +111,9 @@ export const fr: typeof en = {
       done: "Commencer à réserver",
     },
     linkErrors: {
+      unlink_failed:
+        "Le nouveau salon est lié, mais nous n'avons pas pu délier le précédent. Déliez-le dans Salons liés.",
+      failed: "Nous n'avons pas pu lier ce salon. Vérifiez votre connexion et réessayez.",
       too_many_attempts: "Trop de codes essayés. Attendez 15 minutes et réessayez.",
       connection_code_invalid:
         "Nous ne reconnaissons pas ce code. Vérifiez-le auprès de votre salon.",

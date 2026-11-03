@@ -53,7 +53,9 @@ export const en = {
     failed: "We couldn't open this page signed in. Check your connection and try again.",
   },
   client: {
+    bookAgain: "Book another appointment",
     salons: {
+      replaceText: (services: string) => `The new salon takes over: ${services}.`,
       title: "Linked salons",
       linked: "Your salons",
       previous: "Unlinked",
@@ -107,6 +109,9 @@ export const en = {
       done: "Start booking",
     },
     linkErrors: {
+      unlink_failed:
+        "The new salon is linked, but we couldn't unlink the previous one. Unlink it under Linked salons.",
+      failed: "We couldn't link this salon. Check your connection and try again.",
       too_many_attempts: "Too many codes tried. Please wait 15 minutes and try again.",
       connection_code_invalid: "We don't recognise this code. Check it with your salon.",
       categories_required: "Choose at least one service for this salon.",

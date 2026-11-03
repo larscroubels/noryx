@@ -148,6 +148,12 @@ describe("linking a salon", () => {
     ]);
   });
 
+  it("keeps earlier categories when a salon is linked again for another service", async () => {
+    const client = await createUser(db, "Hair Then Nails");
+    await link(client, await codeOf(), "{hair}");
+    expect((await link(client, await codeOf(), "{nails}")).categories).toEqual(["hair", "nails"]);
+  });
+
   it("unlinks without touching salon data, and re-linking restores the link", async () => {
     const client = await createUser(db, "Leaving Client");
     await link(client, await codeOf());

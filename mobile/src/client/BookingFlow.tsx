@@ -154,11 +154,13 @@ export function BookingFlow({ slug }: { slug: string }) {
               key={s.id}
               title={s.name}
               detail={`${s.duration_minutes} min · ${money(s.promo_price_cents ?? s.price_cents)}`}
-              onPress={() => {
-                dispatch({ type: "service", serviceId: s.id });
-                // Salons that don't offer a choice of professional skip that step.
-                if (!b.policy.allow_staff_choice) dispatch({ type: "staff", staffId: "any" });
-              }}
+              onPress={() =>
+                dispatch({
+                  type: "service",
+                  serviceId: s.id,
+                  allowStaffChoice: b.policy.allow_staff_choice,
+                })
+              }
             />
           ))}
         </Card>
@@ -283,6 +285,12 @@ export function BookingFlow({ slug }: { slug: string }) {
           </Text>
           <Button onPress={() => router.navigate("/client/appointments")}>
             {app.client.tabs.appointments}
+          </Button>
+          <Button
+            variant="secondary"
+            onPress={() => dispatch({ type: "restart", date: todayInZone(b.timezone) })}
+          >
+            {app.client.bookAgain}
           </Button>
         </Card>
       ) : null}

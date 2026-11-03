@@ -59,21 +59,29 @@ export default function Salons() {
     if (!editor || editor.kind === "unlink") return;
     setBusy(true);
     setError(null);
-    const existing = links.data ?? [];
-    const outcome =
-      editor.kind === "replace"
-        ? await replaceSalon(editor.link.business_id, code, categories, existing)
-        : ((
-            await linkCodes(
-              categories.map((category) => ({ category, code })),
-              existing,
+    try {
+      const existing = links.data ?? [];
+      const outcome =
+        editor.kind === "replace"
+          ? await replaceSalon(editor.link, code, existing)
+          : ((
+              await linkCodes(
+                categories.map((category) => ({ category, code })),
+                existing,
+              )
             )
-          )
-            .values()
-            .next().value ?? { ok: false as const, error: "categories_required" });
-    setBusy(false);
-    if (!outcome.ok) return setError(linkErrorMessage(outcome.error, t, app));
-    done(editor.kind === "replace" ? s.replaced(outcome.name) : s.added(outcome.name));
+              .values()
+              .next().value ?? { ok: false as const, error: "categories_required" });
+      setBusy(false);
+      if (!outcome.ok) {
+        if (outcome.error === "unlink_failed")
+          void queryClient.invalidateQueries({ queryKey: ["client"] });
+        return setError(linkErrorMessage(outcome.error, t, app));
+      }
+      done(editor.kind === "replace" ? s.replaced(outcome.name) : s.added(outcome.name));
+    } finally {
+      setBusy(false);
+    }
   }
 
   async function unlink(link: ClientLink) {
@@ -186,37 +194,44 @@ export default function Salons() {
             placeholder="ATEL-7KQ2MX"
             error={error ?? undefined}
           />
-          <Text variant="label">{s.services}</Text>
-          <View style={styles.chips} accessibilityRole="list">
-            {choosable.map((category) => {
-              const selected = categories.includes(category);
-              return (
-                <Pressable
-                  key={category}
-                  accessibilityRole="checkbox"
-                  accessibilityState={{ checked: selected }}
-                  onPress={() =>
-                    setCategories((list) =>
-                      selected ? list.filter((c) => c !== category) : [...list, category],
-                    )
-                  }
-                  style={[styles.chip, selected && styles.selected]}
-                >
-                  <CategoryIcon
-                    category={category}
-                    size={20}
-                    color={selected ? colors["primary-fg"] : colors["fg-accent"]}
-                  />
-                  <Text variant="label" color={selected ? "primary-fg" : "fg"}>
-                    {categoryLabel(category, t)}
-                  </Text>
-                </Pressable>
-              );
-            })}
-          </View>
+          {editing.kind === "replace" ? (
+            <Text color="fg-muted">
+              {s.replaceText(editing.link.categories.map((c) => categoryLabel(c, t)).join(", "))}
+            </Text>
+          ) : null}
+          {editing.kind !== "replace" ? <Text variant="label">{s.services}</Text> : null}
+          {editing.kind !== "replace" ? (
+            <View style={styles.chips} accessibilityRole="list">
+              {choosable.map((category) => {
+                const selected = categories.includes(category);
+                return (
+                  <Pressable
+                    key={category}
+                    accessibilityRole="checkbox"
+                    accessibilityState={{ checked: selected }}
+                    onPress={() =>
+                      setCategories((list) =>
+                        selected ? list.filter((c) => c !== category) : [...list, category],
+                      )
+                    }
+                    style={[styles.chip, selected && styles.selected]}
+                  >
+                    <CategoryIcon
+                      category={category}
+                      size={20}
+                      color={selected ? colors["primary-fg"] : colors["fg-accent"]}
+                    />
+                    <Text variant="label" color={selected ? "primary-fg" : "fg"}>
+                      {categoryLabel(category, t)}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+          ) : null}
           <Button
             loading={busy}
-            disabled={!code.trim() || categories.length === 0}
+            disabled={!code.trim() || (editing.kind !== "replace" && categories.length === 0)}
             onPress={() => void save()}
             haptic
           >

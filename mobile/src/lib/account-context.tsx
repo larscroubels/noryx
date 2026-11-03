@@ -26,7 +26,7 @@ type AccountValue = {
   /** The active business on the salon side, re-validated against the memberships. */
   businessId: string | null;
   setBusinessId: (businessId: string) => void;
-  refetch: () => void;
+  refetch: () => Promise<unknown>;
 };
 
 const AccountContext = createContext<AccountValue | null>(null);
@@ -79,7 +79,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
       canSwitch: Boolean(account && account.memberships.length > 0 && account.links.length > 0),
       businessId: business?.business.id ?? null,
       setBusinessId,
-      refetch: () => void query.refetch(),
+      refetch: () => query.refetch(),
     };
   }, [query, lastSide, preferred, userId, setSide, setBusinessId]);
 

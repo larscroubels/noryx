@@ -12,17 +12,20 @@ export type BookingState = {
   /** Bumped when the times must be loaded again (e.g. the slot was just taken). */
   reloadTimes: number;
   result: "pending" | "confirmed" | null;
+  /** False when the salon doesn't let clients pick a professional (the step is skipped). */
+  allowStaffChoice: boolean;
 };
 
 export type BookingAction =
-  | { type: "service"; serviceId: string }
+  | { type: "service"; serviceId: string; allowStaffChoice: boolean }
   | { type: "staff"; staffId: string }
   | { type: "date"; date: string }
   | { type: "slot"; slot: DaySlot }
   | { type: "note"; note: string }
   | { type: "back" }
   | { type: "failed"; error: string; message: string }
-  | { type: "booked"; status: string };
+  | { type: "booked"; status: string }
+  | { type: "restart"; date: string };
 
 /** Errors after which the chosen time can't be used and fresh times are needed. */
 const TIME_ERRORS = new Set([
@@ -51,13 +54,23 @@ export function initialBooking(date: string): BookingState {
     message: null,
     reloadTimes: 0,
     result: null,
+    allowStaffChoice: true,
   };
 }
 
 export function bookingReducer(state: BookingState, action: BookingAction): BookingState {
   switch (action.type) {
     case "service":
-      return { ...state, step: "staff", serviceId: action.serviceId, slot: null, message: null };
+      return {
+        ...state,
+        serviceId: action.serviceId,
+        allowStaffChoice: action.allowStaffChoice,
+        // Without a choice of professional, "any professional" goes straight to times.
+        step: action.allowStaffChoice ? "staff" : "time",
+        staffId: action.allowStaffChoice ? null : "any",
+        slot: null,
+        message: null,
+      };
     case "staff":
       return { ...state, step: "time", staffId: action.staffId, slot: null, message: null };
     case "date":
@@ -67,7 +80,11 @@ export function bookingReducer(state: BookingState, action: BookingAction): Book
     case "note":
       return { ...state, note: action.note };
     case "back":
-      return { ...state, step: BACK[state.step], message: null };
+      return {
+        ...state,
+        step: state.step === "time" && !state.allowStaffChoice ? "service" : BACK[state.step],
+        message: null,
+      };
     case "failed":
       return TIME_ERRORS.has(action.error)
         ? {
@@ -85,5 +102,7 @@ export function bookingReducer(state: BookingState, action: BookingAction): Book
         result: action.status === "pending" ? "pending" : "confirmed",
         message: null,
       };
+    case "restart":
+      return initialBooking(action.date);
   }
 }

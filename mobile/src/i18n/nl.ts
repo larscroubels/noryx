@@ -54,7 +54,9 @@ export const nl: typeof en = {
       "We konden deze pagina niet aangemeld openen. Controleer je verbinding en probeer opnieuw.",
   },
   client: {
+    bookAgain: "Nog een afspraak boeken",
     salons: {
+      replaceText: (services: string) => `De nieuwe salon neemt over: ${services}.`,
       title: "Gekoppelde salons",
       linked: "Je salons",
       previous: "Ontkoppeld",
@@ -109,6 +111,9 @@ export const nl: typeof en = {
       done: "Beginnen met boeken",
     },
     linkErrors: {
+      unlink_failed:
+        "De nieuwe salon is gekoppeld, maar we konden de vorige niet ontkoppelen. Ontkoppel ze bij Gekoppelde salons.",
+      failed: "We konden deze salon niet koppelen. Controleer je verbinding en probeer opnieuw.",
       too_many_attempts: "Te veel codes geprobeerd. Wacht 15 minuten en probeer opnieuw.",
       connection_code_invalid: "We herkennen deze code niet. Vraag ze na bij je salon.",
       categories_required: "Kies minstens één dienst voor deze salon.",
