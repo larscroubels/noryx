@@ -80,7 +80,10 @@ export async function listLinks(): Promise<ClientLink[]> {
 }
 
 export async function myAppointments(): Promise<ClientAppointment[]> {
-  return (check(await supabase.rpc("my_appointments")) ?? []) as unknown as ClientAppointment[];
+  const rows = (check(await supabase.rpc("my_appointments")) ??
+    []) as unknown as ClientAppointment[];
+  // Older databases don't return the zone yet; NORYX salons default to Brussels.
+  return rows.map((row) => ({ ...row, timezone: row.timezone ?? "Europe/Brussels" }));
 }
 
 export async function publicBusiness(slug: string): Promise<PublicBusiness | null> {

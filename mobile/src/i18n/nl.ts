@@ -54,6 +54,25 @@ export const nl: typeof en = {
       "We konden deze pagina niet aangemeld openen. Controleer je verbinding en probeer opnieuw.",
   },
   client: {
+    salons: {
+      title: "Gekoppelde salons",
+      linked: "Je salons",
+      previous: "Ontkoppeld",
+      add: "Salon toevoegen",
+      addService: "Dienst toevoegen",
+      replace: "Vervangen",
+      unlink: "Ontkoppelen",
+      code: "Salon-code",
+      services: "Diensten",
+      save: "Koppelen",
+      unlinkTitle: (name: string) => `${name} ontkoppelen?`,
+      unlinkText:
+        "Je kunt dan niet meer bij deze salon boeken in de app. Er wordt niets geannuleerd: je geschiedenis en geplande afspraken blijven bij Afspraken staan.",
+      unlinkConfirm: "Salon ontkoppelen",
+      added: (name: string) => `${name} is gekoppeld.`,
+      replaced: (name: string) => `${name} vervangt de vorige salon.`,
+      unlinked: (name: string) => `${name} is ontkoppeld.`,
+    },
     appointments: {
       upcoming: "Gepland",
       history: "Geschiedenis",

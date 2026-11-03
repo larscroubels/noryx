@@ -53,6 +53,25 @@ export const en = {
     failed: "We couldn't open this page signed in. Check your connection and try again.",
   },
   client: {
+    salons: {
+      title: "Linked salons",
+      linked: "Your salons",
+      previous: "Unlinked",
+      add: "Add a salon",
+      addService: "Add a service",
+      replace: "Replace",
+      unlink: "Unlink",
+      code: "Salon code",
+      services: "Services",
+      save: "Link",
+      unlinkTitle: (name: string) => `Unlink ${name}?`,
+      unlinkText:
+        "You can no longer book with this salon in the app. Nothing is cancelled: your history and upcoming visits stay under Appointments.",
+      unlinkConfirm: "Unlink salon",
+      added: (name: string) => `${name} is linked.`,
+      replaced: (name: string) => `${name} replaces the previous salon.`,
+      unlinked: (name: string) => `${name} is unlinked.`,
+    },
     appointments: {
       upcoming: "Upcoming",
       history: "History",

@@ -1,4 +1,4 @@
-import { linkSalon, normaliseCode, type ClientCategory, type ClientLink } from "./api";
+import { linkSalon, normaliseCode, unlinkSalon, type ClientCategory, type ClientLink } from "./api";
 import { mergeCategories } from "./links";
 
 export type LinkOutcome =
@@ -34,4 +34,25 @@ export async function linkCodes(
     outcomes.set(code, result);
   }
   return outcomes;
+}
+
+/**
+ * Replaces a salon: the new one is linked first, and only then is the old one unlinked,
+ * so a wrong code never leaves the client without their salon. Unlinking keeps the old
+ * salon's history and upcoming visits (nothing is cancelled).
+ */
+export async function replaceSalon(
+  oldBusinessId: string,
+  code: string,
+  categories: ClientCategory[],
+  existing: ClientLink[],
+): Promise<LinkOutcome> {
+  const outcome = (
+    await linkCodes(
+      categories.map((category) => ({ category, code })),
+      existing,
+    )
+  ).get(normaliseCode(code)) ?? { ok: false, error: "failed" };
+  if (outcome.ok && outcome.businessId !== oldBusinessId) await unlinkSalon(oldBusinessId);
+  return outcome;
 }

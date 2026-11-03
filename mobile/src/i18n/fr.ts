@@ -55,6 +55,25 @@ export const fr: typeof en = {
       "Nous n'avons pas pu ouvrir cette page en étant connecté. Vérifiez votre connexion et réessayez.",
   },
   client: {
+    salons: {
+      title: "Salons liés",
+      linked: "Vos salons",
+      previous: "Déliés",
+      add: "Ajouter un salon",
+      addService: "Ajouter un service",
+      replace: "Remplacer",
+      unlink: "Délier",
+      code: "Code du salon",
+      services: "Services",
+      save: "Lier",
+      unlinkTitle: (name: string) => `Délier ${name} ?`,
+      unlinkText:
+        "Vous ne pourrez plus réserver chez ce salon dans l'app. Rien n'est annulé : votre historique et vos rendez-vous à venir restent dans Rendez-vous.",
+      unlinkConfirm: "Délier le salon",
+      added: (name: string) => `${name} est lié.`,
+      replaced: (name: string) => `${name} remplace le salon précédent.`,
+      unlinked: (name: string) => `${name} est délié.`,
+    },
     appointments: {
       upcoming: "À venir",
       history: "Historique",
