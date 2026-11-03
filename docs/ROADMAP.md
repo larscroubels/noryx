@@ -102,10 +102,22 @@ Status as of 22 October 2026. The full product brief is in [`PRODUCT_BRIEF.md`](
   - appointment actions: confirm, complete, no-show, cancel, reschedule, record payment, redeem a gift card and internal note.
 - **Shared with the website:** `reschedule_appointment` (RPC) and `buildSetupChecklist`.
 - **Open:**
-  - plan C (client side);
   - the manual test on a real iPhone and Android phone (`mobile/README.md`);
   - a 1024 px app icon;
   - Apple and Google developer accounts and the store listings.
+
+
+## NORYX app — client side (plan C) ✅ (2026-11-03)
+
+- **What it does:** clients link salons with each salon's code, per service (one salon can serve several), and get one tab per service with that salon.
+  - Booking uses the website's steps and rules, and shares the slot computation with the booking page.
+  - The Appointments screen shows upcoming visits, history and previous salons, with cancellation within the salon's deadline.
+  - Linked salons can be added, replaced or unlinked.
+- **Database:** `my_appointments` now also returns the salon's time zone (migration `20261103090000`).
+- **Open:**
+  - apply that migration to the hosted project. It was unreachable on 2026-11-03 (probably paused), so the migration isn't there yet;
+  - run the end-to-end booking check against the hosted demo;
+  - the phone test script.
 
 ## Phase 8 — Launch preparation ⏳
 

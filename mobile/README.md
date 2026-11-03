@@ -1,6 +1,6 @@
 # NORYX app
 
-One app for iOS and Android, built with Expo, for both sides of NORYX. **Salon teams** use it for Today, Calendar, Clients, Clock and More. **Clients** get their side with plan C; until then the app shows a "coming soon" screen there.
+One app for iOS and Android, built with Expo, for both sides of NORYX. **Salon teams** use it for Today, Calendar, Clients, Clock and More. **Clients** link their salons with each salon's code, book in a few taps, see and cancel their appointments, and manage their salons.
 
 The app uses the same Supabase project, logins and row-level security as the website. It also imports pure code from the website, such as times, prices, status rules and the three languages, through `@/…` (pointing at `../src`). Its own code lives under `~/…` (pointing at `./src`).
 
@@ -58,3 +58,28 @@ Use the demo logins from `supabase/seed.sql` on the hosted project, or test acco
    - VoiceOver (iOS) or TalkBack (Android) on Today and Calendar: every control is read out with a label, in the same order as on screen.
    - Airplane mode: screens show the "couldn't load" message with **Try again**, never an endless spinner.
    - Revoke the session (for example by changing the password on the website): the app returns to sign-in with "You've been signed out."
+
+### Client side
+
+Use a fresh test account, and Atelier Noor's code from the website (**Settings → NORYX app**).
+
+9. **New client links salons** (spec flow 4):
+   - Create an account in the app, confirm the email, then sign in.
+   - Choose **Hairdresser** and **Nail stylist** and enter the codes. Using the same code twice links one salon for both services.
+   - You get one tab per service, with the salon's name.
+   - A wrong code shows "We don't recognise this code". Before the email is confirmed, the app asks you to confirm it and offers to resend the email.
+10. **Booking** (spec flow 5):
+    - Tap the hair tab and choose a service, a professional (or "Any available professional"), a day and a time, then confirm.
+    - The confirmation says "You're booked", or "Request received" when the salon approves bookings itself.
+    - The visit appears under **Appointments** and in the salon's calendar, both on the website and in the salon side of the app.
+    - Times are the salon's times, even with the phone set to another time zone.
+11. **Cancelling** (spec flow 6):
+    - Cancel a visit within the deadline. It shows "Cancelled", and the time is free again at the salon.
+    - For a visit inside the cancellation window, the app says it's too late and to contact the salon. There is no cancel button.
+12. **Replacing a salon** (spec flow 7):
+    - Go to **Profile → Linked salons → Replace** and enter another salon's code.
+    - The old salon moves to **Previous salons** under Appointments. Its history stays, and an upcoming visit there can still be cancelled.
+    - A wrong code leaves the old salon linked.
+13. **Privacy and deletion** (spec flows 9 and 10):
+    - A salon's visits from before you linked never appear.
+    - Deleting the account works. The salon still has your client record, now without a link to the account.

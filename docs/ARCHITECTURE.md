@@ -151,6 +151,14 @@ Booking, cancellation and order events write rows to `notifications` (outbox). `
   - `/client` (plan C);
   - `/profile` and `/delete-account`.
   - Side choice: team members go to the salon side; clients and new accounts go to the client side. Someone who is both returns to the side they used last, or picks a side on first use.
+- **Client side** (`mobile/src/app/client/`):
+  - **First run:** you choose services, then enter one salon code per service. `linkCodes` groups the entries by code and merges them with a salon's earlier categories, because `link_business_by_code` replaces the list.
+  - **Tabs:** a custom tab bar with one tab per category that has linked salons, then Appointments and Profile.
+  - **Booking:** a salon tab runs `BookingFlow`, the website's steps:
+    - it uses `get_public_business` and `get_public_busy_periods`, plus `slotsForDay` from `src/lib/booking/slots.ts`, the same code as the website's booking page;
+    - then it calls `client_book_appointment`.
+  - **Appointments:** shows `my_appointments` in the salon's time zone, split into upcoming, history and previous salons.
+  - **Linked salons:** add or replace a salon (the new one is linked first), or unlink one; unlinking cancels nothing.
 - **Moving an appointment** goes through `reschedule_appointment`. It is SECURITY INVOKER, keeps the buffer, and raises `appointment_not_found` when RLS hides the row. The website's action uses it too.
 - **Website routes for the app:** both accept a bearer token only.
   - `POST /api/account/delete`.
