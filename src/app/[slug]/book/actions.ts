@@ -5,21 +5,14 @@ import { z } from "zod";
 
 import type { Dictionary } from "@/i18n/dictionaries";
 import { getT } from "@/i18n/server";
-import { computeAvailability } from "@/lib/booking/availability";
-import {
-  eligibleStaff,
-  getPublicBusiness,
-  toWeekly,
-  type PublicBusiness,
-} from "@/lib/booking/public";
+import { getPublicBusiness, type PublicBusiness } from "@/lib/booking/public";
+import { busyRange, slotsForDay } from "@/lib/booking/slots";
 import { publicEnv } from "@/lib/env";
-import { formatTime } from "@/lib/format";
 import { logger } from "@/lib/logger";
 import { processNotificationsForAppointment } from "@/lib/notifications";
 import { rateLimit } from "@/lib/rate-limit";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
-import { dayBoundsUtc } from "@/lib/time";
 import { rules } from "@/lib/validation/common";
 
 async function ipKey(scope: string) {
@@ -42,51 +35,24 @@ async function slotsFor(
   staffId: string,
   date: string,
 ) {
-  const service = business.services.find((s) => s.id === serviceId);
-  if (!service) return null;
-  let staff = eligibleStaff(business, serviceId);
-  if (staffId !== "any") staff = staff.filter((s) => s.id === staffId);
-  if (staff.length === 0) return [];
-
-  const { start, end } = dayBoundsUtc(date, business.timezone);
+  if (!business.services.some((s) => s.id === serviceId)) return null;
+  const { from, to } = busyRange(date, business.timezone);
   const supabase = await createClient();
   const { data: busy, error } = await supabase.rpc("get_public_busy_periods", {
     p_business_id: business.id,
-    p_from: start.toISOString(),
-    p_to: end.toISOString(),
+    p_from: from,
+    p_to: to,
   });
   if (error) throw new Error("Availability could not be loaded.");
-
-  const location = business.locations[0];
-  const slots = computeAvailability({
+  return slotsForDay({
+    business,
+    serviceId,
+    staffId,
     date,
-    timeZone: business.timezone,
+    busy: busy ?? [],
     now: new Date(),
-    policy: {
-      minNoticeMinutes: business.policy.min_notice_minutes,
-      horizonDays: business.policy.horizon_days,
-      slotIntervalMinutes: business.policy.slot_interval_minutes,
-      bufferMinutes: business.policy.buffer_minutes,
-    },
-    serviceBufferMinutes: service.buffer_after_minutes,
-    locationHours: location ? toWeekly(location.hours) : [],
-    staff: staff.map((member) => ({
-      staffId: member.id,
-      durationMinutes: member.durationMinutes,
-      workingHours: toWeekly(member.hours),
-      busy: (busy ?? [])
-        .filter((period) => period.staff_id === member.id)
-        .map((period) => ({
-          startsAt: new Date(period.starts_at),
-          endsAt: new Date(period.ends_at),
-        })),
-    })),
+    locale: "en-GB",
   });
-  return slots.map((slot) => ({
-    startsAt: slot.startsAt.toISOString(),
-    label: formatTime(slot.startsAt, business.timezone, "en-GB"),
-    staffIds: slot.staffIds,
-  }));
 }
 
 export async function getAvailability(
